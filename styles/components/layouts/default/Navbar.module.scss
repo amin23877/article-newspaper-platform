@@ -1,0 +1,94 @@
+@import "styles/vars";
+
+.boxContainer {
+  height: 64px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  .contentContainer {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+
+    .rightCol {
+      display: flex;
+      align-items: center;
+      .logo {
+        width: 121px;
+        height: 54px;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 24px;
+        line-height: 38px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: $primary-color;
+      }
+      .linksContainer {
+        display: flex;
+        margin-right: 22px;
+        align-items: center;
+        height: 100%;
+        .linkItem {
+          font-style: normal;
+          font-weight: 500;
+          font-size: $secondary-size;
+          line-height: 22px;
+          align-items: center;
+          text-align: center;
+          position: relative;
+          margin-left: 24px;
+          height: 100%;
+          display: flex;
+        }
+        .activeLink {
+          color: $primary-color;
+          &::after {
+            height: 5px;
+            width: 47px;
+            content: "";
+            display: block;
+            top: 100%;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            border-radius: 3px;
+            background-color: $primary-color;
+            position: absolute;
+          }
+        }
+      }
+    }
+
+    .leftCol {
+      display: flex;
+      align-items: center;
+      .loginButton {
+        margin-left: 16px;
+      }
+
+      .profileInfo {
+        display: flex;
+        cursor: pointer;
+
+        .name {
+          width: 90px;
+          margin-left: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: $secondary-size;
+          color: $primary-color;
+        }
+        .profilePic {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}

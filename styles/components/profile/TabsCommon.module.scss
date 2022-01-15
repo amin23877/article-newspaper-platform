@@ -1,0 +1,17 @@
+
+@import "styles/vars";
+
+.showMoreContainer {
+  margin: 32px 0 94px 0;
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 189px;
+    height: 40px;
+    background: $primary-color;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px 20px 20px 0px;
+    font-size: $header-size;
+  }
+}

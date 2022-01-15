@@ -1,0 +1,150 @@
+
+@import "styles/vars";
+
+.publishRightContainer {
+  margin-top: 32px;
+
+  .wrapper {
+    margin-bottom: 24px;
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+
+    .buttonsContainer {
+      width: 655px;
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        width: 205px;
+      }
+
+    }
+
+    .inputContainer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+
+      .label {
+        margin-right: 8px;
+        font-size: $tertiary-size;
+        color: $primary-color;
+        display: flex;
+        align-items: center;
+      }
+      .currencyInput {
+        border: 1px solid #155A61;
+        box-sizing: border-box;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        border-radius: 10px 10px 10px 0px;
+        text-align: center;
+        direction: ltr;
+      }
+    }
+
+  }
+  .description {
+    width: 100%;
+    font-weight: 500;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: #706C64;
+    margin-bottom: 32px;
+  }
+
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 100px;
+
+    .button {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px 20px 20px 0px;
+      width: 188px;
+      height: 64px;
+      font-size: $header-size;
+    }
+  }
+
+  .dateSelectionContainer {
+    background: #FFFFFF;
+    border: 1px solid rgba(21, 90, 97, 0.9);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px 30px 30px 0px;
+    width: 100%;
+    padding: 24px;
+    margin-bottom: 32px;
+
+    .header {
+      display: flex;
+      align-items: center;
+
+      .title {
+        font-style: normal;
+        font-weight: 500;
+        font-size: $header-size;
+        line-height: 28px;
+        text-align: right;
+        margin-left: 12px;
+        color: #000000;
+        opacity: 0.9;
+      }
+
+      .selectContainer {
+        display: flex;
+
+        .inputWrapper {
+          display: flex;
+          align-items: center;
+          margin-left: 20px;
+
+          label {
+
+            cursor: pointer;
+          }
+
+          input {
+            margin-left: 15px;
+          }
+        }
+      }
+
+    }
+    .desc {
+      font-size: $header-size;
+      line-height: 28px;
+      text-align: right;
+      color: #797474;
+      opacity: 0.9;
+      width: 100%;
+      margin: 12px 0;
+    }
+
+    .buttonsContainer {
+      margin-top: 24px;
+
+      button {
+        width: 205px;
+        margin-left: 28px;
+      }
+
+    }
+    .datePicker {
+      border: 1px solid #155A61;
+      box-sizing: border-box;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      border-radius: 10px 10px 10px 0px;
+      text-align: center;
+      direction: ltr;
+      width: 205px;
+    }
+  }
+}
+
+

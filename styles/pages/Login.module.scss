@@ -1,0 +1,192 @@
+@import "styles/vars";
+
+    .content {
+      direction: rtl;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .logoContainer {
+        height: 43.68px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 35px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: $primary-color;
+        margin: 60px 0 70px 0;
+      }
+      .inputsContainer {
+        padding: 40px 60px;
+        width: 393px;
+
+        .titleContainer {
+          height: 31px;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 34px;
+          display: flex;
+          align-items: center;
+          text-align: right;
+          margin-bottom: 35px;
+          color: $dimgray;
+        }
+
+        .phoneInput {
+          text-align: left;
+          direction: ltr;
+        }
+
+        .radioLabel {
+          height: 19px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 19px;
+          text-align: right;
+          margin: 15px 0;
+
+          color: #545454;
+        }
+
+        .radioContainer {
+          display: flex;
+
+          .radioInput {
+            width: 12px;
+            height: 12px;
+          }
+
+          .radioInputLabel {
+            font-style: normal;
+            font-weight: normal;
+            font-size: $tertiary-size;
+            line-height: 19px;
+            align-items: center;
+            text-align: right;
+            color: #979797;
+            margin-left: 23px;
+            cursor: pointer;
+          }
+        }
+
+        .inputContainer {
+          .otpLabelClass {
+            color: #C4C4C4;
+            font-size: $tertiary-size;
+          }
+          .button {
+            width: 100%;
+            background: $primary-color;
+            border-radius: 15px 15px 15px 0px;
+            height: 45px;
+            margin-top: 20px;
+
+            &.otpButton {
+              margin-top: 5px;
+            }
+          }
+
+        }
+
+        .SignupLinkContainer {
+          height: 21px;
+          left: 1073px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 10px;
+          line-height: 17px;
+          display: flex;
+          color: #979797;
+          margin-top: 16px;
+          a {
+            font-size: 12px;
+            color: $primary-color;
+            margin-right: 4px;
+          }
+        }
+
+        .hintContainer {
+          font-size: 10px;
+          line-height: 17px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #979797;
+          margin-top: 16px;
+        }
+      }
+
+      &.otpContainer {
+        margin-top: 100px;
+
+        .stepBack {
+          height: 20px;
+          font-size: $tertiary-size;
+          line-height: 20px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #979797;
+          width: 393px;
+          cursor: pointer;
+          padding: 37px 24px 0 0;
+
+          .iconContainer {
+            height: 10px;
+            width: 9px;
+            display: inline-block;
+            margin-bottom: 5px;
+            margin-left: 7px;
+          }
+        }
+
+        .timeout {
+          font-style: normal;
+          font-weight: 500;
+          font-size: 10px;
+          line-height: 16px;
+          align-items: center;
+          text-align: center;
+          color: $primary-color;
+          margin: 32px 0 10px 0;
+        }
+
+        .titleContainer {
+          margin-bottom: 15px;
+        }
+
+        .sendAgain {
+          height: 25px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 10px;
+          line-height: 17px;
+          align-items: center;
+          text-align: center;
+          text-decoration-line: underline;
+          color: $dimgray;
+          cursor: pointer;
+        }
+      }
+
+      .successIconContainer {
+        margin-top: 165px;
+      }
+
+      .successTextContainer {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 41px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: $primary-color;
+        margin-top: 40px;
+      }
+    }

@@ -1,0 +1,139 @@
+
+@import "styles/vars";
+
+.detailsContainer {
+  margin-top: 32px;
+
+  .wrapper {
+    margin-bottom: 24px;
+  }
+
+  .content {
+
+    .inputContainer {
+      margin-top: 8px;
+
+      input {
+        font-size: 18px;
+        outline: none;
+        border: none;
+        width: 100%;
+
+        &::placeholder {
+          color: #545454;
+          opacity: 0.9;
+        }
+      }
+
+      textarea {
+        font-size: 18px;
+        outline: none;
+        border: none;
+        width: 100%;
+        height: 150px;
+        resize: none;
+
+        &::placeholder {
+          color: #545454;
+          opacity: 0.9;
+        }
+      }
+    }
+
+    .selectContainer {
+
+      select {
+        width: 134px;
+        height: 32px;
+        background: #FFFFFF;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+        border-radius: 7px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        padding: 0 6px;
+
+        option {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .subjectsContainer {
+      display: flex;
+      margin: 16px 0 24px 0;
+
+
+      .subject {
+        min-width: 88px;
+        height: 32px;
+        border: 1px solid $primary-color;
+        box-sizing: border-box;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        border-radius: 10px 10px 10px 0px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        color: $primary-color;
+        margin-left: 8px;
+      }
+    }
+
+    .counter {
+      font-size: $tertiary-size;
+      line-height: 14px;
+      color: #000000;
+      opacity: 0.9;
+      width: 100%;
+      text-align: left;
+      margin-top: 36px;
+    }
+
+    .uploadContent {
+
+      display: flex;
+      justify-content: flex-end;
+
+      .placeholderContainer {
+        width: 130px;
+        border: 1px dashed $primary-color;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 0;
+        height: 130px;
+        cursor: pointer;
+
+        .image {
+          width: 70px;
+          height: 70px;
+        }
+        .text {
+          font-size: $tertiary-size;
+          line-height: 28px;
+          text-align: center;
+          color: #797474;
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 100px;
+
+    .button {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px 20px 20px 0px;
+      width: 188px;
+      height: 64px;
+      font-size: $header-size;
+    }
+  }
+}

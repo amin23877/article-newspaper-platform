@@ -1,0 +1,42 @@
+
+@import "styles/vars";
+
+.typeStepContainer {
+
+  .typeSelection {
+    display: flex;
+    justify-content: center;
+    margin-top: 84px;
+
+    .item {
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        margin-left: 32px;
+      }
+
+    }
+  }
+  .title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: $title-size;
+    line-height: 38px;
+    text-align: center;
+    color: $primary-color;
+    margin-top: 32px;
+
+  }
+  .rules {
+    font-style: normal;
+    font-weight: normal;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: $primary-color;
+    margin: 120px 0;
+    padding: 0 60px;
+  }
+}

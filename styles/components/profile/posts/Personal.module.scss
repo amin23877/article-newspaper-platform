@@ -1,0 +1,132 @@
+@import "Common.module";
+
+@import "styles/vars";
+
+.postContainer {
+
+  .mediaPlaceHolder {
+    width: 100%;
+    height: 342px;
+    .imageItem {
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .descriptionContainer {
+    padding: 8px 20px;
+
+    .timingRow {
+      display: flex;
+      justify-content: space-between;
+
+      .userContainer {
+        display: flex;
+      }
+
+      .time {
+        height: 25px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: $tertiary-size;
+        line-height: 19px;
+        text-align: right;
+        color: #797474;
+        opacity: 0.9;
+        align-items: center;
+        display: flex;
+      }
+
+    }
+    .title {
+      font-style: normal;
+      font-weight: 500;
+      font-size: $primary-size;
+      line-height: 28px;
+      text-align: right;
+      color: #312C20;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .description {
+      font-style: normal;
+      font-weight: normal;
+      font-size: $primary-size;
+      line-height: 28px;
+      text-align: right;
+      margin-top: 16px;
+      position: relative;
+      .mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background-image: linear-gradient(rgba(255, 255, 255, 0), white);
+        height: 100%;
+        z-index: 2;
+      }
+    }
+    .actionsRow {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 16px;
+
+      .actions {
+        display: flex;
+
+        .like {
+          margin-left: 16px;
+          display: flex;
+
+        }
+        .comment {
+          display: flex;
+        }
+
+        .icon {
+
+        }
+        .count {
+          font-style: normal;
+          font-weight: normal;
+          font-size: $secondary-size;
+          line-height: 22px;
+          text-align: right;
+          color: #797474;
+          opacity: 0.9;
+          margin-right: 8px;
+        }
+
+      }
+      .social {
+        display: flex;
+
+        &>div:nth-child(1) {
+          margin-left: 16px;
+        }
+      }
+    }
+
+    .readMoreRow {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+
+      .readMore {
+        font-style: normal;
+        font-weight: normal;
+        font-size: $header-size;
+        line-height: 28px;
+        color: $primary-color;
+        opacity: 0.9;
+        cursor: pointer;
+      }
+    }
+  }
+}
+

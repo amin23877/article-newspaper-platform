@@ -1,0 +1,26 @@
+@import "styles/vars";
+
+.button {
+  width: 86px;
+  height: 32px;
+
+  border: 1px solid $primary-color;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 10px 10px 10px 0px;
+  cursor: pointer;
+}
+
+.filled {
+  background-color: $primary-color;
+  color: #FFFFFF;
+}
+
+.outline {
+  background-color: #FFFFFF;
+  color: $primary-color;
+}
+
+.disabled {
+   opacity: .5;
+}

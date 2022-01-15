@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans_Bold.ttf");
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans_Light.ttf");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans_Medium.ttf");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSans";
+  src: url("/fonts/IRANSans.ttf");
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: IRANSans;
+  direction: rtl;
+}
+
+*,
+*::after,
+*::before {
+  font-family: IRANSans;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

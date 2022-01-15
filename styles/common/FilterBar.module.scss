@@ -1,0 +1,76 @@
+
+@import "styles/vars";
+
+.filterBarContainer {
+  display: flex;
+  width: 100%;
+  margin-bottom: 32px;
+
+  .title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: $title-size;
+    line-height: 38px;
+    text-align: center;
+    color: #706C64;
+    width: 83px;
+  }
+  .optionsContainer {
+    height: 42px;
+    background: #FFFFFF;
+    border: 1px solid $dimgray;
+    box-sizing: border-box;
+    border-radius: 6px;
+    display: flex;
+    width: 392px;
+    justify-content: space-evenly;
+
+    .optionItem {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #706C64;
+      padding-left: 12px;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        border-left: 1px solid #C4C4C4;
+      }
+
+      .text {
+        font-size: $secondary-size;
+      }
+      .icon {
+        margin-right: 8px;
+      }
+    }
+  }
+  .searchContainer {
+    width: 190px;
+    margin-right: 16px;
+    position: relative;
+
+    input {
+      width: 100%;
+      height: 42px;
+      background: #E5E5E5;
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding-right: 36px;
+
+      &::placeholder {
+        color: #706C64;
+      }
+    }
+
+    .iconContainer {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+    }
+  }
+}

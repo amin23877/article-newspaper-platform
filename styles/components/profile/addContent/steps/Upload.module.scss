@@ -1,0 +1,150 @@
+
+@import "styles/vars";
+
+.uploadStepContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > .title {
+    height: 75px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: $title-size;
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 32px;
+  }
+  .uploadBox {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid rgba($primary-color, 0.9);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.dragOver {
+      border: 1px dashed rgba($primary-color, 0.9);
+      box-shadow: none;
+    }
+
+    .placeholderContainer {
+      width: 260px;
+      border: 1px dashed $primary-color;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 0;
+
+      .image {
+        width: 178px;
+        height: 178px;
+      }
+      .text {
+        font-size: $header-size;
+        line-height: 28px;
+        text-align: center;
+        color: #797474;
+        opacity: 0.9;
+      }
+    }
+    & > .description {
+      font-style: normal;
+      font-weight: 500;
+      font-size: $header-size;
+      line-height: 28px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: $primary-color;
+      margin-top: 32px;
+
+    }
+    .details {
+      margin-top: 32px;
+      width: 100%;
+
+      .title {
+        font-style: normal;
+        font-weight: 500;
+        font-size: $header-size;
+        line-height: 28px;
+        text-align: right;
+        color: #000000;
+        opacity: 0.9;
+        margin-bottom: 16px;
+      }
+      .description {
+        font-style: normal;
+        font-weight: normal;
+        font-size: $header-size;
+        line-height: 28px;
+        text-align: right;
+        color: #797474;
+        opacity: 0.9;
+      }
+    }
+  }
+  .usageText {
+    font-style: normal;
+    font-weight: 500;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: #706C64;
+    margin-top: 48px;
+  }
+
+  .buttonContainer {
+    margin-top: 48px;
+
+    .button {
+      background: $primary-color;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px 20px 20px 0px;
+      height: auto;
+      width: auto;
+      font-size: $header-size;
+      margin-left: 16px;
+
+      input {
+        display: none;
+      }
+      label {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        display: block;
+        padding: 22px 32px;
+      }
+
+      .continue {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        display: block;
+        padding: 22px 32px;
+      }
+    }
+  }
+
+  .rules {
+    font-style: normal;
+    font-weight: normal;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: $primary-color;
+    margin: 120px 0;
+    padding: 0 60px;
+  }
+}

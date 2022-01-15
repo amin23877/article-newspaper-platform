@@ -1,0 +1,103 @@
+
+@import "styles/vars";
+
+.profileContainer {
+  background-color: #f7fcfc;
+
+  .headerContainer {
+    padding-top: 43px;
+    height: 373px;
+    background-image: url("../../assets/images/profile/default-profile-bg.png");
+    background-size: cover;
+
+    .buttonContainer {
+      width: 100%;
+      margin-top: 43px;
+
+      .addContentButton {
+        width: 165px;
+        height: 50px;
+        border-radius: 20px 20px 20px 0px;
+        font-size: $header-size;
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+
+          span:nth-child(2) {
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+  .contentContainer {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 32px 16px 0;
+
+    .rightCol {
+      width: 290px;
+
+      .profileContentBox {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .avatarContainer {
+          width: 85px;
+          height: 85px;
+          margin-bottom: 8px;
+        }
+        .name {
+          height: 38px;
+          font-style: normal;
+          font-weight: 500;
+          font-size: $header-size;
+          line-height: 28px;
+          text-align: center;
+          margin-bottom: 8px;
+          color: #241E12;
+        }
+        .status {
+          height: 38px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: $header-size;
+          line-height: 28px;
+          text-align: center;
+          color: #706C64;
+        }
+      }
+      .contactsContainer {
+        margin-bottom: 16px;
+      }
+      .socialContainer {
+        display: flex;
+        margin: 32px 0;
+        justify-content: center;
+
+        .social {
+          a {
+            margin-left: 16px;
+          }
+        }
+      }
+    }
+    .leftCol {
+      width: calc(100% - 290px);
+
+      .tabsContainer {
+        padding: 0 16px;
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+@import "styles/vars";
+
+.footerContainer {
+  width: 100%;
+  padding: 20px 0 40px 0;
+  background-color: $primary-color;
+  color: #FFFFFF;
+
+  .pagesLinkContainer {
+    display: flex;
+    height: 38px;
+    flex-grow: 1;
+
+    .linkItem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      font-size: $header-size;
+
+      &:not(:last-child) {
+        &::after {
+          display: block;
+          height: 100%;
+          width: 2px;
+          background-color: #FFFFFF;
+          position: absolute;
+          left: 0;
+          top: 0;
+          content: '';
+        }
+      }
+    }
+  }
+
+  .downloadsContainer {
+    margin-top: 27px;
+    display: flex;
+    justify-content: center;
+
+    .downloadItem {
+      &:not(:last-child) {
+        margin-left: 24px;
+      }
+    }
+  }
+
+  .footerDescription {
+    height: 28px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: $header-size;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .socialContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+
+    & > a {
+      &:not(:last-child) {
+        margin-left: 40px;
+      }
+    }
+  }
+}

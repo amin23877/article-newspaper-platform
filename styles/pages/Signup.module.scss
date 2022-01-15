@@ -1,0 +1,88 @@
+@import "styles/vars";
+
+.content {
+  direction: rtl;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .stepperContainer {
+    padding: 0 70px;
+    width: 100%;
+  }
+
+  .logoContainer {
+    height: 43.68px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: $primary-color;
+    margin: 60px 0 70px 0;
+  }
+
+  .inputsContainer {
+    padding: 40px 60px;
+    width: 393px;
+
+    .titleContainer {
+      height: 31px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 34px;
+      display: flex;
+      align-items: center;
+      text-align: right;
+      margin-bottom: 35px;
+      color: $dimgray;
+    }
+
+    .inputContainer {
+
+      .phoneInput {
+        text-align: left;
+      }
+      .button {
+        width: 100%;
+        background: $primary-color;
+        border-radius: 15px 15px 15px 0px;
+        height: 45px;
+        margin-top: 20px;
+      }
+
+    }
+
+    .SignupLinkContainer {
+      height: 21px;
+      left: 1073px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 17px;
+      display: flex;
+      color: #979797;
+      margin-top: 16px;
+      a {
+        font-size: 12px;
+        color: $primary-color;
+        margin-right: 4px;
+      }
+    }
+
+    .hintContainer {
+      font-size: 10px;
+      line-height: 17px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #979797;
+      margin-top: 16px;
+    }
+  }
+
+}

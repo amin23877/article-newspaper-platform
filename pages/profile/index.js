@@ -130,7 +130,7 @@ export async function getServerSideProps(context) {
 
         const followersReq = axios.get(Endpoints.baseUrl + '/user/followers?start=0&limit=4&sortBy=_id&sortOrder=-1',{
             headers: {
-                authorization: accessToken
+               authorization: accessToken
             }
         })
 
@@ -164,7 +164,8 @@ export async function getServerSideProps(context) {
             props: {me, followers, followings, followingsCount, followersCount}
         }
 
-    } catch (e) {
+    } 
+    catch (e) {
         return {
             redirect: {
                 destination: '/',

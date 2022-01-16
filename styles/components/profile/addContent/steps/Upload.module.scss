@@ -1,5 +1,9 @@
 
 @import "styles/vars";
+// .subject{
+//   color: $primary-color;
+//   font-size: $header-size;
+// }
 
 .uploadStepContainer {
   display: flex;
@@ -18,6 +22,7 @@
     color: $primary-color;
     margin-bottom: 32px;
   }
+  
   .uploadBox {
     width: 100%;
     background: #FFFFFF;

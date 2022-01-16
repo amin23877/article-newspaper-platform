@@ -10,7 +10,7 @@ import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";
 
 import { DatePicker } from "jalali-react-datepicker";
 
-export default function PublishRight({onDetailSubmit}) {
+export default function PublishRight({onStepForward}) {
 
     const [sharePolicy, setSharePolicy] = useState('')
 
@@ -62,17 +62,22 @@ export default function PublishRight({onDetailSubmit}) {
                 <div className={styles.desc}>
                     تاریخ نمایش محتوایتان را تعیین نمایید.
                 </div>
-                {/*<div className={styles.buttonsContainer}>*/}
-                {/*    <Button variant='outline'>تاریخ</Button>*/}
-                {/*    <Button variant='outline'>زمان</Button>*/}
-                {/*</div>*/}
+               
                 <DatePicker disabled={sharePolicy !== 'payment' ? 'disabled' : ''} className={styles.datePicker} open={true} />
             </div>
             <div className={styles.buttonContainer}>
-                <Button variant='filled' classes={styles.button} onClick={() => onDetailSubmit()}>
+                <Button  classes={styles.button} onClick={() => onStepForward() }>
                     تایید
                 </Button>
             </div>
         </div>
     )
 }
+
+ {/*<div className={styles.buttonsContainer}>*/}
+ {/*    <Button variant='outline'>تاریخ</Button>*/}
+ {/*    <Button variant='outline'>زمان</Button>*/}
+ {/*</div>*/}
+
+
+

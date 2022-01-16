@@ -2,7 +2,6 @@
 import styles from 'styles/components/profile/addContent/steps/Details.module.scss'
 import Button from "components/common/button";
 import WrapperCard from "components/profile/addContent/wrapper-card";
-
 import {useState, useEffect} from 'react'
 import Image from "next/image";
 import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";

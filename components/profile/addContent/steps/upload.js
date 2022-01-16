@@ -59,7 +59,15 @@ export default function UploadType ({onUpload, data, onStepForward}) {
     }
 
     return (
-        <div className={styles.uploadStepContainer}>
+        <div>
+            {/* <div>
+            <div className={styles.subject}>
+                بارگذاری محتوا
+            </div>
+            </div> */}
+            <div>
+            <div className={styles.uploadStepContainer}>
+            
             <div className={styles.title}>
                 محتوای خودرا بارگزاری کنید.
             </div>
@@ -123,5 +131,9 @@ export default function UploadType ({onUpload, data, onStepForward}) {
                 با بارگزاری محتوای خود در دیجی نشر، موافقتتان را با شرایط و قوانین ودستورالعمل های دیجی نشر اعلام می‌کنید. لطفا مطمئن شوید که حقوق نشر و حریم خصوصی را نقض نمی‌کنید. <br />بیشتر بدانید
             </div>
         </div>
+            </div>
+           
+        </div>
+       
     )
 }

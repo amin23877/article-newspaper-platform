@@ -1,14 +1,12 @@
 
 import { useState, useEffect } from 'react'
 import Image from "next/image";
-
 import styles from 'styles/pages/AddContent.module.scss'
 import MockAvatar from "assets/images/mock-avatar.png";
 import Stepper from "components/signup/stepper";
 import ChevronRightLight from "assets/svg/common/chevron-right-light.svg";
-
 import Type from 'components/profile/addContent/steps/type'
-import Completion from 'components/profile/addContent/steps/completion'
+import {Completion} from 'components/profile/addContent/steps/completion'
 import Details from 'components/profile/addContent/steps/details'
 import PublishRight from 'components/profile/addContent/steps/publishRight'
 import Upload from 'components/profile/addContent/steps/upload'
@@ -26,6 +24,8 @@ export default function AddContent(props) {
         {id: 2, name: 'details', text: 'جزئیات'},
         {id: 3, name: 'publishRight', text: 'حق نشر'},
         {id: 4, name: 'completion', text: 'تکمیل اطلاعات'},
+        
+
     ]
 
     const [step, setStep] = useState(steps[0])
@@ -44,6 +44,14 @@ export default function AddContent(props) {
         })
         setStep(steps[1])
     }
+
+    // function selectPublishRight(contentType){
+    //     setData({
+    //         ...data,
+    //         contentType
+    //     })
+    //     setStep(steps[4])
+    // }
 
     function uploadFile(file) {
         setData({
@@ -77,7 +85,22 @@ export default function AddContent(props) {
         setStep(steps[3])
     }
 
+    // function onDetailSubmit() {
+    //     setStep(steps[3])
+    // }
+    // function onPublishRight() {
+    //     setStep(steps[4])
+    // }
+
+    // function onCompletionSubmit() {
+    //     setStep(steps[4])
+    // }
+
     function stepForward() {
+        setStep(steps.find(p => p.id === step.id + 1))
+    }
+
+    function stepForward1() {
         setStep(steps.find(p => p.id === step.id + 1))
     }
 
@@ -120,15 +143,17 @@ export default function AddContent(props) {
                         <div className={styles.stepContainer}>
                             {
                                 (() => {
-                                    switch (step.name) {
-                                        case "type":
+                                    switch (step.id) {
+                                        case 0:
                                             return <Type onTypeSelect={selectUploadType} />
-                                        case "upload":
+                                        case 1:
                                             return <Upload onUpload={uploadFile} onStepForward={stepForward} data={data} />
-                                        case "details":
+                                        case 2:
                                             return <Details onDetailSubmit={onDetailSubmit} />
-                                        case "publishRight":
-                                            return <PublishRight />
+                                        case 3:
+                                            return <PublishRight onStepForward={stepForward}/>
+                                        case 4: 
+                                             return <Completion/>
                                     }
                                 })()
                             }

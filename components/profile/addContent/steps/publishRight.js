@@ -9,10 +9,15 @@ import Image from "next/image";
 import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";
 
 import { DatePicker } from "jalali-react-datepicker";
+import { getThemeProps } from '@mui/system';
 
 export default function PublishRight({onStepForward}) {
 
     const [sharePolicy, setSharePolicy] = useState('')
+
+    // const publishRightHandler = ()=>{
+    //      setSharePolicy(props.sharePolicy)
+    // }
 
     return (
         <div className={styles.publishRightContainer}>

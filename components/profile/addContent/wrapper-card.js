@@ -12,7 +12,7 @@ export default function WrapperCard({children, title, description, className}) {
             <div className={styles.titleContainer}>
                 <div className={styles.title}>{title}:</div>
                 <div className={styles.infoIcon}>
-                    <Image src={InfoIcon} />
+                    <Image src={InfoIcon} alt=''/>
                 </div>
             </div>
             {description ?

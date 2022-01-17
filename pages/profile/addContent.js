@@ -6,7 +6,7 @@ import MockAvatar from "assets/images/mock-avatar.png";
 import Stepper from "components/signup/stepper";
 import ChevronRightLight from "assets/svg/common/chevron-right-light.svg";
 import Type from 'components/profile/addContent/steps/type'
-import {Completion} from 'components/profile/addContent/steps/completion'
+import Completion from 'components/profile/addContent/steps/completion/completion'
 import Details from 'components/profile/addContent/steps/details'
 import PublishRight from 'components/profile/addContent/steps/publishRight'
 import Upload from 'components/profile/addContent/steps/upload'
@@ -24,8 +24,6 @@ export default function AddContent(props) {
         {id: 2, name: 'details', text: 'جزئیات'},
         {id: 3, name: 'publishRight', text: 'حق نشر'},
         {id: 4, name: 'completion', text: 'تکمیل اطلاعات'},
-        
-
     ]
 
     const [step, setStep] = useState(steps[0])
@@ -100,14 +98,22 @@ export default function AddContent(props) {
         setStep(steps.find(p => p.id === step.id + 1))
     }
 
-    function stepForward1() {
-        setStep(steps.find(p => p.id === step.id + 1))
-    }
+    // function stepForward1() {
+    //     setStep(steps.find(p => p.id === step.id + 1))
+    // }
 
 
     function stepBack() {
         setStep(steps.find(p => p.id === step.id - 1))
     }
+    function editDetail() {
+        setStep(steps.find(p => p.id === step.id - 2))
+    }
+
+    // const PublishRightHandler = () => {
+    //     props.sharePolicy
+    // }
+
 
     return (
         <div className={styles.addContentContainer}>
@@ -115,7 +121,7 @@ export default function AddContent(props) {
             <div className={styles.profileContainer}>
                 <div className={styles.content}>
                     <div className={styles.avatar}>
-                        <Image src={MockAvatar}/>
+                        <Image src={MockAvatar} alt=''/>
                     </div>
                     <div className={styles.name}>
                         نام کاربری شما
@@ -129,7 +135,7 @@ export default function AddContent(props) {
                             (
                                 <div className={styles.stepBack}>
                                     <div className={styles.backIcon}>
-                                        <Image src={ChevronRightLight}/>
+                                        <Image src={ChevronRightLight} alt=''/>
                                     </div>
                                     <div className={styles.text} onClick={stepBack}>بازگشت به مرحله قبل</div>
                                 </div>
@@ -153,7 +159,7 @@ export default function AddContent(props) {
                                         case 3:
                                             return <PublishRight onStepForward={stepForward}/>
                                         case 4: 
-                                             return <Completion/>
+                                             return <Completion onEditPublish={stepBack} onEditDetail={editDetail} />
                                     }
                                 })()
                             }

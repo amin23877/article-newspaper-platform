@@ -36,14 +36,11 @@ export default function UploadType ({onUpload, data, onStepForward}) {
 
     function handleDrop (event) {
         event.preventDefault();
-
         let file = event.dataTransfer.files[0];
-
         const src = URL.createObjectURL(file);
         const preview = document.getElementById("image-placeholder");
         preview.srcset = '';
         preview.src = src;
-
         onUpload(file)
     }
 
@@ -80,7 +77,7 @@ export default function UploadType ({onUpload, data, onStepForward}) {
             >
                 <div className={styles.placeholderContainer}>
                     <div className={styles.image}>
-                        <Image id="image-placeholder" src={ImagePlaceholder}/>
+                        <Image id="image-placeholder" src={ImagePlaceholder} alt=''/>
                     </div>
                     <div className={styles.text}>
                         پیش نمایش محتوا

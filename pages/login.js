@@ -15,7 +15,7 @@ import Button from "components/common/button";
 import Wrapper from "components/login/wrapper";
 
 import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg'
-import SuccessIcon from 'assets/svg/common/success-icon.svg'
+import success from 'assets/svg/common/success.svg'
 import {phoneNumberRegex} from "utils/validations";
 import {Endpoints} from "utils/endpoints";
 import {useCountdown} from "hooks/useCountdown";
@@ -245,7 +245,7 @@ export default function Login () {
                                     Digi Nashr Logo
                                 </div>
                                 <div className={styles.successIconContainer}>
-                                    <Image src={SuccessIcon}/>
+                                    <Image src={success}/>
                                 </div>
                                 <div className={styles.successTextContainer}>
                                     اطلاعات شما با موفقیت ثبت شد.

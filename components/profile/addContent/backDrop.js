@@ -6,7 +6,7 @@ import styles from '../../../styles/components/profile/addContent/steps/Completi
 import Box from "@mui/material/Box"
 import Image from 'next/image';
 import Typography from "@mui/material/Typography"
-//import success  from "../../../assets/svg/common/success"
+import success from 'assets/svg/common/success.svg'
 export default function SimpleBackdrop() {
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -27,7 +27,7 @@ export default function SimpleBackdrop() {
           <Box
             width="660px"
             height="392px"  background= '#FFFFFF'
-            border='1px solid rgba($primary-color, 0.9)'
+            border='4px solid rgba(21, 90, 97, 0.5);'
             boxSizing='border-box'
             boxShadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
             borderRadius= '30px 30px 30px 0px'
@@ -36,11 +36,11 @@ export default function SimpleBackdrop() {
             alignItems='center'
             flexDirection='column'
             bgcolor='#FFFFFF'>
-            <Box>
-               {/* <Image src={success}  alt="" /> */}
+            <Box marginBottom='40px'>
+               <Image src={success}  alt="" />
             </Box>
             <Box>
-                <Typography fontSize='24px' color='#155A61'>محتوای شما با موفقیت بارگذاری شد </Typography>
+                <Typography fontSize='24px' fontWeight='700' fontFamily='IRANSans'  color='#155A61'>محتوای شما با موفقیت بارگذاری شد </Typography>
             </Box>
 
           </Box>

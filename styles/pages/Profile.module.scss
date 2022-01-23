@@ -1,8 +1,8 @@
-
 @import "styles/vars";
 
 .profileContainer {
   background-color: #f7fcfc;
+  margin-top: 64px;
 
   .headerContainer {
     padding-top: 43px;
@@ -65,7 +65,7 @@
           line-height: 28px;
           text-align: center;
           margin-bottom: 8px;
-          color: #241E12;
+          color: #241e12;
         }
         .status {
           height: 38px;
@@ -74,7 +74,7 @@
           font-size: $header-size;
           line-height: 28px;
           text-align: center;
-          color: #706C64;
+          color: #706c64;
         }
       }
       .contactsContainer {

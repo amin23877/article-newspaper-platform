@@ -1,0 +1,96 @@
+@import "styles/vars";
+
+.profileContainer {
+  background-color: #f7fcfc;
+  margin-top: 64px;
+
+  .headerContainer {
+    padding-top: 43px;
+    height: 373px;
+    background-image: url("../../assets/images/contact/default-profile-bg.png");
+    background-size: cover;
+    position: relative;
+
+    .buttonContainer {
+      width: 100%;
+      margin-top: 43px;
+
+      .addContentButton {
+        width: 165px;
+        height: 50px;
+        border-radius: 20px 20px 20px 0px;
+        font-size: $header-size;
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+
+          span:nth-child(2) {
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+    .avatarContainer {
+      width: 90px;
+      height: 90px;
+      position: absolute;
+      bottom: -35px;
+      right: calc(50% - 45px);
+      border-radius: 50%;
+      border: 4px solid white;
+    }
+  }
+  .contentContainer {
+    .name {
+      height: 38px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: $header-size;
+      line-height: 28px;
+      text-align: center;
+      margin-top: 64px;
+      margin-bottom: 8px;
+      color: #241e12;
+    }
+    .status {
+      height: 38px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: $header-size;
+      line-height: 28px;
+      text-align: center;
+      color: #706c64;
+    }
+    .title {
+      font-size: $header-size;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 28px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .membershipContainer {
+      display: flex;
+      margin-bottom: 50px;
+      margin-top: 60px;
+      justify-content: center;
+
+      .membership {
+        margin-left: 16px;
+        width: 393px;
+        box-shadow: 2px 2px 6px 0px #0000001f;
+        border-radius: 30px 30px 30px 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 32px;
+      }
+    }
+  }
+}

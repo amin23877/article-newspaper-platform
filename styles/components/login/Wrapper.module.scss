@@ -2,6 +2,7 @@
 
 .pageContainer {
   display: flex;
+  margin-top: 64px;
 
   .leftCol {
     width: 50%;
@@ -17,7 +18,12 @@
       height: 944px;
       bottom: 0;
       position: absolute;
-      background: linear-gradient(0deg, #04282C -4.87%, rgba(45, 45, 45, 0.184223) 44.45%, rgba(255, 255, 255, 0) 93.01%);
+      background: linear-gradient(
+        0deg,
+        #04282c -4.87%,
+        rgba(45, 45, 45, 0.184223) 44.45%,
+        rgba(255, 255, 255, 0) 93.01%
+      );
     }
     .circle {
       left: 50%;
@@ -55,7 +61,7 @@
         display: flex;
         align-items: center;
         text-align: center;
-        color: #FFFFFF;
+        color: #ffffff;
       }
     }
   }

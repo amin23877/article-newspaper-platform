@@ -1,28 +1,32 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import {useRouter} from "next/router";
 import MockAvatar from 'assets/images/contact/mock-avatar.png'
 import BronzePlan from 'assets/images/contact/bronze-plan.svg'
 import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
+import GoldRank from 'assets/images/contact/gold-rank.svg'
 import styles from 'styles/pages/ContactUs.module.scss'
 import Button from "components/common/button";
 import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";
 import ForYou from "components/profile/tabs/forYou";
-import Archive from "components/profile/tabs/archive";
-import {useRouter} from "next/router";
 import {useUser} from "hooks/useUser";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
 import Twitter from "assets/svg/social-media/twitter-green-circle.svg";
 import Facebook from "assets/svg/social-media/facebook-green-circle.svg";
 import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
 import Dots from "assets/svg/common/dots.svg";
+import Cookies from 'js-cookie';
 import cookie from "cookie";
 
 export default function Index() {
 
     const [user, getUser, hasInitialized] = useUser()
+    const [memberType, setMemberType] = useState('')
+
+    const router = useRouter()
 
     const memberships = [
         {
@@ -49,22 +53,28 @@ export default function Index() {
     ]
 
     useEffect(() => {
-
         if (!hasInitialized)
             getUser()
+            if (Cookies.get('membership') !== undefined) {
+                console.log(Cookies.get('membership'))
+                setMemberType(Cookies.get('membership'))
+            }
         return
     })
 
-    console.log(user)
+    const onJoinMembership = (membershipType) => {
+        Cookies.set('membership', `${membershipType}`)
+        router.replace('/contact-us')
+    }
 
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
                 <div className={`${styles.buttonContainer} container`}>
-                    <Button classes={styles.addContentButton}>
+                    <Button classes={styles.addContentButton} variant={memberType !== '' ? 'outline' : 'filled'}>
                         <Link href='/'>
                             <a>
-                                <span>دنبال کردن</span>
+                                <span>{memberType !== '' ? 'دنبال می کنید' : 'دنبال کردن'}</span>
                             </a>
                         </Link>
                     </Button>
@@ -72,6 +82,12 @@ export default function Index() {
                 <div className={styles.avatarContainer}>
                     <Image src={MockAvatar}/>
                 </div>
+                {memberType !== '' ? 
+                <div className={styles.rankContainer}>
+                    <Image src={GoldRank}/>
+                </div>
+                :null
+                }
             </div>
             <div className={styles.contentContainer}>
                 {user ? 
@@ -82,13 +98,15 @@ export default function Index() {
                 <div className={styles.status}>
                     در حال ایجاد دوره های هنری، تصاویر و پادکست های آموزشی ویدیویی است
                 </div>
-                <div className={styles.title}>
-                    انتخاب عضویت
-                </div>
                 </>
                 :null
                 }
 
+                {memberType === '' ? 
+                <>
+                <div className={styles.title}>
+                    انتخاب عضویت
+                </div>
                 <div className={styles.membershipContainer}>
                     {memberships.map((membership => (
                         <div className={styles.membership} key={membership.title}>
@@ -109,16 +127,18 @@ export default function Index() {
                                     <li key={index}>{feature}</li>
                                 )))}
                             </ul>
-                            <Button classes={styles.addContentButton}>
-                                <Link href='/'>
-                                    <a>
-                                        <span>ملحق شوید</span>
-                                    </a>
-                                </Link>
+                            <Button classes={styles.addContentButton} onClick={() => onJoinMembership(membership.title)}
+                            >
+                                <a>
+                                    <span>ملحق شوید</span>
+                                </a>
                             </Button>
                         </div>
                     )))}
                 </div>
+                </>
+                :null
+                }
 
                 <div className={styles.followersSection}>
                     {user ? 
@@ -150,7 +170,8 @@ export default function Index() {
                         </div>
                         <span>{user.username}</span>
                     </div>
-                    <a href='https://google.com'>
+                    {memberType !== '' ? <Image src={GoldRank} width={25} height={25}/> : null}
+                    <a href='/'>
                         <Image src={Dots} alt=""/>
                     </a>
                 </div>

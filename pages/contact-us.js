@@ -10,7 +10,7 @@ import styles from 'styles/pages/ContactUs.module.scss'
 import Button from "components/common/button";
 import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";
-import ForYou from "components/profile/tabs/forYou";
+import About from "components/profile/tabs/about";
 import {useUser} from "hooks/useUser";
 import {useEffect, useState} from "react";
 import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
@@ -170,7 +170,11 @@ export default function Index() {
                         </div>
                         <span>{user.username}</span>
                     </div>
-                    {memberType !== '' ? <Image src={GoldRank} width={25} height={25}/> : null}
+                    {memberType !== '' ? 
+                    <div className={styles.barRank}>
+                        <Image src={GoldRank} width={25} height={25}/>
+                    </div>
+                    : null}
                     <a href='/'>
                         <Image src={Dots} alt=""/>
                     </a>
@@ -190,7 +194,7 @@ export default function Index() {
                                 {
                                     name: 'forYou',
                                     text: 'درباره',
-                                    content: ForYou
+                                    content: About
                                 },
                             ]
                         }

@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import MockAvatar from 'assets/images/contact/mock-avatar.png'
+import BronzePlan from 'assets/images/contact/bronze-plan.svg'
+import SilverPlan from 'assets/images/contact/silver-plan.svg'
+import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import styles from 'styles/pages/ContactUs.module.scss'
 import Card from "components/common/card";
 import Accordion from "components/common/accordion";
@@ -17,13 +20,25 @@ export default function Index() {
 
     const memberships = [
         {
-            title: 'اشتراک برنزی'
+            title: 'اشتراک برنزی',
+            image: BronzePlan,
+            cost : '10 هزار تومان ماهیانه',
+            subtitle: 'اشتراک عادی',
+            features: ['مشاهده محتوا', 'نظرات']
         },
         {
-            title: 'اشتراک نقره ای'
+            title: 'اشتراک نقره ای',
+            image: SilverPlan,
+            cost: '30 هزار تومان ماهیانه',
+            subtitle: 'اشتراک معمولی',
+            features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا']
         },
         {
-            title: 'اشتراک طلایی'
+            title: 'اشتراک طلایی',
+            image: GoldPlan,
+            cost: '60 هزار تومان ماهیانه',
+            subtitle: 'اشتراک VIP',
+            features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا', 'دانلود محتوا']
         }
     ]
 
@@ -71,13 +86,32 @@ export default function Index() {
                 <div className={styles.membershipContainer}>
                     {memberships.map((membership => (
                         <div className={styles.membership}>
-                            
-                            <div className={styles.inputsContainer}>
-                                <div className={styles.titleContainer}>
-                                    {membership.title}
-                                </div>
+                            <div className={styles.membershipTitle}>
+                                {membership.title}
                             </div>
-                            
+                            <div className={styles.image}>
+                                <Image src={membership.image}/>
+                            </div>
+                            <div className={styles.cost}>
+                                {membership.cost}
+                            </div>
+                            <div className={styles.subtitle}>
+                                {membership.subtitle}
+                            </div>
+                            <ul className={styles.features}>
+                                {membership.features.map((feature => (
+                                    <li>{feature}</li>
+                                )))}
+                            </ul>
+                            {/* <div className={`${styles.buttonContainer} container`}> */}
+                                <Button classes={styles.addContentButton}>
+                                    <Link href='/'>
+                                        <a>
+                                            <span>ملحق شوید</span>
+                                        </a>
+                                    </Link>
+                                </Button>
+                            {/* </div> */}
                         </div>
                     )))}
                 </div>

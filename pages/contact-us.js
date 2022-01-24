@@ -6,6 +6,10 @@ import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import styles from 'styles/pages/ContactUs.module.scss'
 import Button from "components/common/button";
+import Tab from "components/common/tab";
+import Feed from "components/profile/tabs/feed";
+import ForYou from "components/profile/tabs/forYou";
+import Archive from "components/profile/tabs/archive";
 import {useRouter} from "next/router";
 import {useUser} from "hooks/useUser";
 import {useEffect} from "react";
@@ -87,7 +91,7 @@ export default function Index() {
 
                 <div className={styles.membershipContainer}>
                     {memberships.map((membership => (
-                        <div className={styles.membership}>
+                        <div className={styles.membership} key={membership.title}>
                             <div className={styles.membershipTitle}>
                                 {membership.title}
                             </div>
@@ -101,8 +105,8 @@ export default function Index() {
                                 {membership.subtitle}
                             </div>
                             <ul className={styles.features}>
-                                {membership.features.map((feature => (
-                                    <li>{feature}</li>
+                                {membership.features.map(((feature, index) => (
+                                    <li key={index}>{feature}</li>
                                 )))}
                             </ul>
                             <Button classes={styles.addContentButton}>
@@ -152,6 +156,25 @@ export default function Index() {
                 </div>
                 :null
                 }
+
+                <div className={styles.tabsContainer}>
+                    <Tab
+                        items={
+                            [
+                                {
+                                    name: 'feed',
+                                    text: 'محتوا',
+                                    content: Feed
+                                },
+                                {
+                                    name: 'forYou',
+                                    text: 'درباره',
+                                    content: ForYou
+                                },
+                            ]
+                        }
+                    />
+                </div>
         
             </div>
         </div>

@@ -7,14 +7,16 @@ import Image from "next/image";
 import MockNews from 'assets/images/953473320video.png'
 import {useState} from "react";
 import Popup from "components/common/popup";
+import Button from 'components/common/button';
 import TrashIcon from "../../../assets/svg/popup/trash.svg";
 import EyeOffIcon from "../../../assets/svg/popup/eye-off.svg";
 import EditIcon from "../../../assets/svg/popup/edit.svg";
 import ShareIcon from "../../../assets/svg/popup/share.svg";
 import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
+import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost (props) {
+export default function FeedPost ({paid, ...rest}) {
 
     const popupItems = [
         {text: 'حذف', icon: TrashIcon, action: () => {}},
@@ -30,9 +32,25 @@ export default function FeedPost (props) {
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
-                <div className={styles.imageItem}>
+                <div className={`${styles.imageItem} ${paid ? styles.paidImageItem : ''}`}>
                     <Image layout='fill'
                            objectFit='cover' src={MockNews} alt=""/>
+                    {paid ? 
+                    <div className={styles.paidImageContent}>
+                        <div className={styles.paidLock}>
+                            <Image src={PaidLockIcon}/>
+                        </div>
+                        <div>
+                            قفل این محتوا را با تبدیل شدن به یک حامی باز کنید.
+                        </div>
+                        <Button variant='outline' classes={styles.donateButton}>
+                            <a>
+                                <span>حامی شوید</span>
+                            </a>
+                        </Button>
+                    </div>
+                    :null
+                    }
                 </div>
             </div>
             <div className={styles.descriptionContainer}>

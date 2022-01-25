@@ -11,7 +11,7 @@ export default function Feed(props) {
             <div>
                 <FeedPost />
                 <FeedPost />
-                <FeedPost />
+                <FeedPost paid/>
                 <FeedPost />
                 <div className={styles.showMoreContainer}>
                     <Button>

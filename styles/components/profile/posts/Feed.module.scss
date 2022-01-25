@@ -1,9 +1,7 @@
-
 @import "Common.module";
 @import "styles/vars";
 
 .postContainer {
-
   .mediaPlaceHolder {
     width: 100%;
     height: 342px;
@@ -14,6 +12,38 @@
 
       img {
         width: 100%;
+      }
+    }
+    .paidImageItem {
+      img {
+        filter: brightness(36%);
+      }
+    }
+    .paidImageContent {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      filter: brightness(100%);
+      .paidLock {
+        margin-bottom: 24px;
+        img {
+          filter: brightness(100%);
+          width: 42px;
+          height: 46px;
+        }
+      }
+      .donateButton {
+        margin-top: 15px;
+        border-radius: 30px;
+        border: none;
+        color: black;
+        font-weight: 700;
+        font-size: $secondary-size;
+        padding-inline: 24px;
+        min-width: fit-content;
       }
     }
   }
@@ -45,7 +75,6 @@
           top: 20px;
         }
       }
-
     }
     .title {
       font-style: normal;
@@ -53,7 +82,7 @@
       font-size: $primary-size;
       line-height: 28px;
       text-align: right;
-      color: #312C20;
+      color: #312c20;
       margin-top: 8px;
       cursor: pointer;
     }
@@ -87,14 +116,12 @@
         .like {
           margin-left: 16px;
           display: flex;
-
         }
         .comment {
           display: flex;
         }
 
         .icon {
-
         }
         .count {
           font-style: normal;
@@ -106,7 +133,6 @@
           opacity: 0.9;
           margin-right: 8px;
         }
-
       }
       .readMore {
         font-style: normal;
@@ -120,4 +146,3 @@
     }
   }
 }
-

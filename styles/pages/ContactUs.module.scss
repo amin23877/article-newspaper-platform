@@ -167,9 +167,9 @@
       margin-top: 24px;
       margin-bottom: 18px;
       padding: 0 130px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
-      justify-content: space-between;
       .user {
         display: flex;
         font-weight: 500;
@@ -181,8 +181,13 @@
         }
       }
       .barRank {
+        display: flex;
+        justify-content: center;
         height: calc(100% - 13px);
-        margin-left: 72px;
+      }
+      .dots {
+        display: flex;
+        justify-content: flex-end;
       }
     }
 

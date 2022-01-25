@@ -162,26 +162,23 @@ export default function Index() {
                     </div>
                 </div>
 
-                {user ?
                 <div className={styles.bar}>
                     <div className={styles.user}>
                         <div className={styles.barImage}>
                             <Image src={MockAvatar}/>
                         </div>
-                        <span>{user.username}</span>
+                        <span>{'mehdi salamati'}</span>
                     </div>
                     {memberType !== '' ? 
                     <div className={styles.barRank}>
                         <Image src={GoldRank} width={25} height={25}/>
                     </div>
                     : null}
-                    <a href='/'>
+                    <a href='/' className={styles.dots}>
                         <Image src={Dots} alt=""/>
                     </a>
                 </div>
-                :null
-                }
-
+               
                 <div className={styles.tabsContainer}>
                     <Tab
                         items={

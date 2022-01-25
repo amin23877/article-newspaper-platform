@@ -25,6 +25,7 @@ export default function Index() {
 
     const [user, getUser, hasInitialized] = useUser()
     const [memberType, setMemberType] = useState('')
+    const [followed, setFollowed] = useState(false)
 
     const router = useRouter()
 
@@ -67,16 +68,21 @@ export default function Index() {
         router.replace('/contact-us')
     }
 
+    const onFollow = () => {
+        setFollowed(!followed)
+    }
+
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
                 <div className={`${styles.buttonContainer} container`}>
-                    <Button classes={styles.addContentButton} variant={memberType !== '' ? 'outline' : 'filled'}>
-                        <Link href='/'>
+                    <Button classes={styles.addContentButton} variant={followed ? 'outline' : 'filled'}
+                     disabled={!user ? true : false}
+                     onClick={() => onFollow()}
+                     >
                             <a>
-                                <span>{memberType !== '' ? 'دنبال می کنید' : 'دنبال کردن'}</span>
+                                <span>{followed ? 'دنبال می کنید' : 'دنبال کردن'}</span>
                             </a>
-                        </Link>
                     </Button>
                 </div>
                 <div className={styles.avatarContainer}>
@@ -90,17 +96,14 @@ export default function Index() {
                 }
             </div>
             <div className={styles.contentContainer}>
-                {user ? 
-                <>
+                
                 <div className={styles.name}>
-                    {user.username ?? 'کاربر میهمان'}
+                    {'mehdi salamati'}
                 </div>
                 <div className={styles.status}>
                     در حال ایجاد دوره های هنری، تصاویر و پادکست های آموزشی ویدیویی است
                 </div>
-                </>
-                :null
-                }
+                
 
                 {memberType === '' ? 
                 <>
@@ -141,11 +144,8 @@ export default function Index() {
                 }
 
                 <div className={styles.followersSection}>
-                    {user ? 
-                    <span>{user.followersCount} نفر دنبال کننده</span>
-                    :null
-                    }
-
+                    <span>{853} نفر دنبال کننده</span>
+                    
                     <div className={styles.social}>
                         <a href='https://google.com'>
                             <Image src={Instagram} alt=""/>

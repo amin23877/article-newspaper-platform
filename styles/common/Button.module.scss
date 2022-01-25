@@ -13,14 +13,15 @@
 
 .filled {
   background-color: $primary-color;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .outline {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: $primary-color;
 }
 
 .disabled {
-   opacity: .5;
+  opacity: 0.5;
+  cursor: default;
 }

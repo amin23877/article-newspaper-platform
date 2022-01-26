@@ -15,7 +15,7 @@ export function useUser() {
         if (!hasInitialized)
             //getUser()
             if (Cookies.get('membership') !== undefined) {
-                console.log(Cookies.get('membership'))
+                // console.log(Cookies.get('membership'))
                 setMemberType(Cookies.get('membership'))
             }
         return

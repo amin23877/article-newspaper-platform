@@ -3,6 +3,7 @@ import MoreOptions from "assets/svg/common/more-options.svg";
 import Heart from "assets/svg/common/heart.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
 import Image from "next/image";
+import { useEffect } from 'react';
 
 import MockNews from 'assets/images/953473320video.png'
 import {useState} from "react";
@@ -16,7 +17,7 @@ import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
 import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
+export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}) {
 
     const popupItems = [
         {text: 'حذف', icon: TrashIcon, action: () => {}},
@@ -28,11 +29,29 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
     ]
 
     const [showPopup, setShowPopup] = useState(false)
-    console.log('member: ', memberType,'payment: ', paymentType)
+    let showContent = true
+
+    
+        if (paid) {
+            if (paymentType === 'individual') { // pay for each content no need to buy membership
+                if (!hasPaid) {
+                    showContent = false
+                }
+            } 
+            else {
+                if (paymentType !== memberType) {
+                    //console.log('payment: ', paymentType,'memberType: ', memberType)
+                    showContent = false
+                }
+            }
+        }
+    
+
+    console.log(showContent)
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
-                <div className={`${styles.imageItem} ${!paid || paymentType === memberType ? '' : styles.paidImageItem}`}>
+                <div className={`${styles.imageItem} ${showContent ? '' : styles.paidImageItem}`}>
                     <Image layout='fill'
                            objectFit='cover' src={MockNews} alt=""/>
                     {paid && !(paymentType === memberType) ? 

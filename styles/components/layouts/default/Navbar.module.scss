@@ -65,6 +65,8 @@
 
     .leftCol {
       display: flex;
+      width: 100%;
+      justify-content: center;
       align-items: center;
       .loginButton {
         margin-left: 16px;

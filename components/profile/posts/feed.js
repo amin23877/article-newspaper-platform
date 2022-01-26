@@ -46,8 +46,6 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
             }
         }
     
-
-    console.log(showContent)
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>

@@ -60,16 +60,16 @@ export default function Navbar() {
                         pathname !== '/login' && pathname !== '/signup' && !user ?
                             (
                                 <div className={styles.leftCol}>
-                                    <Button classes={styles.loginButton} variant='outline'>
+                                    <Button classes={styles.loginButton} variant='filled'>
                                         <Link href='/login'>
                                             <a>
                                                 ورود
                                             </a>
                                         </Link>
                                     </Button>
-                                    <Button>
+                                    {/* <Button>
                                         ثبت نام
-                                    </Button>
+                                    </Button> */}
                                 </div>
                         ) :
                         ''

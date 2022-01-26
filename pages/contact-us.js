@@ -11,6 +11,7 @@ import Button from "components/common/button";
 import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";
 import About from "components/profile/tabs/about";
+import LoginModal from 'components/common/login-modal';
 import {useUser} from "hooks/useUser";
 import {useEffect, useState} from "react";
 import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
@@ -25,6 +26,9 @@ export default function Index() {
 
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [followed, setFollowed] = useState(false)
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const router = useRouter()
 
@@ -63,7 +67,10 @@ export default function Index() {
     }
 
     const onFollow = () => {
-        setFollowed(!followed)
+        if (!user) {
+            handleOpen()
+        }
+        else setFollowed(!followed)
     }
 
     return (
@@ -71,7 +78,6 @@ export default function Index() {
             <div className={styles.headerContainer}>
                 <div className={`${styles.buttonContainer} container`}>
                     <Button classes={styles.addContentButton} variant={followed ? 'outline' : 'filled'}
-                     disabled={!user ? true : false}
                      onClick={() => onFollow()}
                      >
                             <a>
@@ -193,6 +199,8 @@ export default function Index() {
                 </div>
         
             </div>
+
+            <LoginModal open={open} handleClose={handleClose} />
         </div>
     )
 }

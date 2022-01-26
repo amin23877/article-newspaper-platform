@@ -2,9 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {useRouter} from "next/router";
 import MockAvatar from 'assets/images/contact/mock-avatar.png'
-import BronzePlan from 'assets/images/contact/bronze-plan.svg'
-import SilverPlan from 'assets/images/contact/silver-plan.svg'
-import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import GoldRank from 'assets/images/contact/gold-rank.svg'
 import styles from 'styles/pages/ContactUs.module.scss'
 import Button from "components/common/button";
@@ -18,6 +15,7 @@ import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
 import Twitter from "assets/svg/social-media/twitter-green-circle.svg";
 import Facebook from "assets/svg/social-media/facebook-green-circle.svg";
 import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
+import MembershipPlans from 'components/profile/contacts/membershipPlans';
 import Dots from "assets/svg/common/dots.svg";
 import Cookies from 'js-cookie';
 import cookie from "cookie";
@@ -32,39 +30,11 @@ export default function Index() {
 
     const router = useRouter()
 
-    const memberships = [
-        {
-            title: 'اشتراک برنزی',
-            image: BronzePlan,
-            cost : '10 هزار تومان ماهیانه',
-            subtitle: 'اشتراک عادی',
-            features: ['مشاهده محتوا', 'نظرات']
-        },
-        {
-            title: 'اشتراک نقره ای',
-            image: SilverPlan,
-            cost: '30 هزار تومان ماهیانه',
-            subtitle: 'اشتراک معمولی',
-            features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا']
-        },
-        {
-            title: 'اشتراک طلایی',
-            image: GoldPlan,
-            cost: '60 هزار تومان ماهیانه',
-            subtitle: 'اشتراک VIP',
-            features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا', 'دانلود محتوا']
-        }
-    ]
-
     useEffect(() => {
         if (!hasInitialized)
             getUser()
         return
     })
-    const onJoinMembership = (membershipType) => {
-        Cookies.set('membership', `${membershipType}`)
-        router.replace('/contact-us')
-    }
 
     const onFollow = () => {
         if (!user) {
@@ -110,35 +80,7 @@ export default function Index() {
                 <div className={styles.title}>
                     انتخاب عضویت
                 </div>
-                <div className={styles.membershipContainer}>
-                    {memberships.map((membership => (
-                        <div className={styles.membership} key={membership.title}>
-                            <div className={styles.membershipTitle}>
-                                {membership.title}
-                            </div>
-                            <div className={styles.image}>
-                                <Image src={membership.image}/>
-                            </div>
-                            <div className={styles.cost}>
-                                {membership.cost}
-                            </div>
-                            <div className={styles.subtitle}>
-                                {membership.subtitle}
-                            </div>
-                            <ul className={styles.features}>
-                                {membership.features.map(((feature, index) => (
-                                    <li key={index}>{feature}</li>
-                                )))}
-                            </ul>
-                            <Button classes={styles.addContentButton} onClick={() => onJoinMembership(membership.title)}
-                            >
-                                <a>
-                                    <span>ملحق شوید</span>
-                                </a>
-                            </Button>
-                        </div>
-                    )))}
-                </div>
+                <MembershipPlans />
                 </>
                 :null
                 }

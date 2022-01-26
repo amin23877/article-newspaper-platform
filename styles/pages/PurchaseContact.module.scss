@@ -1,0 +1,23 @@
+@import "styles/vars";
+
+.purchaseContainer {
+  padding-top: 64px;
+  .subtitle {
+    height: 38px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: #706c64;
+    margin-top: 48px;
+  }
+  .title {
+    font-size: $header-size;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+}

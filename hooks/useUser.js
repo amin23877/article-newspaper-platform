@@ -1,4 +1,5 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react';
+import Cookies from 'js-cookie';
 import axios from "axios";
 import {Endpoints} from "utils/endpoints";
 
@@ -8,6 +9,17 @@ import {getUserProfile} from "../shared/users";
 export function useUser() {
     const [user, setUser] = useState(undefined)
     const [hasInitialized, setHasInitialized] = useState(false)
+    const [memberType, setMemberType] = useState('')
+
+    useEffect(() => {
+        if (!hasInitialized)
+            //getUser()
+            if (Cookies.get('membership') !== undefined) {
+                console.log(Cookies.get('membership'))
+                setMemberType(Cookies.get('membership'))
+            }
+        return
+    })
 
     async function getUser() {
 
@@ -28,5 +40,5 @@ export function useUser() {
         }
     }
 
-    return [ user, getUser, hasInitialized ]
+    return [ user, getUser, hasInitialized, memberType ]
 }

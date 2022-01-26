@@ -16,7 +16,7 @@ import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
 import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost ({paid, ...rest}) {
+export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
 
     const popupItems = [
         {text: 'حذف', icon: TrashIcon, action: () => {}},
@@ -28,14 +28,14 @@ export default function FeedPost ({paid, ...rest}) {
     ]
 
     const [showPopup, setShowPopup] = useState(false)
-
+    console.log('member: ', memberType,'payment: ', paymentType)
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
-                <div className={`${styles.imageItem} ${paid ? styles.paidImageItem : ''}`}>
+                <div className={`${styles.imageItem} ${!paid || paymentType === memberType ? '' : styles.paidImageItem}`}>
                     <Image layout='fill'
                            objectFit='cover' src={MockNews} alt=""/>
-                    {paid ? 
+                    {paid && !(paymentType === memberType) ? 
                     <div className={styles.paidImageContent}>
                         <div className={styles.paidLock}>
                             <Image src={PaidLockIcon}/>
@@ -54,20 +54,26 @@ export default function FeedPost ({paid, ...rest}) {
                 </div>
             </div>
             <div className={styles.descriptionContainer}>
-                <div className={styles.timingRow}>
+                <div className={`${styles.timingRow} ${paid && !(paymentType === memberType) ? styles.paidTime : ''}`}>
                     <div className={styles.time}>11 ساعت پیش</div>
+                    {!paid || paymentType === memberType ? 
                     <div className={styles.moreActions} onClick={() => setShowPopup(!showPopup)}>
                         <Image src={MoreOptions} alt=""/>
                         {showPopup ? <Popup popupSet={setShowPopup} containerClass={styles.popup} items={popupItems} /> : ''}
                     </div>
+                    :null
+                    }
                 </div>
                 <div className={styles.title}>
                     عنوان
                 </div>
+                {!paid || paymentType === memberType ? 
                 <div className={styles.description}>
                     منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار
                     <div className={styles.mask} />
                 </div>
+                :null
+                }
                 <div className={styles.actionsRow}>
                     <div className={styles.actions}>
                         <div className={styles.like}>
@@ -85,9 +91,12 @@ export default function FeedPost ({paid, ...rest}) {
                             </div>
                         </div>
                     </div>
+                    {!paid || paymentType === memberType ? 
                     <div className={styles.readMore}>
                         مطالعه بیشتر
                     </div>
+                    :null
+                    }
                 </div>
             </div>
         </div>

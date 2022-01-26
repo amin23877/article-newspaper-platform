@@ -23,8 +23,7 @@ import cookie from "cookie";
 
 export default function Index() {
 
-    const [user, getUser, hasInitialized] = useUser()
-    const [memberType, setMemberType] = useState('')
+    const [user, getUser, hasInitialized, memberType] = useUser()
     const [followed, setFollowed] = useState(false)
 
     const router = useRouter()
@@ -56,13 +55,8 @@ export default function Index() {
     useEffect(() => {
         if (!hasInitialized)
             getUser()
-            if (Cookies.get('membership') !== undefined) {
-                console.log(Cookies.get('membership'))
-                setMemberType(Cookies.get('membership'))
-            }
         return
     })
-
     const onJoinMembership = (membershipType) => {
         Cookies.set('membership', `${membershipType}`)
         router.replace('/contact-us')
@@ -162,7 +156,7 @@ export default function Index() {
                     </div>
                 </div>
 
-                <div className={styles.bar}>
+                {/* <div className={styles.bar}>
                     <div className={styles.user}>
                         <div className={styles.barImage}>
                             <Image src={MockAvatar}/>
@@ -177,8 +171,7 @@ export default function Index() {
                     <a href='/' className={styles.dots}>
                         <Image src={Dots} alt=""/>
                     </a>
-                </div>
-               
+                </div> */}
                 <div className={styles.tabsContainer}>
                     <Tab
                         items={
@@ -186,7 +179,8 @@ export default function Index() {
                                 {
                                     name: 'feed',
                                     text: 'محتوا',
-                                    content: Feed
+                                    content: Feed,
+                                    props: {memberType: memberType}
                                 },
                                 {
                                     name: 'forYou',

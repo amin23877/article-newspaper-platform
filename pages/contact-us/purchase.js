@@ -37,7 +37,7 @@ export default function Purchase () {
             {paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی' ? 
             <MembershipPlans />
             :
-            <PurchaseCard title={title}/>
+            <PurchaseCard balance={0} paymentType={paymentType} title={title}/>
             }
         </div>
     )

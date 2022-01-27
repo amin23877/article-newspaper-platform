@@ -29,19 +29,30 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
         {text: 'حق نشر', icon: LockIcon, action: () => {}},
     ]
 
+    const post = {
+        image: MockNews,
+        title: 'عنوان',
+        time: '11 ساعت پیش',
+        description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+        likeCount: 22, 
+        commentCount: 12
+
+    }
+
     const [showPopup, setShowPopup] = useState(false)
     let showContent = true
 
     
+        
         if (paid) {
-            if (paymentType === 'individual') { // pay for each content no need to buy membership
-                if (!hasPaid) {
-                    showContent = false
-                }
-            } 
-            else {
+            if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
                 if (paymentType !== memberType) {
                     //console.log('payment: ', paymentType,'memberType: ', memberType)
+                    showContent = false
+                }
+            }
+            else {
+                if (!hasPaid) {
                     showContent = false
                 }
             }
@@ -63,7 +74,7 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                         </div>
                         <Button variant='outline' classes={styles.donateButton}
                         >
-                            <Link href={{ pathname: '/contact-us/purchase', query: {paymentType: paymentType}}}>
+                            <Link href={{ pathname: '/contact-us/purchase', query: {paymentType: paymentType, title: post.title}}}>
                                 <span>حامی شوید</span>
                             </Link>
                         </Button>
@@ -74,7 +85,7 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
             </div>
             <div className={styles.descriptionContainer}>
                 <div className={`${styles.timingRow} ${paid && !(paymentType === memberType) ? styles.paidTime : ''}`}>
-                    <div className={styles.time}>11 ساعت پیش</div>
+                    <div className={styles.time}>{post.time}</div>
                     {!paid || paymentType === memberType ? 
                     <div className={styles.moreActions} onClick={() => setShowPopup(!showPopup)}>
                         <Image src={MoreOptions} alt=""/>
@@ -84,11 +95,11 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                     }
                 </div>
                 <div className={styles.title}>
-                    عنوان
+                    {post.title}
                 </div>
                 {!paid || paymentType === memberType ? 
                 <div className={styles.description}>
-                    منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار
+                    {post.description}
                     <div className={styles.mask} />
                 </div>
                 :null
@@ -99,14 +110,14 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                             <div className={styles.icon}>
                                 <Image src={Heart} alt=""/>
                             </div>
-                            <div className={styles.count}>22</div>
+                            <div className={styles.count}>{post.likeCount}</div>
                         </div>
                         <div className={styles.comment}>
                             <div className={styles.icon}>
                                 <Image src={Comment} alt=""/>
                             </div>
                             <div className={styles.count}>
-                                12
+                                {post.commentCount}
                             </div>
                         </div>
                     </div>

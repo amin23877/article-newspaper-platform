@@ -20,7 +20,7 @@ export default function Feed({memberType}) {
                 <FeedPost memberType={memberType}/>
                 <FeedPost memberType={memberType}/>
                 <FeedPost paid memberType={memberType} paymentType='اشتراک طلایی'/>
-                <FeedPost paid memberType={memberType} paymentType='individual' hasPaid={false}/>
+                <FeedPost paid memberType={memberType} paymentType={5} hasPaid={false}/> {/** 5ooo toman */}
                 <div className={styles.showMoreContainer}>
                     <Button>
                         موارد بیشتر

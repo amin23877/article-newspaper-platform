@@ -4,8 +4,12 @@ import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import Button from "components/common/button";
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 export default function MembershipPlans () {
+
+    const router = useRouter()
 
 
     const memberships = [

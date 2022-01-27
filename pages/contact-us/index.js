@@ -17,7 +17,6 @@ import Facebook from "assets/svg/social-media/facebook-green-circle.svg";
 import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
 import MembershipPlans from 'components/profile/contacts/membershipPlans';
 import Dots from "assets/svg/common/dots.svg";
-import Cookies from 'js-cookie';
 import cookie from "cookie";
 
 export default function Index() {

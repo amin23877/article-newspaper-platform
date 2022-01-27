@@ -3,6 +3,7 @@ import MoreOptions from "assets/svg/common/more-options.svg";
 import Heart from "assets/svg/common/heart.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
 import Image from "next/image";
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 import MockNews from 'assets/images/953473320video.png'
@@ -60,10 +61,11 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                         <div>
                             قفل این محتوا را با تبدیل شدن به یک حامی باز کنید.
                         </div>
-                        <Button variant='outline' classes={styles.donateButton}>
-                            <a>
+                        <Button variant='outline' classes={styles.donateButton}
+                        >
+                            <Link href={{ pathname: '/contact-us/purchase', query: {paymentType: paymentType}}}>
                                 <span>حامی شوید</span>
-                            </a>
+                            </Link>
                         </Button>
                     </div>
                     :null

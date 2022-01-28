@@ -49,7 +49,7 @@
       font-size: $header-size;
       font-weight: 500;
       margin-top: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
     .cardSubtitle {
       margin-bottom: 16px;
@@ -61,7 +61,54 @@
       color: $gray;
       font-size: $secondary-size;
       font-weight: 500;
-      width: 60%;
+      width: 80%;
+    }
+    .amountContainer {
+      width: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      .amountButtons {
+        margin-top: auto;
+        margin-bottom: auto;
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        border: 1px solid rgba(21, 90, 97, 0.7);
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      .plus {
+        right: 16px;
+      }
+      .minus {
+        left: 16px;
+      }
+      .amountInput {
+        border-color: rgba(21, 90, 97, 0.67);
+        width: 300px;
+        padding-right: 119px;
+        color: $primary-color;
+        font-weight: 500;
+        font-size: $secondary-size;
+      }
+    }
+    .walletHint {
+      color: $gray;
+      font-size: $tertiary-size;
+      margin-top: 10px;
+    }
+    .amountButtons {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+    .amountButtons > * {
+      height: auto;
+      width: 93px;
     }
     .payButton {
       width: 180px;
@@ -73,7 +120,7 @@
       color: $primary-color;
       cursor: pointer;
       font-weight: 500;
-      margin-bottom: 40px;
+      margin-bottom: 24px;
     }
     .bottom {
       display: flex;

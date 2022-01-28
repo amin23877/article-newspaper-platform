@@ -1,21 +1,27 @@
 import styles from 'styles/components/profile/contacts/PurchaseCard.module.scss';
 import Button from "components/common/button";
+import CustomInput from "components/common/input";
 import Image from 'next/image';
 import Sadad from 'assets/images/contact/sadad.svg';
-import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg'
+import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg';
+import Plus from "assets/images/contact/plus.svg";
+import Minus from "assets/images/contact/minus.svg";
+
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import {useForm} from "react-hook-form";
 
 export default function PurchaseCard ({balance, paymentType, title}) {
 
-    const router = useRouter()
+    const { register: amountFormRegister, handleSubmit: handlePhoneSubmit, formState: {isValid: isPhoneValid}  } = useForm();
+
     const [step, setStep] = useState('default')
     const [headerText, setHeaderText] = useState('')
     const [titleText, setTitleText] = useState(title)
     const [subTitleText, setSubtitleText] = useState('')
     const [outlinedButton, setOutlinedButton] = useState('')
     const [filledButton, setFilledButton] = useState('')
+    const [amount, setAmount] = useState(0)
 
     const payWithWallet = () => {
         setStep('useWallet')
@@ -73,6 +79,20 @@ export default function PurchaseCard ({balance, paymentType, title}) {
         }
     }
 
+    const changeAmount = (type, moneyAmount) => {
+        if (type === 'plus') {
+            setAmount(amount + 1)
+        }
+        else if(type === 'minus') {
+            if (amount - 1 >= 0) {
+                setAmount(amount - 1)
+            }
+        }
+        else {
+            setAmount(moneyAmount)
+        }
+    }
+
     useEffect(() => {
         setTexts()
     },[step])
@@ -101,6 +121,59 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                    {subTitleText}
                </div>
 
+                {/** choose amount to charge the wallet */}
+               {step === 'chargeWallet' ? 
+               <>
+               <div className={styles.amountContainer}>
+                <div className={`${styles.amountButtons} ${styles.plus}`}
+                onClick={() => changeAmount('plus')}
+                ><Image src={Plus} /></div>
+                <CustomInput register={amountFormRegister} name="amount"
+                value={`${amount} هزار تومان`} 
+                classes={styles.amountInput}
+                validation={{required: true}} 
+                />
+                <div className={`${styles.amountButtons} ${styles.minus}`}
+                onClick={() => changeAmount('minus')}
+                ><Image src={Minus} /></div>
+               </div>
+               <span className={styles.walletHint}>مبلغ وارد شده باید حداقل 5 هزار تومان باشد.</span>
+               <div className={styles.amountButtons}>
+                   <Button variant='outline'
+                   onClick={() => changeAmount('amount', 100)}
+                   classes={styles.amountBtn}
+                    >
+                        <a>
+                            <span>
+                                100 هزار تومان
+                            </span>
+                        </a>
+                    </Button>
+                    <Button variant='outline'
+                    onClick={() => changeAmount('amount', 100)}
+                   classes={styles.amountBtn}
+                    >
+                        <a>
+                            <span>
+                                100 هزار تومان
+                            </span>
+                        </a>
+                    </Button>
+                    <Button variant='outline'
+                    onClick={() => changeAmount('amount', 100)}
+                   classes={styles.amountBtn}
+                    >
+                        <a>
+                            <span>
+                                100 هزار تومان
+                            </span>
+                        </a>
+                    </Button>
+               </div>
+               </>
+               :null
+               }
+
                <Button variant='filled'
                classes={styles.payButton}
                onClick={() => onChargeWallet()}
@@ -125,7 +198,7 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                 </Button>
                 :null
                 }   
-                <a className={styles.cancelPay}>انصراف</a>
+                <a href='/contact-us' className={styles.cancelPay}>انصراف</a>
 
                 <div className={styles.bottom}>
                     <div className={styles.balanceText}>

@@ -26,6 +26,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
     const [outlinedButton, setOutlinedButton] = useState('')
     const [filledButton, setFilledButton] = useState('')
     const [amount, setAmount] = useState(paymentAmount)
+    const [walletBalance, setWalletBalance] = useState(balance)
 
     const payWithWallet = () => {
         setStep('useWallet')
@@ -46,8 +47,16 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
         let filledButton = ''
         switch(step) {
             case 'default':
-                header = 'خرید محتوا'
-                titleText = title
+                if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
+                    header = 'پرداخت حق اشتراک'
+                }
+                else header = 'خرید محتوا'
+                if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
+                    titleText = `${paymentAmount} هزار تومان بابت ${paymentType}`
+                }   
+                else {
+                    titleText = title
+                }
                 subTitle = 'شما در حال خرید یک محتوا از mehdi sarmast هستید.'
                 outlinedButton = 'پرداخت با کیف پول'
                 filledButton = 'پرداخت'
@@ -55,7 +64,12 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
             case 'useWallet':
                 if (balance < paymentAmount) {
                     header = 'موجودی کافی نمی باشد'
-                    titleText = `${paymentAmount} هزار تومان بابت خرید محتوا`
+                    if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
+                        titleText = `${paymentAmount} هزار تومان بابت ${paymentType}`
+                    }
+                    else {
+                        titleText = `${paymentAmount} هزار تومان بابت خرید محتوا`
+                    }
                     subTitle = 'شما در حال خرید یک محتوا از mehdi sarmast هستید.'
                     outlinedButton = 'پرداخت از درگاه'
                     filledButton = 'شارژ کیف پول'
@@ -107,9 +121,11 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
     useEffect(() => {
         setTitleText(title)
         setAmount(paymentAmount)
-        console.log('balance: ', balance, 'amount: ', paymentAmount )
+        setWalletBalance(balance)
         setTexts()
     },[step, amount, title, paymentAmount, balance])
+
+    console.log(walletBalance)
 
     return (
         <div className={styles.purchaseCardContainer}>
@@ -229,7 +245,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
 
                 <div className={styles.bottom}>
                     <div className={styles.balanceText}>
-                        {'موجودی کیف پول : ' + 25 + 'هزار تومان'} 
+                        {`موجودی کیف پول : ${walletBalance} هزار تومان` } 
                     </div>
                     <div className={styles.sadadImage}>
                         <Image src={Sadad}/>

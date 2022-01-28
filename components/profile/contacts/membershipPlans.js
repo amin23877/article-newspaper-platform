@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-export default function MembershipPlans () {
+export default function MembershipPlans ({openModal}) {
 
     const router = useRouter()
 
@@ -37,8 +37,13 @@ export default function MembershipPlans () {
     ]
 
     const onJoinMembership = (membershipType) => {
-        Cookies.set('membership', `${membershipType}`)
-        router.replace('/contact-us')
+        if (router.pathname === '/contact-us') {
+            Cookies.set('membership', `${membershipType}`)
+            router.replace('/contact-us')
+        }
+        else {
+            openModal()
+        }
     }
 
     return (

@@ -6,15 +6,14 @@
   .purchaseCard {
     width: 393px;
     box-shadow: 2px 2px 6px 0px #0000001f;
-    border-radius: 30px 30px 30px 0px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 60px;
     padding-bottom: 8px;
     .purchaseHeader {
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
-      border-radius: 20px 20px 0px 0px;
+      border-radius: 10px 10px 0px 0px;
       width: 100%;
       display: flex;
       justify-content: center;

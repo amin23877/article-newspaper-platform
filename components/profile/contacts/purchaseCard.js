@@ -6,14 +6,18 @@ import Sadad from 'assets/images/contact/sadad.svg';
 import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg';
 import Plus from "assets/images/contact/plus.svg";
 import Minus from "assets/images/contact/minus.svg";
+import CheckCircle from "assets/images/contact/check-circle.svg";
 
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import {useForm} from "react-hook-form";
+import { useRouter } from 'next/router';
 
-export default function PurchaseCard ({balance, paymentType, title}) {
+export default function PurchaseCard ({balance, paymentType, paymentAmount, title}) {
 
     const { register: amountFormRegister, handleSubmit: handlePhoneSubmit, formState: {isValid: isPhoneValid}  } = useForm();
+
+    const router = useRouter()
 
     const [step, setStep] = useState('default')
     const [headerText, setHeaderText] = useState('')
@@ -21,14 +25,17 @@ export default function PurchaseCard ({balance, paymentType, title}) {
     const [subTitleText, setSubtitleText] = useState('')
     const [outlinedButton, setOutlinedButton] = useState('')
     const [filledButton, setFilledButton] = useState('')
-    const [amount, setAmount] = useState(0)
+    const [amount, setAmount] = useState(paymentAmount)
 
     const payWithWallet = () => {
         setStep('useWallet')
     }
 
     const onChargeWallet = () => {
-        setStep('chargeWallet')
+        if (balance >= paymentAmount) {
+            router.replace('/contact-us')
+        }
+        else setStep('chargeWallet')
     }
 
     const setTexts = () => {
@@ -46,17 +53,21 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                 filledButton = 'پرداخت'
                 break
             case 'useWallet':
-                if (balance === 0) {
+                if (balance < paymentAmount) {
                     header = 'موجودی کافی نمی باشد'
-                    titleText = `${paymentType} هزار تومان بابت خرید محتوا`
+                    titleText = `${paymentAmount} هزار تومان بابت خرید محتوا`
                     subTitle = 'شما در حال خرید یک محتوا از mehdi sarmast هستید.'
                     outlinedButton = 'پرداخت از درگاه'
                     filledButton = 'شارژ کیف پول'
                 }
+                else {
+                    filledButton = 'بازگشت به صفحه اصلی'
+                    subTitle = `${paymentAmount} هزار تومان بابت خرید محتوا`
+                }
                 break
             case 'chargeWallet': 
                 header = 'افزایش موجودی'
-                titleText = `افزایش اعتبار : ${50} هزار تومان`
+                titleText = `افزایش اعتبار : ${amount} هزار تومان`
                 subTitle = 'شما در حال افزایش موجودی برای کیف پول به شماره تلفن 09333655504 هستید.'
                 filledButton = 'افزایش موجودی'
                 break
@@ -94,16 +105,30 @@ export default function PurchaseCard ({balance, paymentType, title}) {
     }
 
     useEffect(() => {
+        setTitleText(title)
+        setAmount(paymentAmount)
+        console.log('balance: ', balance, 'amount: ', paymentAmount )
         setTexts()
-    },[step])
+    },[step, amount, title, paymentAmount, balance])
 
     return (
         <div className={styles.purchaseCardContainer}>
            <div className={styles.purchaseCard}>
+               {step === 'useWallet' && balance >= paymentAmount ?
+               <>
+               <div className={styles.checkCircle}>
+                   <Image src={CheckCircle} />
+               </div>
+               <span className={styles.successTitle}>پرداخت با موفقیت  انجام شد.</span>
+               </>
+               :
                <div className={styles.purchaseHeader}>
                    {headerText}
                </div>
-               {step !== 'default' ? 
+                }
+               {(step === 'default' || (step === 'useWallet' && balance >= paymentAmount)) ? 
+                null
+                :
                 <div className={styles.stepBack} onClick={() => onGoBack()}>
                     <span className={styles.iconContainer}>
                         <Image src={ChevronRightLight}/>
@@ -112,11 +137,13 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                         بازگشت به مرحله قبل
                     </span>
                 </div>
-                :null
                 }
-               <div className={styles.title}>
+                {(step === 'useWallet' && balance >= paymentAmount) ?
+                null:
+                <div className={styles.title}>
                     {titleText}
-               </div>
+                </div>
+                }
                <div className={styles.cardSubtitle}>
                    {subTitleText}
                </div>
@@ -185,7 +212,7 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                     </a>
                 </Button>
                 
-                {step === 'default' || step === 'useWallet' ? 
+                {step === 'default' || (step === 'useWallet' && balance < paymentAmount) ? 
                 <Button variant='outline'
                classes={styles.payButton}
                onClick={() => payWithWallet()}

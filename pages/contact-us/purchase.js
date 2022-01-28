@@ -19,7 +19,7 @@ export default function Purchase () {
                     <div className={styles.title}>سطح عضویت را انتخاب کنید</div>
                     :
                     <div className={styles.payTitle}>
-                        {'هزینه محتوا ' + paymentType + '000' + ' تومان می باشد.'}
+                        {'هزینه محتوا ' + paymentType + ' هزار تومان می باشد.'}
                     </div>
                     }
                 </div>
@@ -37,7 +37,7 @@ export default function Purchase () {
             {paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی' ? 
             <MembershipPlans />
             :
-            <PurchaseCard balance={0} paymentType={paymentType} title={title}/>
+            <PurchaseCard balance={5} paymentType={paymentType} paymentAmount={parseInt(paymentType)} title={title}/>
             }
         </div>
     )

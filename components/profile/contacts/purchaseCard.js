@@ -12,6 +12,10 @@ export default function PurchaseCard ({balance, paymentType, title}) {
     const router = useRouter()
     const [step, setStep] = useState('default')
     const [headerText, setHeaderText] = useState('')
+    const [titleText, setTitleText] = useState(title)
+    const [subTitleText, setSubtitleText] = useState('')
+    const [outlinedButton, setOutlinedButton] = useState('')
+    const [filledButton, setFilledButton] = useState('')
 
     const payWithWallet = () => {
         setStep('useWallet')
@@ -21,22 +25,41 @@ export default function PurchaseCard ({balance, paymentType, title}) {
         setStep('chargeWallet')
     }
 
-    const setHeader = () => {
-        let text = ''
+    const setTexts = () => {
+        let header = ''
+        let titleText = ''
+        let subTitle = ''
+        let outlinedButton = ''
+        let filledButton = ''
         switch(step) {
             case 'default':
-                text = 'خرید محتوا'
+                header = 'خرید محتوا'
+                titleText = title
+                subTitle = 'شما در حال خرید یک محتوا از mehdi sarmast هستید.'
+                outlinedButton = 'پرداخت با کیف پول'
+                filledButton = 'پرداخت'
                 break
             case 'useWallet':
                 if (balance === 0) {
-                    text = 'موجودی کافی نمی باشد'
+                    header = 'موجودی کافی نمی باشد'
+                    titleText = `${paymentType} هزار تومان بابت خرید محتوا`
+                    subTitle = 'شما در حال خرید یک محتوا از mehdi sarmast هستید.'
+                    outlinedButton = 'پرداخت از درگاه'
+                    filledButton = 'شارژ کیف پول'
                 }
                 break
             case 'chargeWallet': 
-                text = 'افزایش موجودی'
+                header = 'افزایش موجودی'
+                titleText = `افزایش اعتبار : ${50} هزار تومان`
+                subTitle = 'شما در حال افزایش موجودی برای کیف پول به شماره تلفن 09333655504 هستید.'
+                filledButton = 'افزایش موجودی'
                 break
         }
-        setHeaderText(text)
+        setHeaderText(header)
+        setTitleText(titleText)
+        setSubtitleText(subTitle)
+        setOutlinedButton(outlinedButton)
+        setFilledButton(filledButton)
     }
 
     const onGoBack = () => {
@@ -44,11 +67,14 @@ export default function PurchaseCard ({balance, paymentType, title}) {
             case 'useWallet': 
                 setStep('default')
                 break
+            case 'chargeWallet':
+                setStep('useWallet')
+                break
         }
     }
 
     useEffect(() => {
-        setHeader()
+        setTexts()
     },[step])
 
     return (
@@ -69,43 +95,36 @@ export default function PurchaseCard ({balance, paymentType, title}) {
                 :null
                 }
                <div className={styles.title}>
-                    {step === 'default' ? 
-                    `${title}`
-                    :`${paymentType} هزار تومان بابت خرید محتوا`
-                    }
+                    {titleText}
                </div>
                <div className={styles.cardSubtitle}>
-                   <div>
-                   شما در حال یک خرید محتوا از
-                    </div>
-                    <div>mehdi sarmast</div>
-                    <div>هستید.</div>
+                   {subTitleText}
                </div>
+
                <Button variant='filled'
                classes={styles.payButton}
+               onClick={() => onChargeWallet()}
                 >
                     <a>
                         <span>
-                            {step === 'default' ?
-                            'پرداخت':
-                            'شارژ کیف پول'
-                            }
+                            {filledButton}
                         </span>
                     </a>
                 </Button>
+                
+                {step === 'default' || step === 'useWallet' ? 
                 <Button variant='outline'
                classes={styles.payButton}
                onClick={() => payWithWallet()}
                 >
                     <a>
                         <span>
-                            {step === 'default' ?
-                            'پرداخت با کیف پول':
-                            'پرداخت از درگاه'
-                            }
+                            {outlinedButton}
                         </span>
                     </a>
                 </Button>
+                :null
+                }   
                 <a className={styles.cancelPay}>انصراف</a>
 
                 <div className={styles.bottom}>

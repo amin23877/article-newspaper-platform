@@ -55,12 +55,13 @@
       margin-bottom: 16px;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      text-align: center;
       align-items: center;
-      div {
-        color: $gray;
-        font-size: $secondary-size;
-        font-weight: 500;
-      }
+      color: $gray;
+      font-size: $secondary-size;
+      font-weight: 500;
+      width: 60%;
     }
     .payButton {
       width: 180px;

@@ -12,8 +12,9 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import {useForm} from "react-hook-form";
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-export default function PurchaseCard ({balance, paymentType, paymentAmount, title}) {
+export default function PurchaseCard ({balance, paymentType, paymentAmount, title, ...rest}) {
 
     const { register: amountFormRegister, handleSubmit: handlePhoneSubmit, formState: {isValid: isPhoneValid}  } = useForm();
 
@@ -32,9 +33,11 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
         setStep('useWallet')
     }
 
-    const onChargeWallet = () => {
+    const onFilledButton = () => {
         if (balance >= paymentAmount) {
-            router.replace('/contact-us')
+            Cookies.set('membership', paymentType)
+            rest.closeModal()
+            router.reload('/contact-us')
         }
         else setStep('chargeWallet')
     }
@@ -120,12 +123,12 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
 
     useEffect(() => {
         setTitleText(title)
-        setAmount(paymentAmount)
+        //setAmount(paymentAmount)
         setWalletBalance(balance)
         setTexts()
     },[step, amount, title, paymentAmount, balance])
 
-    console.log(walletBalance)
+    //console.log(paymentType)
 
     return (
         <div className={styles.purchaseCardContainer}>
@@ -133,7 +136,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                {step === 'useWallet' && balance >= paymentAmount ?
                <>
                <div className={styles.checkCircle}>
-                   <Image src={CheckCircle} />
+                   <Image src={CheckCircle} alt=''/>
                </div>
                <span className={styles.successTitle}>پرداخت با موفقیت  انجام شد.</span>
                </>
@@ -147,7 +150,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                 :
                 <div className={styles.stepBack} onClick={() => onGoBack()}>
                     <span className={styles.iconContainer}>
-                        <Image src={ChevronRightLight}/>
+                        <Image src={ChevronRightLight} alt=''/>
                     </span>
                         <span>
                         بازگشت به مرحله قبل
@@ -170,7 +173,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                <div className={styles.amountContainer}>
                 <div className={`${styles.amountButtons} ${styles.plus}`}
                 onClick={() => changeAmount('plus')}
-                ><Image src={Plus} /></div>
+                ><Image src={Plus} alt=''/></div>
                 <CustomInput register={amountFormRegister} name="amount"
                 value={`${amount} هزار تومان`} 
                 classes={styles.amountInput}
@@ -178,7 +181,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                 />
                 <div className={`${styles.amountButtons} ${styles.minus}`}
                 onClick={() => changeAmount('minus')}
-                ><Image src={Minus} /></div>
+                ><Image src={Minus} alt=''/></div>
                </div>
                <span className={styles.walletHint}>مبلغ وارد شده باید حداقل 5 هزار تومان باشد.</span>
                <div className={styles.amountButtons}>
@@ -219,7 +222,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
 
                <Button variant='filled'
                classes={styles.payButton}
-               onClick={() => onChargeWallet()}
+               onClick={() => onFilledButton()}
                 >
                     <a>
                         <span>
@@ -241,14 +244,16 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                 </Button>
                 :null
                 }   
-                <a href='/contact-us' className={styles.cancelPay}>انصراف</a>
+                <div className={styles.cancelPay} onClick={rest.closeModal}>
+                    <Link href='/contact-us' >انصراف</Link>
+                </div>
 
                 <div className={styles.bottom}>
                     <div className={styles.balanceText}>
                         {`موجودی کیف پول : ${walletBalance} هزار تومان` } 
                     </div>
                     <div className={styles.sadadImage}>
-                        <Image src={Sadad}/>
+                        <Image src={Sadad} alt='Sadad'/>
                     </div>
                 </div>
            </div>

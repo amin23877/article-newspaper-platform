@@ -127,7 +127,9 @@ export default function Home() {
             :null
             }
             {carouselsList.map((carousel) => (
-                <CarouselContainer title={carousel.title} carouselOptions={
+                <CarouselContainer
+                 key={carousel.title}
+                 title={carousel.title} carouselOptions={
                 {
                     items: carousel.options,
                     swiperOptions: {slidesPerView: carousel.slidesPerView},

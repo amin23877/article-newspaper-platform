@@ -1,26 +1,30 @@
 import FilterBar from "components/common/filterBar";
 import FeedPost from "components/profile/posts/feed";
 import Button from "components/common/button";
+import {useUser} from "hooks/useUser";
 
 import styles from 'styles/components/profile/TabsCommon.module.scss'
 import { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
 
-export default function Feed({memberType}) {
+export default function Feed(props) {
 
-    // const [memberType, setMemberType] = useState(props.memberType)
-    // useEffect(() => {
-    //     setMemberType(props.memberType)
-    // }, [props])
+    const [membership, setMembership] = useState('')
+    const [user, getUser, hasInitialized, memberType] = useUser()
 
-    
+    useEffect(() => {
+        setMembership(props.memberType)
+    }, [props.memberType])
+
+    //console.log(memberType)
     return (
         <div>
             <FilterBar />
             <div>
-                <FeedPost memberType={memberType}/>
-                <FeedPost memberType={memberType}/>
-                <FeedPost paid memberType={memberType} paymentType='اشتراک طلایی'/>
-                <FeedPost paid memberType={memberType} paymentType={5} hasPaid={false}/> {/** 5ooo toman */}
+                <FeedPost memberType={membership}/>
+                <FeedPost memberType={membership}/>
+                <FeedPost paid memberType={membership} paymentType='اشتراک طلایی'/>
+                <FeedPost paid memberType={membership} paymentType={5} hasPaid={false}/> {/** 5ooo toman */}
                 <div className={styles.showMoreContainer}>
                     <Button>
                         موارد بیشتر

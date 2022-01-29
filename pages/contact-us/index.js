@@ -16,20 +16,36 @@ import Twitter from "assets/svg/social-media/twitter-green-circle.svg";
 import Facebook from "assets/svg/social-media/facebook-green-circle.svg";
 import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
 import MembershipPlans from 'components/profile/contacts/membershipPlans';
+import PurchaseCard from 'components/profile/contacts/purchaseCard';
+import Modal from '@mui/material/Modal';
 import Dots from "assets/svg/common/dots.svg";
 import cookie from "cookie";
+import Cookies from 'js-cookie';
 
 export default function Index() {
 
-    const [user, getUser, hasInitialized, memberType] = useUser()
+    
     const [followed, setFollowed] = useState(false)
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const [membership, setMembership] = useState('')
+    const [membershipCost, setMembershipCost] = useState(0)
+    const [user, getUser, hasInitialized, memberType] = useUser()
+
+    const [loginOpen, setLoginOpen] = useState(false); // modal for logging in
+    const handleLoginOpen = () => setOpen(true);
+    const handleLoginClose = () => setOpen(false);
+
+    const [open, setOpen] = useState(false); // Modal to pay for membership
+    const handleOpen = (membership, cost) => {
+        setMembershipCost(cost)
+        setMembership(membership)
+        setOpen(true)
+    }
     const handleClose = () => setOpen(false);
 
     const router = useRouter()
 
     useEffect(() => {
+        // setMemberType(type)
         if (!hasInitialized)
             getUser()
         return
@@ -37,10 +53,12 @@ export default function Index() {
 
     const onFollow = () => {
         if (!user) {
-            handleOpen()
+            handleLoginOpen()
         }
         else setFollowed(!followed)
     }
+
+    console.log(memberType)
 
     return (
         <div className={styles.profileContainer}>
@@ -55,11 +73,11 @@ export default function Index() {
                     </Button>
                 </div>
                 <div className={styles.avatarContainer}>
-                    <Image src={MockAvatar}/>
+                    <Image src={MockAvatar} alt=""/>
                 </div>
                 {memberType !== '' ? 
                 <div className={styles.rankContainer}>
-                    <Image src={GoldRank}/>
+                    <Image src={GoldRank} alt=""/>
                 </div>
                 :null
                 }
@@ -79,7 +97,7 @@ export default function Index() {
                 <div className={styles.title}>
                     انتخاب عضویت
                 </div>
-                <MembershipPlans />
+                <MembershipPlans openModal={handleOpen}/>
                 </>
                 :null
                 }
@@ -141,7 +159,18 @@ export default function Index() {
         
             </div>
 
-            <LoginModal open={open} handleClose={handleClose} />
+            <LoginModal open={loginOpen} handleClose={handleLoginClose} />
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title2"
+                aria-describedby="modal-modal-description2"
+            >
+                <div className={styles.modalContainer}>
+                    <PurchaseCard balance={60} paymentType={membership} paymentAmount={membershipCost} closeModal={handleClose}/>
+                </div>
+                
+            </Modal>
         </div>
     )
 }

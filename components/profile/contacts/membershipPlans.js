@@ -5,46 +5,41 @@ import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import Button from "components/common/button";
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 
 export default function MembershipPlans ({openModal}) {
 
     const router = useRouter()
+
+    const onJoinMembership = (membershipType, cost) => {
+        // Cookies.set('membership', `${membershipType}`)
+        openModal(membershipType, cost)
+    }
 
 
     const memberships = [
         {
             title: 'اشتراک برنزی',
             image: BronzePlan,
-            cost : '10 هزار تومان ماهیانه',
+            cost : 10,
             subtitle: 'اشتراک عادی',
             features: ['مشاهده محتوا', 'نظرات']
         },
         {
             title: 'اشتراک نقره ای',
             image: SilverPlan,
-            cost: '30 هزار تومان ماهیانه',
+            cost: 30,
             subtitle: 'اشتراک معمولی',
             features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا']
         },
         {
             title: 'اشتراک طلایی',
             image: GoldPlan,
-            cost: '60 هزار تومان ماهیانه',
+            cost: 60,
             subtitle: 'اشتراک VIP',
             features: ['مشاهده محتوا', 'نظرات', 'اشتراک گذاری محتوا', 'دانلود محتوا']
         }
     ]
-
-    const onJoinMembership = (membershipType) => {
-        if (router.pathname === '/contact-us') {
-            Cookies.set('membership', `${membershipType}`)
-            router.replace('/contact-us')
-        }
-        else {
-            openModal()
-        }
-    }
 
     return (
         <div className={styles.membershipContainer}>
@@ -54,10 +49,10 @@ export default function MembershipPlans ({openModal}) {
                         {membership.title}
                     </div>
                     <div className={styles.image}>
-                        <Image src={membership.image}/>
+                        <Image src={membership.image} alt=""/>
                     </div>
                     <div className={styles.cost}>
-                        {membership.cost}
+                        {`${membership.cost} هزار تومان ماهیانه`}
                     </div>
                     <div className={styles.subtitle}>
                         {membership.subtitle}
@@ -67,7 +62,7 @@ export default function MembershipPlans ({openModal}) {
                             <li key={index}>{feature}</li>
                         )))}
                     </ul>
-                    <Button classes={styles.addContentButton} onClick={() => onJoinMembership(membership.title)}
+                    <Button classes={styles.addContentButton} onClick={() => onJoinMembership(membership.title, membership.cost)}
                     >
                         <a>
                             <span>ملحق شوید</span>

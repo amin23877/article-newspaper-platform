@@ -11,18 +11,22 @@ export function useUser() {
     const [hasInitialized, setHasInitialized] = useState(false)
     const [memberType, setMemberType] = useState('')
 
-    useEffect(() => {
-        if (!hasInitialized)
-            //getUser()
-            if (Cookies.get('membership') !== undefined) {
-                // console.log(Cookies.get('membership'))
-                setMemberType(Cookies.get('membership'))
-            }
-        return
-    })
+    // useEffect(() => {
+    //     if (!hasInitialized)
+    //         //getUser()
+    //         if (Cookies.get('membership') !== undefined) {
+    //             // console.log(Cookies.get('membership'))
+    //             setMemberType(Cookies.get('membership'))
+    //         }
+    //     return
+    // }, [memberType, hasInitialized])
 
     async function getUser() {
 
+        if (Cookies.get('membership') !== undefined) {
+            // console.log(Cookies.get('membership'))
+            setMemberType(Cookies.get('membership'))
+        }
         const {accessToken} = cookie.parse(document.cookie)
 
         if (!accessToken) {

@@ -48,7 +48,7 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                             {
                                 item.bestSeller ?
                                 (<div className={styles.bestSellerBadge}>
-                                    <Image src={bestSellerBadge}/>
+                                    <Image src={bestSellerBadge} alt=''/>
                                 </div>) :
                                 ''
                             }
@@ -92,10 +92,10 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                 })
             }
             <div className={styles.prevNav} ref={prevRef}>
-                    <Image src={ChevronRight} />
+                    <Image src={ChevronRight} alt=""/>
             </div>
             <div className={styles.nextNav} ref={nextRef}>
-                    <Image src={ChevronLeft} />
+                    <Image src={ChevronLeft} alt=""/>
             </div>
         </Swiper>
     );

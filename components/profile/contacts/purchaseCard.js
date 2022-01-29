@@ -29,17 +29,37 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
     const [amount, setAmount] = useState(paymentAmount)
     const [walletBalance, setWalletBalance] = useState(balance)
 
-    const payWithWallet = () => {
-        setStep('useWallet')
+    const onOutlinedButton = () => {
+        if (step === 'default') {
+            setStep('useWallet')
+        }
+        else if (step === 'useWallet') {
+            /// dargah pardakht
+        }
     }
 
     const onFilledButton = () => {
-        if (balance >= paymentAmount) {
-            Cookies.set('membership', paymentType)
-            rest.closeModal()
-            router.reload('/contact-us')
+        if (step === 'default') {
+            /// dargah pardakht
         }
-        else setStep('chargeWallet')
+        else if (step === 'useWallet') {
+            if (balance >= paymentAmount) {
+                Cookies.set('membership', paymentType)
+                if (rest.closeModal !== undefined) {
+                    rest.closeModal()
+                }
+                if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
+                    router.reload()
+                }
+                else {
+                    router.push('/contact-us')
+                }
+            }
+            else setStep('chargeWallet')
+        } 
+        else if (step === 'chargeWallet') {
+            /// dargah pardakht
+        }
     }
 
     const setTexts = () => {
@@ -234,7 +254,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                 {step === 'default' || (step === 'useWallet' && balance < paymentAmount) ? 
                 <Button variant='outline'
                classes={styles.payButton}
-               onClick={() => payWithWallet()}
+               onClick={() => onOutlinedButton()}
                 >
                     <a>
                         <span>

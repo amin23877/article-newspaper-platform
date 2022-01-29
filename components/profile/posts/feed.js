@@ -18,7 +18,7 @@ import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
 import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}) {
+export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
 
     const popupItems = [
         {text: 'حذف', icon: TrashIcon, action: () => {}},
@@ -45,16 +45,8 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
     
         
         if (paid) {
-            if (paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی') {
-                if (paymentType !== memberType) {
-                    //console.log('payment: ', paymentType,'memberType: ', memberType)
-                    showContent = false
-                }
-            }
-            else {
-                if (!hasPaid) {
-                    showContent = false
-                }
+            if (paymentType != memberType) {
+                showContent = false
             }
         }
     
@@ -64,10 +56,10 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                 <div className={`${styles.imageItem} ${showContent ? '' : styles.paidImageItem}`}>
                     <Image layout='fill'
                            objectFit='cover' src={MockNews} alt=""/>
-                    {paid && !(paymentType === memberType) ? 
+                    {paid && !(paymentType == memberType) ? 
                     <div className={styles.paidImageContent}>
                         <div className={styles.paidLock}>
-                            <Image src={PaidLockIcon}/>
+                            <Image src={PaidLockIcon} alt=""/>
                         </div>
                         <div>
                             قفل این محتوا را با تبدیل شدن به یک حامی باز کنید.
@@ -84,9 +76,9 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                 </div>
             </div>
             <div className={styles.descriptionContainer}>
-                <div className={`${styles.timingRow} ${paid && !(paymentType === memberType) ? styles.paidTime : ''}`}>
+                <div className={`${styles.timingRow} ${paid && !(paymentType == memberType) ? styles.paidTime : ''}`}>
                     <div className={styles.time}>{post.time}</div>
-                    {!paid || paymentType === memberType ? 
+                    {!paid || paymentType == memberType ? 
                     <div className={styles.moreActions} onClick={() => setShowPopup(!showPopup)}>
                         <Image src={MoreOptions} alt=""/>
                         {showPopup ? <Popup popupSet={setShowPopup} containerClass={styles.popup} items={popupItems} /> : ''}
@@ -97,7 +89,7 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                 <div className={styles.title}>
                     {post.title}
                 </div>
-                {!paid || paymentType === memberType ? 
+                {!paid || paymentType == memberType ? 
                 <div className={styles.description}>
                     {post.description}
                     <div className={styles.mask} />
@@ -121,7 +113,7 @@ export default function FeedPost ({paid,memberType,hasPaid,paymentType, ...rest}
                             </div>
                         </div>
                     </div>
-                    {!paid || paymentType === memberType ? 
+                    {!paid || paymentType == memberType ? 
                     <div className={styles.readMore}>
                         مطالعه بیشتر
                     </div>

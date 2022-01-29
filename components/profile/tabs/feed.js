@@ -16,7 +16,7 @@ export default function Feed(props) {
         setMembership(props.memberType)
     }, [props.memberType])
 
-    //console.log(memberType)
+    console.log(membership)
     return (
         <div>
             <FilterBar />
@@ -24,7 +24,7 @@ export default function Feed(props) {
                 <FeedPost memberType={membership}/>
                 <FeedPost memberType={membership}/>
                 <FeedPost paid memberType={membership} paymentType='اشتراک طلایی'/>
-                <FeedPost paid memberType={membership} paymentType={5} hasPaid={false}/> {/** 5ooo toman */}
+                <FeedPost paid memberType={membership} paymentType={5}/> {/** 5ooo toman */}
                 <div className={styles.showMoreContainer}>
                     <Button>
                         موارد بیشتر

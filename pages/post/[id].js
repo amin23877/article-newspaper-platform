@@ -7,12 +7,15 @@ import Button from "components/common/button";
 import BronzePlan from 'assets/images/contact/bronze-plan.svg'
 import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
+import Close from 'assets/images/post/close.svg';
+import MockNews from 'assets/images/953473320video.png'
 import {useUser} from "hooks/useUser";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Post () {
 
     const [user, getUser, hasInitialized, memberType] = useUser()
+    const [showAd, setShowAd] = useState(true)
 
     useEffect(() => {
         getUser()
@@ -20,11 +23,66 @@ export default function Post () {
         return
     },[])
 
+    const closeAd = () => {
+        setShowAd(false)
+    }
+
+    const latestPosts = [
+        {
+            image: MockNews,
+            title: 'عنوان',
+            time: '11 ساعت پیش',
+            description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+            likeCount: 22, 
+            commentCount: 12
+        },
+        {
+            image: MockNews,
+            title: 'عنوان',
+            time: '11 ساعت پیش',
+            description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+            likeCount: 22, 
+            commentCount: 12
+        },
+        {
+            image: MockNews,
+            title: 'عنوان',
+            time: '11 ساعت پیش',
+            description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+            likeCount: 22, 
+            commentCount: 12
+        },
+        {
+            image: MockNews,
+            title: 'عنوان',
+            time: '11 ساعت پیش',
+            description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+            likeCount: 22, 
+            commentCount: 12
+        },
+        {
+            image: MockNews,
+            title: 'عنوان',
+            time: '11 ساعت پیش',
+            description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
+            likeCount: 22, 
+            commentCount: 12
+        }
+    ]
+
     return (
         <div className={styles.postPageContainer}>
             <div className={styles.rightCol}>
                 <div className={styles.ad}>
-                    <Image src={Ad} alt='ad'/>
+                    {showAd ? 
+                    <>
+                    <Image src={Ad} alt='' />
+                    <div className={styles.closeAd} onClick={() => closeAd()}>
+                        <Image src={Close} alt=''/>
+                    </div>
+                    </>
+                    :null
+                    }
                 </div>
                 <div className={styles.profileContainer}>
                     <div className={styles.avatarContainer}>
@@ -50,7 +108,7 @@ export default function Post () {
                         </Link>
                     </Button>
 
-                    <div className={styles.membershipsContainer}>
+                    <div className={styles.rightColContainer}>
                         <div className={styles.membershipHeader}>اشتراک ها</div>
                         <div className={styles.membership}>
                             <div className={styles.membershipImage}>
@@ -80,6 +138,20 @@ export default function Post () {
                             </div>
                         </div>
                     </div>
+                    <div className={styles.rightColContainer}>
+                        <div className={styles.membershipHeader}>آخرین محتواها</div>
+                        {latestPosts.map((post, index) => {
+                            return (
+                                <div key={index} className={styles.sidePost}>
+                                    <Image className={styles.postImage} src={post.image} width='47px' height='40px' alt=''/>
+                                    <div className={styles.postText}>
+                                        <div className={styles.postTitle}>{post.title}</div>
+                                        <div className={styles.postTime}>{post.time}</div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
                     </>
                     }
                 </div>
@@ -91,21 +163,4 @@ export default function Post () {
     )
 }
 
-// export async function useServerSideProps(context) {
-
-//     const [user, getUser, hasInitialized, memberType] = samin()
-//     useEffect(() => {
-//         if (!hasInitialized)
-//             getUser()
-//             //console.log(user)
-//         return
-//     })
-//     console.log(user)
-
-//         return {
-//             props: {user}
-//         }
-
-    
-// }
 

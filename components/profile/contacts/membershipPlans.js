@@ -12,7 +12,6 @@ export default function MembershipPlans ({openModal, selectMembership}) {
     const router = useRouter()
 
     const onJoinMembership = (membership) => {
-        // Cookies.set('membership', `${membershipType}`)
         selectMembership(membership)
         openModal(membership.title, membership.cost)
     }

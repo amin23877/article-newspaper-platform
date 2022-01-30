@@ -12,16 +12,22 @@ export default function Purchase () {
     const router = useRouter()
     const {paymentType, title} = router.query
 
+    const [membership, setMembership] = useState(paymentType)
+
     const [open, setOpen] = useState(false); // Modal to pay for membership
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const selectMembership = (membershipType) => {
+        setMembership(membershipType)
+    }
 
     return (
         <div className={styles.purchaseContainer}>
             <div className={styles.top}>
                 <div className={styles.text}>
                     <div className={styles.subtitle}>برای دسترسی به محتوا لطفا با خرید اشتراک از مهدی حمایت کنید :)</div>
-                    {paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی' ? 
+                    {(paymentType.includes('اشتراک')) ? 
                     <div className={styles.title}>سطح عضویت را انتخاب کنید</div>
                     :
                     <div className={styles.payTitle}>
@@ -40,8 +46,8 @@ export default function Purchase () {
                     </span>
                 </div>
             </div>
-            {paymentType === 'اشتراک طلایی' || paymentType === 'اشتراک نقره ای' || paymentType === 'اشتراک برنزی' ? 
-            <MembershipPlans openModal={handleOpen}/>
+            {paymentType.includes('اشتراک') ? 
+            <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)}/>
             :
             <PurchaseCard balance={5} paymentType={paymentType} paymentAmount={parseInt(paymentType)} title={title}/>
             }
@@ -52,7 +58,7 @@ export default function Purchase () {
                 aria-describedby="modal-modal-description2"
             >
                 <div className={styles.modalContainer}>
-                    <PurchaseCard balance={5} paymentType={paymentType} paymentAmount={60} title={title}/>
+                    <PurchaseCard balance={5} paymentType={membership.title} paymentAmount={membership.cost} title={title}/>
                 </div>
                 
             </Modal>

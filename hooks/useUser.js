@@ -44,5 +44,7 @@ export function useUser() {
         }
     }
 
+    //console.log(user)
+
     return [ user, getUser, hasInitialized, memberType ]
 }

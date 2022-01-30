@@ -43,11 +43,12 @@ export default function Index() {
     const router = useRouter()
 
     useEffect(() => {
-        // setMemberType(type)
-        if (!hasInitialized)
+        
+        if (!hasInitialized) {
             getUser()
+        }
         return
-    })
+    },[hasInitialized, getUser])
 
     const onFollow = () => {
         if (!user) {

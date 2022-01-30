@@ -66,7 +66,7 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
                         </div>
                         <Button variant='outline' classes={styles.donateButton}
                         >
-                            <Link href={{ pathname: '/user/1/purchase', query: {paymentType: paymentType, title: post.title}}}>
+                            <Link href={{ pathname: '/user/1/purchase', query: {paymentType: paymentType, title: post.title}}} passHref>
                                 <span>حامی شوید</span>
                             </Link>
                         </Button>
@@ -115,7 +115,9 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
                     </div>
                     {!paid || paymentType == memberType ? 
                     <div className={styles.readMore}>
+                        <Link href={{pathname: '/post/1', query: {type: 'podcast'}}}>
                         مطالعه بیشتر
+                        </Link>
                     </div>
                     :null
                     }

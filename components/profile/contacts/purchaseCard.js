@@ -52,7 +52,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                     router.reload()
                 }
                 else {
-                    router.push('/contact-us')
+                    router.push('/user/1')
                 }
             }
             else setStep('chargeWallet')
@@ -265,7 +265,7 @@ export default function PurchaseCard ({balance, paymentType, paymentAmount, titl
                 :null
                 }   
                 <div className={styles.cancelPay} onClick={rest.closeModal}>
-                    <Link href='/contact-us' >انصراف</Link>
+                    <Link href='/user/1' >انصراف</Link>
                 </div>
 
                 <div className={styles.bottom}>

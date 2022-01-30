@@ -19,8 +19,6 @@ import MembershipPlans from 'components/profile/contacts/membershipPlans';
 import PurchaseCard from 'components/profile/contacts/purchaseCard';
 import Modal from '@mui/material/Modal';
 import Dots from "assets/svg/common/dots.svg";
-import cookie from "cookie";
-import Cookies from 'js-cookie';
 
 export default function Index() {
 
@@ -57,8 +55,6 @@ export default function Index() {
         }
         else setFollowed(!followed)
     }
-
-    console.log(memberType)
 
     return (
         <div className={styles.profileContainer}>

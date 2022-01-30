@@ -113,5 +113,8 @@
   }
   .leftCol {
     width: calc(100% - 290px);
+    .banner {
+      margin-right: 16px;
+    }
   }
 }

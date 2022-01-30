@@ -157,7 +157,9 @@ export default function Post () {
                 </div>
             </div>
             <div className={styles.leftCol}>
-                Left Column
+                <iframe
+                className={styles.banner} 
+                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" frameBorder="2" width="697px" height="340px"></iframe>
             </div>
         </div>
     )

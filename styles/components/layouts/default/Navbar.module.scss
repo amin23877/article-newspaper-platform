@@ -75,7 +75,12 @@
       .profileInfo {
         display: flex;
         cursor: pointer;
-
+        position: relative;
+        .popup {
+          position: absolute;
+          left: 24px;
+          top: 48px;
+        }
         .name {
           width: 90px;
           margin-left: 16px;

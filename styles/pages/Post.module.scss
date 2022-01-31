@@ -186,10 +186,11 @@
       padding: 0 7px 24px 0;
       border-bottom: 1px solid $gray;
     }
-    .postComment {
+    .newComment {
       display: flex;
       margin-top: 8px;
       padding-right: 8px;
+      margin-bottom: 24px;
       .commentAvatar {
         width: 40px;
         height: 40px;
@@ -221,6 +222,38 @@
           display: flex;
           cursor: pointer;
           opacity: 0.5;
+        }
+      }
+    }
+    .comment {
+      display: flex;
+      margin-bottom: 32px;
+      padding-right: 8px;
+      .commentAvatar {
+        width: 40px;
+        height: 40px;
+        margin-left: 9px;
+      }
+      .commentTexts {
+        .userAndTime {
+          display: flex;
+          align-items: center;
+          .commentTime {
+            font-size: $tertiary-size;
+            color: $gray;
+            margin-right: 10px;
+          }
+        }
+        .commentText {
+          color: $dimgray;
+          font-size: $secondary-size;
+        }
+        .thumbs {
+          display: flex;
+          cursor: pointer;
+        }
+        .thumbs > div {
+          margin-left: 24px;
         }
       }
     }

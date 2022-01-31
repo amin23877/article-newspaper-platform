@@ -11,6 +11,8 @@ import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import Close from 'assets/images/post/close.svg';
 import Heart from "assets/svg/common/heart.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
+import ThumbUp from 'assets/images/post/thumb-up.svg';
+import ThumbDown from 'assets/images/post/thumb-down.svg';
 import DotsVertical from "assets/images/post/dots-vertical.svg";
 import Bell from "assets/images/post/bell.svg";
 import Send from "assets/images/post/send.svg";
@@ -74,6 +76,52 @@ export default function Post () {
             likeCount: 22, 
             commentCount: 12
         }
+    ]
+
+    const comments = [
+        {
+            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
+            time: '2 ساعت پیش',
+            user: MockUser,
+            username: 'Nima Kazemi'
+        },
+        {
+            text: 'بسیار عالی بود',
+            time: '11 ساعت پیش',
+            user: MockAvatar,
+            username: 'Saba Ahmadi'
+        },
+        {
+            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
+            time: '2 ساعت پیش',
+            user: MockUser,
+            username: 'Nima Kazemi'
+        },
+        {
+            text: 'بسیار عالی بود',
+            time: '11 ساعت پیش',
+            user: MockAvatar,
+            username: 'Saba Ahmadi'
+        },
+        {
+            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
+            time: '2 ساعت پیش',
+            user: MockUser,
+            username: 'Nima Kazemi'
+        },
+        {
+            text: 'بسیار عالی بود',
+            time: '11 ساعت پیش',
+            user: MockAvatar,
+            username: 'Saba Ahmadi'
+        },
+        {
+            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
+            time: '2 ساعت پیش',
+            user: MockUser,
+            username: 'Nima Kazemi'
+        },
+        
     ]
 
     return (
@@ -199,7 +247,7 @@ export default function Post () {
                 <div className={styles.lightLine}></div>
                 <div className={styles.description}>{latestPosts[0].description}</div>
                 <div>{`${latestPosts[0].commentCount} نظر`}</div>
-                <div className={styles.postComment}>
+                <div className={styles.newComment}>
                     <div className={styles.commentAvatar}>
                         <Image src={MockAvatar} alt=''/>
                     </div>
@@ -208,6 +256,31 @@ export default function Post () {
                         <input type='text' placeholder='دیدگاه خود را وارد نمایید ...'/>
                     </div>
                 </div>
+                {comments.map((comment, index) => {
+                    return (
+                        <div key={index} className={styles.comment}>
+                            <div className={styles.commentAvatar}>
+                                <Image src={comment.user} alt=''/>
+                            </div>
+                            <div className={styles.commentTexts}>
+                                <div className={styles.userAndTime}>
+                                    <div>{comment.username}</div>
+                                    <div className={styles.commentTime}>{comment.time}</div>
+                                </div>
+                                <div className={styles.commentText}>{comment.text}</div>
+                                <div className={styles.thumbs}>
+                                    <div>
+                                        <Image src={ThumbUp} alt='' />
+                                    </div>
+                                    <div>
+                                        <Image src={ThumbDown} alt=''/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+                
             </div>
         </div>
     )

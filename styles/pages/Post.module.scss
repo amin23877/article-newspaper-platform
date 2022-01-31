@@ -92,7 +92,12 @@
           .postImage {
             width: 47px;
             height: 40px;
+            max-height: 40px;
+            min-width: 47px;
             border-radius: 4px;
+            span {
+              border-radius: 4px;
+            }
           }
           .postText {
             margin-right: 8px;
@@ -113,8 +118,111 @@
   }
   .leftCol {
     width: calc(100% - 290px);
-    .banner {
-      margin-right: 16px;
+    margin-right: 16px;
+    // .banner {
+    //   //margin-right: 16px;
+    // }
+    .videoText {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px 0 20px;
+      align-items: center;
+      .postTitle {
+        font-weight: 500;
+        font-size: $header-size;
+      }
+      .postTime {
+        font-size: $tertiary-size;
+        color: $gray;
+      }
+    }
+    .members {
+      color: $gray;
+      font-size: $tertiary-size;
+      margin-right: 12px;
+      margin-top: 8px;
+    }
+    .videoButtons {
+      padding: 10px 15px 0 20px;
+      display: flex;
+      justify-content: space-between;
+      .actions {
+        display: flex;
+        padding-top: 5px;
+        .like {
+          margin-left: 16px;
+          display: flex;
+        }
+        .comment {
+          display: flex;
+        }
+        .count {
+          font-style: normal;
+          font-weight: normal;
+          font-size: $secondary-size;
+          line-height: 22px;
+          text-align: right;
+          color: #797474;
+          opacity: 0.9;
+          margin-right: 8px;
+        }
+      }
+      .more {
+        width: 40px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .lightLine {
+      width: 87%;
+      margin-right: auto;
+      margin-left: auto;
+      border-top: 1px solid $lightgray;
+      margin-block: 24px;
+    }
+    .description {
+      color: $gray;
+      margin: 10px 2px 16px 20px;
+      padding: 0 7px 24px 0;
+      border-bottom: 1px solid $gray;
+    }
+    .postComment {
+      display: flex;
+      margin-top: 8px;
+      padding-right: 8px;
+      .commentAvatar {
+        width: 40px;
+        height: 40px;
+        margin-left: 9px;
+      }
+      .userNewComment {
+        flex-grow: 1;
+        position: relative;
+        input {
+          width: 95%;
+          height: 40px;
+          box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+          border-radius: 27px;
+          border: none;
+          padding-inline: 16px;
+          font-size: $tertiary-size;
+          color: $dimgray;
+        }
+        input::placeholder {
+          color: #999999;
+        }
+        input:focus-visible {
+          outline: none;
+        }
+        .sendBtn {
+          position: absolute;
+          left: calc(5% + 18px);
+          height: 100%;
+          display: flex;
+          cursor: pointer;
+          opacity: 0.5;
+        }
+      }
     }
   }
 }

@@ -2,13 +2,19 @@ import styles from '/styles/pages/Post.module.scss';
 import Ad from 'assets/images/post/advertisement.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import MockAvatar from 'assets/images/mock-avatar.png';
+import MockUser from 'assets/images/contact/mock-avatar.png';
+import MockAvatar from 'assets/images/mock-avatar.png'
 import Button from "components/common/button";
 import BronzePlan from 'assets/images/contact/bronze-plan.svg'
 import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import Close from 'assets/images/post/close.svg';
-import MockNews from 'assets/images/953473320video.png'
+import Heart from "assets/svg/common/heart.svg";
+import Comment from "assets/svg/common/comment-outline.svg";
+import DotsVertical from "assets/images/post/dots-vertical.svg";
+import Bell from "assets/images/post/bell.svg";
+import Send from "assets/images/post/send.svg";
+import MockNews from 'assets/images/953473320video.png';
 import {useUser} from "hooks/useUser";
 import { useEffect, useState } from 'react';
 
@@ -30,7 +36,7 @@ export default function Post () {
     const latestPosts = [
         {
             image: MockNews,
-            title: 'عنوان',
+            title: 'مطالعات کارشناسی ارشد سینمایی - رنگ و فرم',
             time: '11 ساعت پیش',
             description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
             likeCount: 22, 
@@ -86,13 +92,10 @@ export default function Post () {
                 </div>
                 <div className={styles.profileContainer}>
                     <div className={styles.avatarContainer}>
-                        <Image src={MockAvatar} alt='avatar'/>
+                        <Image src={MockUser} alt='avatar'/>
                     </div>
                     <div className={styles.name}>
-                        {user !== undefined ?
-                        user.username ?? 'کاربر میهمان'
-                        :null
-                        }
+                        Mehdi Azad
                     </div>
                     <div className={styles.status}>
                         در حال ایجاد محتوا هستید
@@ -143,7 +146,9 @@ export default function Post () {
                         {latestPosts.map((post, index) => {
                             return (
                                 <div key={index} className={styles.sidePost}>
-                                    <Image className={styles.postImage} src={post.image} width='47px' height='40px' alt=''/>
+                                    <div className={styles.postImage}>
+                                        <Image src={post.image} width='47px' height='40px' alt=''/>
+                                    </div>
                                     <div className={styles.postText}>
                                         <div className={styles.postTitle}>{post.title}</div>
                                         <div className={styles.postTime}>{post.time}</div>
@@ -159,7 +164,50 @@ export default function Post () {
             <div className={styles.leftCol}>
                 <iframe
                 className={styles.banner} 
-                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" frameBorder="2" width="697px" height="340px"></iframe>
+                src="https://aspb22.cdn.asset.aparat.com/aparat-video/806851e3c1500641e2208a3400d70f7827115864-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjFkZmNlZmI1OWZjZDMwNTcwYTAzNTFlOTg0MTNjMjA3IiwiZXhwIjoxNjQzNjM5MzE3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.utCABN8MI6kcXq0scOxZ37fac1aoM4E63sexHw3xjUk" frameBorder="2" width="100%" height="340px"></iframe>
+                <div className={styles.videoText}>
+                    <div className={styles.postTitle}>{latestPosts[0].title}</div>
+                    <div className={styles.postTime}>{latestPosts[0].time}</div>
+                </div>
+                <div className={styles.members}>756 مشترک</div>
+                <div className={styles.videoButtons}>
+                    <div className={styles.actions}>
+                        <div className={styles.like}>
+                            <div className={styles.icon}>
+                                <Image src={Heart} alt=""/>
+                            </div>
+                            <div className={styles.count}>{latestPosts[0].likeCount}</div>
+                        </div>
+                        <div className={styles.comment}>
+                            <div className={styles.icon}>
+                                <Image src={Comment} alt=""/>
+                            </div>
+                            <div className={styles.count}>
+                                {latestPosts[0].commentCount}
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.more}>
+                        <div>
+                            <Image src={Bell} alt=''/>
+                        </div>
+                        <div>
+                            <Image src={DotsVertical} alt='' />
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.lightLine}></div>
+                <div className={styles.description}>{latestPosts[0].description}</div>
+                <div>{`${latestPosts[0].commentCount} نظر`}</div>
+                <div className={styles.postComment}>
+                    <div className={styles.commentAvatar}>
+                        <Image src={MockAvatar} alt=''/>
+                    </div>
+                    <div className={styles.userNewComment}>
+                        <div className={styles.sendBtn}><Image src={Send} alt='' /></div>
+                        <input type='text' placeholder='دیدگاه خود را وارد نمایید ...'/>
+                    </div>
+                </div>
             </div>
         </div>
     )

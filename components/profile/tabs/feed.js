@@ -21,8 +21,8 @@ export default function Feed(props) {
         <div>
             <FilterBar />
             <div>
-                <FeedPost memberType={membership}/>
-                <FeedPost memberType={membership}/>
+                <FeedPost memberType={membership} type='text'/>
+                <FeedPost memberType={membership} type='video'/>
                 <FeedPost paid memberType={membership} paymentType='اشتراک طلایی'/>
                 <FeedPost paid memberType={membership} paymentType={5}/> {/** 5ooo toman */}
                 <div className={styles.showMoreContainer}>

@@ -115,7 +115,7 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
                     </div>
                     {!paid || paymentType == memberType ? 
                     <div className={styles.readMore}>
-                        <Link href={{pathname: '/post/1', query: {type: 'podcast'}}}>
+                        <Link href={{pathname: '/post/1', query: {type: rest.type}}}>
                         مطالعه بیشتر
                         </Link>
                     </div>

@@ -4,7 +4,7 @@
   margin: 96px auto;
   display: flex;
   max-width: 1000px;
-  padding: 32px 16px 0;
+  padding: 0 16px 0;
   .rightCol {
     width: 290px;
     .ad {
@@ -119,10 +119,8 @@
   .leftCol {
     width: calc(100% - 290px);
     margin-right: 16px;
-    // .banner {
-    //   //margin-right: 16px;
-    // }
     .videoText {
+      margin-top: 10px;
       display: flex;
       justify-content: space-between;
       padding: 0 12px 0 20px;

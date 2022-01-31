@@ -19,15 +19,18 @@ import Send from "assets/images/post/send.svg";
 import MockNews from 'assets/images/953473320video.png';
 import {useUser} from "hooks/useUser";
 import { useEffect, useState } from 'react';
+import {useRouter} from "next/router";
 
 export default function Post () {
+
+    const router = useRouter()
+    const {type, id} = router.query
 
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [showAd, setShowAd] = useState(true)
 
     useEffect(() => {
         getUser()
-        //console.log(user)
         return
     },[])
 
@@ -210,9 +213,20 @@ export default function Post () {
                 </div>
             </div>
             <div className={styles.leftCol}>
+                {type === 'video' ? 
                 <iframe
                 className={styles.banner} 
                 src="https://aspb22.cdn.asset.aparat.com/aparat-video/806851e3c1500641e2208a3400d70f7827115864-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjFkZmNlZmI1OWZjZDMwNTcwYTAzNTFlOTg0MTNjMjA3IiwiZXhwIjoxNjQzNjM5MzE3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.utCABN8MI6kcXq0scOxZ37fac1aoM4E63sexHw3xjUk" frameBorder="2" width="100%" height="340px"></iframe>
+                :
+                <embed
+                    src="http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0"
+                    type="application/pdf"
+                    frameBorder="0"
+                    scrolling="auto"
+                    height="610px"
+                    width="667px"
+                ></embed>
+                }
                 <div className={styles.videoText}>
                     <div className={styles.postTitle}>{latestPosts[0].title}</div>
                     <div className={styles.postTime}>{latestPosts[0].time}</div>

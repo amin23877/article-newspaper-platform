@@ -26,7 +26,7 @@ export default function Tab({ items = [{name: ''}], ...rest }) {
                 {items.map((item, itemIndex) => {
                     return (
                         <div key={itemIndex} className={styles.contentContainer}>
-                            {activeTab === item.name ? item.content(item.props || '') : ''}
+                            {activeTab === item.name ? item.content() : ''}
                         </div>
                     )
                 })}

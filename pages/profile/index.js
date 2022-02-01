@@ -18,6 +18,7 @@ import cookie from "cookie";
 import {getUserProfile} from "shared/users";
 import axios from "axios";
 import {Endpoints} from "../../utils/endpoints";
+import Cookies from 'js-cookie';
 
 export default function Index({me, followers, followings, followingsCount, followersCount}) {
 
@@ -81,17 +82,17 @@ export default function Index({me, followers, followings, followingsCount, follo
                                     {
                                         name: 'feed',
                                         text: 'محتوا',
-                                        content: Feed
+                                        content: Feed,
                                     },
                                     {
                                         name: 'forYou',
                                         text: 'برای تو',
-                                        content: ForYou
+                                        content: ForYou,
                                     },
                                     {
                                         name: 'archive',
                                         text: 'آرشیو',
-                                        content: Archive
+                                        content: Archive,
                                     }
                                 ]
                             }

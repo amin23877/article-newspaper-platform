@@ -40,20 +40,23 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
     }
 
     const [showPopup, setShowPopup] = useState(false)
-    let showContent = true
-
-    
-        
+    const [showContent, setShowContent] = useState(true)
+   
+    useEffect(() => {
         if (paid) {
             if (paymentType != memberType) {
-                showContent = false
+                setShowContent(false)
+            }
+            else {
+                setShowContent(true)
             }
         }
-    
+    },[memberType])
+
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
-                <div className={`${styles.imageItem} ${showContent ? '' : styles.paidImageItem}`}>
+                <div className={`${styles.imageItem} ${!showContent ? styles.paidImageItem : ''}`}>
                     <Image layout='fill'
                            objectFit='cover' src={MockNews} alt=""/>
                     {paid && !(paymentType == memberType) ? 
@@ -76,7 +79,7 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
                 </div>
             </div>
             <div className={styles.descriptionContainer}>
-                <div className={`${styles.timingRow} ${paid && !(paymentType == memberType) ? styles.paidTime : ''}`}>
+                <div className={`${styles.timingRow} ${showContent ? '' : styles.paidTime}`}>
                     <div className={styles.time}>{post.time}</div>
                     {!paid || paymentType == memberType ? 
                     <div className={styles.moreActions} onClick={() => setShowPopup(!showPopup)}>

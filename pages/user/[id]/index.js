@@ -57,6 +57,10 @@ export default function Index() {
         else setFollowed(!followed)
     }
 
+    const selectMembership = (membershipType) => {
+        setMembership(membershipType)
+    }
+
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
@@ -72,7 +76,7 @@ export default function Index() {
                 <div className={styles.avatarContainer}>
                     <Image src={MockAvatar} alt=""/>
                 </div>
-                {memberType !== '' ? 
+                {memberType.includes('اشتراک') ? 
                 <div className={styles.rankContainer}>
                     <Image src={GoldRank} alt=""/>
                 </div>
@@ -89,12 +93,12 @@ export default function Index() {
                 </div>
                 
 
-                {memberType === '' ? 
+                {!(memberType.includes('اشتراک')) ? 
                 <>
                 <div className={styles.title}>
                     انتخاب عضویت
                 </div>
-                <MembershipPlans openModal={handleOpen}/>
+                <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)}/>
                 </>
                 :null
                 }
@@ -142,7 +146,6 @@ export default function Index() {
                                     name: 'feed',
                                     text: 'محتوا',
                                     content: Feed,
-                                    props: {memberType: memberType}
                                 },
                                 {
                                     name: 'forYou',

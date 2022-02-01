@@ -9,22 +9,30 @@ import Cookies from 'js-cookie';
 
 export default function Feed(props) {
 
-    const [membership, setMembership] = useState('')
-    const [user, getUser, hasInitialized, memberType] = useUser()
+    //const [membership, setMembership] = useState('')
+    // const [user, getUser, hasInitialized, memberType] = useUser()
+    const memberType = Cookies.get('membership')
 
-    useEffect(() => {
-        setMembership(props.memberType)
-    }, [props.memberType])
+    // useEffect(() => {
+    //     setMembership(props.memberType)
+    // }, [props.memberType])
 
-    console.log(membership)
+    // useEffect(() => {
+        
+    //     if (!hasInitialized) {
+    //         getUser()
+    //     }
+    //     return
+    // },[hasInitialized, getUser])
+
     return (
         <div>
             <FilterBar />
             <div>
-                <FeedPost memberType={membership} type='text'/>
-                <FeedPost memberType={membership} type='video'/>
-                <FeedPost paid memberType={membership} paymentType='اشتراک طلایی'/>
-                <FeedPost paid memberType={membership} paymentType={5}/> {/** 5ooo toman */}
+                <FeedPost memberType={memberType} type='text'/>
+                <FeedPost memberType={memberType} type='video'/>
+                <FeedPost paid memberType={memberType} paymentType='اشتراک طلایی'/>
+                <FeedPost paid memberType={memberType} paymentType={5}/> {/** 5ooo toman */}
                 <div className={styles.showMoreContainer}>
                     <Button>
                         موارد بیشتر

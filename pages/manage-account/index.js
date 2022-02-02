@@ -10,6 +10,7 @@ export default function ManageAccount () {
 
     const router = useRouter()
     const [user, getUser, hasInitialized, memberType] = useUser()
+    const [activeMenu, setActiveMenu] = useState(1)
 
     useEffect(() => {
         
@@ -19,7 +20,21 @@ export default function ManageAccount () {
         return
     },[hasInitialized, getUser])
 
-    console.log(user)
+    const menuItems = [
+        'اطلاعات شخصی',
+        'لیست سفارش ها',
+        'گزارش مالی',
+        'آنالیز محتوا',
+        'حامی ها',
+        'دنبال کننده ها',
+        'جستجوهای ذخیره شده',
+        'پیام ها',
+        'خروج'
+    ]
+
+    const onChangeMenu = (menuIndex) => {
+        setActiveMenu(menuIndex)
+    }
 
     return (
         <div className={styles.manageAccountPage}>
@@ -51,6 +66,18 @@ export default function ManageAccount () {
                     :null
                     }
                 </div>
+
+                <ul className={styles.menuItems}>
+                    {menuItems.map((menu, index) => {
+                        return (
+                            <li key={menu} 
+                            onClick={() => onChangeMenu(index)}
+                            className={activeMenu === index ? styles.activeMenu : styles.menu}>
+                                {menu}
+                            </li>
+                        )
+                    })}
+                </ul>
                 
             </div>
             <div>

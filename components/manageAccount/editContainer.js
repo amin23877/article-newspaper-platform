@@ -1,5 +1,7 @@
-export default function EditContainer () {
+import styles from 'styles/components/manageAccount/EditContainer.module.scss'
+
+export default function EditContainer ({providerType}) {
     return (
-        <div></div>
+        <div className={styles.container}>{providerType}</div>
     )
 }

@@ -32,8 +32,7 @@ export default function PersonalInfo () {
                 </label>
                 </div>
             </div>
-            {providerType}
-            <EditContainer />
+            <EditContainer providerType={providerType}/>
         </div>
     )
 }

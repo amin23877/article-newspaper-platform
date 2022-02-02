@@ -117,7 +117,7 @@ export default function Navbar() {
                                             </div>
                                             <div className={styles.headerTexts}>
                                                 <div className={styles.headerUsername}>{user.username ?? 'کاربر میهمان'}</div>
-                                                <Link href='/' passHref><div className={styles.headerLink}>مدیریت حساب دیجی نشر</div></Link>
+                                                <Link href='/manage-account' passHref><div className={styles.headerLink}>مدیریت حساب دیجی نشر</div></Link>
                                             </div>
                                         </div>
                                         </Popup>

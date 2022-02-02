@@ -175,7 +175,7 @@ export default function Login () {
                                 <Card>
                                     <div className={styles.stepBack} onClick={() => {setStep('phone')}}>
                                     <span className={styles.iconContainer}>
-                                        <Image src={ChevronRightLight}/>
+                                        <Image src={ChevronRightLight} alt=''/>
                                     </span>
                                         <span>
                                         بازگشت به مرحله قبل

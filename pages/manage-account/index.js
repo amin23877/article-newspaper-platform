@@ -3,14 +3,15 @@ import { useState, useEffect } from "react";
 import {useRouter} from "next/router";
 import {useUser} from "hooks/useUser";
 import MockAvatar from 'assets/images/contact/mock-avatar.png';
-import ArrowLeft from 'assets/svg/common/arrow-left.svg'
+import ArrowLeft from 'assets/svg/common/arrow-left.svg';
+import PersonalInfo from 'components/manageAccount/personalInfo';
 import Image from "next/image";
 
 export default function ManageAccount () {
 
     const router = useRouter()
     const [user, getUser, hasInitialized, memberType] = useUser()
-    const [activeMenu, setActiveMenu] = useState(1)
+    const [activeMenu, setActiveMenu] = useState(0)
 
     useEffect(() => {
         
@@ -81,7 +82,7 @@ export default function ManageAccount () {
                 
             </div>
             <div>
-                Left Column
+                <PersonalInfo />
             </div>
         </div>
     )

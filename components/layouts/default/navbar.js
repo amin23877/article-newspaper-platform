@@ -9,25 +9,30 @@ import {useUser} from "hooks/useUser";
 import {useEffect, useState} from "react";
 import Popup from "components/common/popup";
 import MockAvatar from "assets/images/mock-avatar.png";
-import TrashIcon from "../../../assets/svg/popup/trash.svg";
-import EyeOffIcon from "../../../assets/svg/popup/eye-off.svg";
-import EditIcon from "../../../assets/svg/popup/edit.svg";
-import ShareIcon from "../../../assets/svg/popup/share.svg";
-import CommentsIcon from "../../../assets/svg/popup/comments.svg";
-import LockIcon from "../../../assets/svg/popup/lock.svg";
+import UserIcon from "../../../assets/svg/popup/user.svg";
+import CreditCardIcon from "../../../assets/svg/popup/credit-card.svg";
+import UsersIcon from "../../../assets/svg/popup/users.svg";
+import SettingIcon from "../../../assets/svg/popup/settings.svg";
+import InfoIcon from "../../../assets/svg/popup/info.svg";
+import SlashIcon from "../../../assets/svg/popup/slash.svg";
 
 export default function Navbar() {
-    const { pathname, asPath } = useRouter()
+    const { pathname, route } = useRouter()
 
     const [user, getUser, hasInitialized] = useUser()
     const [showPopup, setShowPopup] = useState(false)
 
     useEffect(() => {
-
         if (!hasInitialized)
             getUser()
         return
     })
+
+    useEffect(() => {
+        if (showPopup)
+            setShowPopup(false)
+        return
+    },[route])
 
     const links = [
         {route: '/', text: 'خانه'},
@@ -39,15 +44,13 @@ export default function Navbar() {
     ]
 
     const popupItems = [
-        {text: 'حذف', icon: TrashIcon, action: () => {}},
-        {text: 'لغو نمایش', icon: EyeOffIcon, action: () => {}},
-        {text: 'ویرایش', icon: EditIcon, action: () => {}},
-        {text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => {}},
-        {text: 'بستن نظرات', icon: CommentsIcon, action: () => {}},
-        {text: 'حق نشر', icon: LockIcon, action: () => {}},
+        {text: 'صفحه شما', icon: UserIcon, action: () => {}, link: '/profile'},
+        {text: 'خرید ها و عضویت', icon: CreditCardIcon, action: () => {}},
+        {text: 'تعویض حساب', icon: UsersIcon, action: () => {}},
+        {text: 'تنظیمات', icon: SettingIcon, action: () => {}},
+        {text: 'راهنما', icon: InfoIcon, action: () => {}},
+        {text: 'خروج از حساب', icon: SlashIcon, action: () => {}},
     ]
-
-    console.log(showPopup)
 
     return (
         <div className={`${styles.boxContainer} w-100`}>
@@ -106,7 +109,20 @@ export default function Navbar() {
                                         <div className={styles.profilePic}>
                                             <Image src={MockAvatar} alt='avatar'/>
                                         </div>
-                                        {showPopup ? <Popup popupSet={setShowPopup} containerClass={styles.popup} items={popupItems} /> : ''}
+                                        {showPopup ? 
+                                        <Popup popupSet={setShowPopup} containerClass={styles.popup} items={popupItems}>
+                                        <div className={styles.popupHeader}>
+                                            <div className={styles.popupAvatar}>
+                                                <Image src={MockAvatar} alt='avatar'/>
+                                            </div>
+                                            <div className={styles.headerTexts}>
+                                                <div className={styles.headerUsername}>{user.username ?? 'کاربر میهمان'}</div>
+                                                <Link href='/' passHref><div className={styles.headerLink}>مدیریت حساب دیجی نشر</div></Link>
+                                            </div>
+                                        </div>
+                                        </Popup>
+                                         :
+                                         ''}
                                     </div>
                                 </a>
                             </div>

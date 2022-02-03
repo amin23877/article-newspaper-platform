@@ -82,7 +82,7 @@ export default function ManageAccount () {
                 
             </div>
             <div>
-                <PersonalInfo />
+                <PersonalInfo user={user}/>
             </div>
         </div>
     )

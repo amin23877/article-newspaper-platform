@@ -11,7 +11,7 @@ export default function PersonalInfo ({user}) {
     const Haghighi = 'ناشر حقیقی'
     const Hoghughi = 'ناشر حقوقی'
 
-    const { register: infoFormRegister, handleSubmit: handleInfoSubmit , formState: {isValid: isInfoValid}, setValue: infoSetValue } = useForm();
+    const { register: infoFormRegister } = useForm();
 
     const [generalInfo, setGeneralInfo] = useState([])
 
@@ -19,10 +19,10 @@ export default function PersonalInfo ({user}) {
         if (user !== undefined) {
             if (providerType === Haghighi) {
                 let tempGeneralInfo = [
-                    {name: 'نام نام خانوادگی', value: user.username},
-                    {name: 'کد ملی', value: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
-                    {name: 'شماره همراه', value: user.msisdn},
-                    {name: 'پست الکترونیک', value: user.email || 'پست الکترونیکتان را وارد نمایید.'},
+                    {name: "username", value: user.username, label: 'نام نام خانوادگی', placeholder: ''},
+                    {name: "nationalID", value: '', label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
+                    {name: "phone", value: user.msisdn, label: 'شماره همراه', placeholder: ''},
+                    {name: "email", value: user.email, label: 'پست الکترونیک', placeholder: 'پست الکترونیکتان را وارد نمایید.'},
                 ]
                 setGeneralInfo(tempGeneralInfo)
             }
@@ -49,10 +49,7 @@ export default function PersonalInfo ({user}) {
         setProviderType(e.currentTarget.value)
     }
 
-    const onInfoSubmit = ({username, publisher}) => {
-        
-        console.log('salam')
-    }
+    
 
     
 
@@ -78,22 +75,20 @@ export default function PersonalInfo ({user}) {
                 </label>
                 </div>
             </div>
-            <EditContainer type='ویرایش پروفایل' onSubmit={handleInfoSubmit(onInfoSubmit)}
+            <EditContainer type='ویرایش پروفایل'
             providerType={providerType}
             >
-                
-    
-                    {generalInfo.map((field) => {
-                        return (
-                            <div key={field.name} className={editContainerStyles.field}>
-                                <div className={editContainerStyles.label}>{`${field.name}:`}</div>
-                                <CustomInput register={infoFormRegister} value={field.value}
-                                name={field.name} validation={{required: true}}
-                                />
-                            </div>
-                        )
-                    })}
-           
+                {generalInfo.map((field) => {
+                    return (
+                        <div key={field.name} className={editContainerStyles.field}>
+                            <div className={editContainerStyles.label}>{`${field.label}:`}</div>
+                            <CustomInput register={infoFormRegister} value={field.value}
+                            placeholder={field.placeholder}
+                            name={field.name} validation={{required: true}}
+                            />
+                        </div>
+                    )
+                })}
             </EditContainer>
         </>
     )

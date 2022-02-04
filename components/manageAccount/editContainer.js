@@ -1,14 +1,8 @@
 import styles from 'styles/components/manageAccount/EditContainer.module.scss'
-import Button from "components/common/button";
 import {useForm} from "react-hook-form";
+import { useEffect, useState } from 'react';
 
 export default function EditContainer ({type,providerType, ...rest}) {
-
-    const { handleSubmit } = useForm();
-
-    const onInfoSubmit = data => {
-        console.log(data)
-    }
     
     return (
         <div 
@@ -21,14 +15,7 @@ export default function EditContainer ({type,providerType, ...rest}) {
                 'اطلاعات حقوقی'
                 }
             </div>
-            <form onSubmit={handleSubmit(onInfoSubmit)} className={styles.generalInfo}>
-                {rest.children}
-                <Button classes={styles.editButton} variant='filled'
-                type='submit'
-                >
-                    {type}
-                </Button>
-            </form>
+            {rest.children}
         </div>
     )
 }

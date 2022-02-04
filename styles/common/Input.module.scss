@@ -1,28 +1,37 @@
-
 @import "styles/vars";
 
-.input {
-  width: 100%;
-  height: 46px;
-  border: 1px solid #BAC1C1;
-  box-sizing: border-box;
-  border-radius: 15px 15px 15px 0px;
-  outline: none;
-  padding:0 17px;
+.inputContainer {
+  position: relative;
+  .input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #bac1c1;
+    box-sizing: border-box;
+    border-radius: 15px 15px 15px 0px;
+    outline: none;
+    padding: 0 17px;
 
-  &::placeholder {
-    color: #c4c4c4;
+    &::placeholder {
+      color: #c4c4c4;
+    }
   }
-}
 
-.label {
-  height: 31px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: $tertiary-size;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  text-align: right;
-  color: $dimgray;
+  .label {
+    height: 31px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $tertiary-size;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: $dimgray;
+  }
+  .error {
+    color: $error;
+    font-size: $tertiary-size;
+    position: absolute;
+    top: 45px;
+    right: 10px;
+  }
 }

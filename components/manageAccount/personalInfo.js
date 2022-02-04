@@ -1,5 +1,6 @@
 import EditContainer from 'components/manageAccount/editContainer';
-import CustomInput from 'components/common/input'
+import CustomInput from 'components/common/input';
+import Button from "components/common/button";
 import { useEffect, useState } from 'react';
 import {useForm} from "react-hook-form";
 import styles from 'styles/components/manageAccount/PersonalInfo.module.scss';
@@ -11,7 +12,7 @@ export default function PersonalInfo ({user}) {
     const Haghighi = 'ناشر حقیقی'
     const Hoghughi = 'ناشر حقوقی'
 
-    const { register: infoFormRegister } = useForm();
+    const { register: infoFormRegister, handleSubmit, formState: {errors}  } = useForm();
 
     const [generalInfo, setGeneralInfo] = useState([])
 
@@ -50,7 +51,9 @@ export default function PersonalInfo ({user}) {
     }
 
     
-
+    const onInfoSubmit = data => {
+        console.log(data)
+    }
     
 
     return (
@@ -78,17 +81,30 @@ export default function PersonalInfo ({user}) {
             <EditContainer type='ویرایش پروفایل'
             providerType={providerType}
             >
-                {generalInfo.map((field) => {
-                    return (
-                        <div key={field.name} className={editContainerStyles.field}>
-                            <div className={editContainerStyles.label}>{`${field.label}:`}</div>
-                            <CustomInput register={infoFormRegister} value={field.value}
-                            placeholder={field.placeholder}
-                            name={field.name} validation={{required: true}}
-                            />
-                        </div>
-                    )
-                })}
+                <form onSubmit={handleSubmit(onInfoSubmit)} className={editContainerStyles.generalInfo}>
+                    {generalInfo.map((field) => {
+                        return (
+                            <div key={field.name} className={editContainerStyles.field}>
+                            
+                                <div className={editContainerStyles.label}>{`${field.label}:`}</div>
+                                <CustomInput register={infoFormRegister} 
+                                defaultValue={field.value}
+                                placeholder={field.placeholder}
+                                name={field.name} 
+                                validation={{required: 'پر کردن این فیلد الزامی است'}}
+                                error={errors[field.name]}
+                                />
+                            </div>
+                            
+                        )
+                    })}
+                    <Button classes={styles.editButton} variant='filled'
+                    type='submit'
+                    >
+                        ویرایش پروفایل
+                    </Button>
+                </form>
+                
             </EditContainer>
         </>
     )

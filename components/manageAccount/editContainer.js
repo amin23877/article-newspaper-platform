@@ -2,7 +2,7 @@ import styles from 'styles/components/manageAccount/EditContainer.module.scss'
 import {useForm} from "react-hook-form";
 import { useEffect, useState } from 'react';
 
-export default function EditContainer ({type,providerType, ...rest}) {
+export default function EditContainer ({providerType, ...rest}) {
     
     return (
         <div 

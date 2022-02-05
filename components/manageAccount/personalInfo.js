@@ -1,7 +1,7 @@
 import EditContainer from 'components/manageAccount/editContainer';
 import CustomInput from 'components/common/input';
 import Button from "components/common/button";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useAsyncState} from 'react';
 import {useForm} from "react-hook-form";
 import styles from 'styles/components/manageAccount/PersonalInfo.module.scss';
 import editContainerStyles from 'styles/components/manageAccount/EditContainer.module.scss';
@@ -14,7 +14,15 @@ export default function PersonalInfo ({user}) {
 
     const { register: infoFormRegister, handleSubmit, formState: {errors}  } = useForm();
 
-    const [generalInfo, setGeneralInfo] = useState([])
+    const [generalFields, setGeneralFields] = useState([])
+    const [generalInfo, setGeneralInfo] = useState(
+            {
+                username: '',
+                nationalID: '',
+                phone: '',
+                email: ''
+            }
+        )
 
     useEffect(() => {
         if (user !== undefined) {
@@ -25,7 +33,7 @@ export default function PersonalInfo ({user}) {
                     {name: "phone", value: user.msisdn, label: 'شماره همراه', placeholder: ''},
                     {name: "email", value: user.email, label: 'پست الکترونیک', placeholder: 'پست الکترونیکتان را وارد نمایید.'},
                 ]
-                setGeneralInfo(tempGeneralInfo)
+                setGeneralFields(tempGeneralInfo)
             }
             else if (providerType === Hoghughi) {
                 let hoghughiGeneralInfo = [
@@ -38,23 +46,27 @@ export default function PersonalInfo ({user}) {
                     {name: 'شماره همراه', value: user.msisdn},
                     {name: 'پست الکترونیک', value: user.email || 'پست الکترونیکتان را وارد نمایید.'},
                 ]
-                setGeneralInfo(hoghughiGeneralInfo)
+                setGeneralFields(hoghughiGeneralInfo)
             }
             
         }
     },[user, providerType])
 
-    
-
     const changeType = (e) => {
         setProviderType(e.currentTarget.value)
     }
 
-    
-    const onInfoSubmit = data => {
-        console.log(data)
+    const onInfoSubmit = async data => {
+        let tempGeneralInfo = {
+                username: data.username,
+                nationalID: data.nationalID,
+                phone: data.phone,
+                email: data.email
+            }
+        await setGeneralInfo(tempGeneralInfo)
     }
-    
+
+    console.log(generalInfo)
 
     return (
         <>
@@ -78,11 +90,11 @@ export default function PersonalInfo ({user}) {
                 </label>
                 </div>
             </div>
-            <EditContainer type='ویرایش پروفایل'
+            <EditContainer
             providerType={providerType}
             >
                 <form onSubmit={handleSubmit(onInfoSubmit)} className={editContainerStyles.generalInfo}>
-                    {generalInfo.map((field) => {
+                    {generalFields.map((field) => {
                         return (
                             <div key={field.name} className={editContainerStyles.field}>
                             

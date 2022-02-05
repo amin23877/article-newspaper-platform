@@ -14,6 +14,10 @@
     /*removes original button*/
   }
 
+  .fileInput {
+    border: none !important;
+  }
+
   label:before {
     /*styles outer circle*/
     content: " ";
@@ -51,4 +55,39 @@
   width: 160px;
   height: 48px;
   border-radius: 20px 20px 20px 0px;
+}
+.fileInput {
+  border: none;
+}
+.profileContainer {
+  .pictures {
+    .profilePic {
+      width: 80px;
+      height: 80px;
+      margin-inline: auto;
+      margin-bottom: 35px;
+    }
+  }
+  .profileInfo {
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+    }
+    .field {
+      .label {
+        font-weight: 500;
+        color: $dimgray;
+        margin-bottom: 8px;
+      }
+      .value {
+        font-size: $secondary-size;
+        color: $simplegray;
+        font-weight: 500;
+      }
+      .hint {
+        font-size: $secondary-size;
+        color: $simplegray;
+      }
+    }
+  }
 }

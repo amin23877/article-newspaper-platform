@@ -10,10 +10,12 @@
     border-radius: 15px 15px 15px 0px;
     outline: none;
     padding: 0 17px;
-
     &::placeholder {
-      color: #c4c4c4;
+      color: $simplegray;
     }
+  }
+  .fileInput {
+    border: none !important;
   }
 
   .label {

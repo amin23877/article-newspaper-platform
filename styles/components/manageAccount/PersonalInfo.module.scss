@@ -74,6 +74,7 @@
       grid-template-columns: 2fr 3fr;
     }
     .field {
+      margin-top: 16px;
       .label {
         font-weight: 500;
         color: $dimgray;
@@ -89,5 +90,18 @@
         color: $simplegray;
       }
     }
+  }
+}
+.aboutYouForm {
+  margin-top: 32px;
+  .selectInput:first-child {
+    margin-bottom: 43px;
+    width: 134px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    font-weight: 500;
+    color: $gray;
   }
 }

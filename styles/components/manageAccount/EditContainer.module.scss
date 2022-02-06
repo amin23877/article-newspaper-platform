@@ -8,6 +8,7 @@
   padding: 24px;
   position: relative;
   margin-bottom: 16px;
+  min-height: 250px;
   .personalTitle {
     font-size: $header-size;
     font-weight: 500;
@@ -27,6 +28,7 @@
     grid-column-gap: 10px;
     padding-top: 19px;
     .field {
+      position: relative;
       .label {
         font-weight: 500;
         color: $dimgray;

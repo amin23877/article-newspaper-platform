@@ -10,8 +10,12 @@
     border-radius: 15px 15px 15px 0px;
     outline: none;
     padding: 0 17px;
+    position: relative;
     &::placeholder {
       color: $simplegray;
+    }
+    option {
+      color: $gray;
     }
   }
   .fileInput {
@@ -32,8 +36,13 @@
   .error {
     color: $error;
     font-size: $tertiary-size;
+    // position: absolute;
+    // top: 45px;
+    // right: 10px;
+  }
+  .selectArrow {
     position: absolute;
-    top: 45px;
-    right: 10px;
+    top: 8px;
+    right: 105px;
   }
 }

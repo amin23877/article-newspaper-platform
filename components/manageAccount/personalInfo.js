@@ -18,6 +18,8 @@ export default function PersonalInfo ({user}) {
 
     const { register: infoFormRegister, handleSubmit: handleGeneralSubmit, formState: {errors}, setValue  } = useForm();
     const { register: profileFormRegister, handleSubmit: handleProfileSubmit, formState: {errors: profileErrors}  } = useForm();
+    const { register: aboutYouRegister, handleSubmit: handleAboutYouSubmit, formState: {errors: aboutErrors}  } = useForm();
+    const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}  } = useForm();
 
     const [generalFields, setGeneralFields] = useState([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
@@ -40,9 +42,19 @@ export default function PersonalInfo ({user}) {
                 email: '',
                 profilePic: '',
                 coverPic: '',
-                content: ''
+                content: '',
+                about: '',
+                social: []
             }
         )
+    const socials = [
+        'اینستاگرام',
+        'یوتیوب',
+        'آپارات',
+        'لینکدین',
+        'مدیوم',
+        '...'
+    ];
 
     useEffect(() => {
         if (user !== undefined) {
@@ -54,7 +66,7 @@ export default function PersonalInfo ({user}) {
                     phone: user.msisdn,
                     email: '',
                     profilePic: user.profilePicture,
-                    coverPic: user.coverImage
+                    coverPic: user.coverImage,
                 }
                 setGeneralInfo(tempGeneralInfo)
                 for (let field of generalFields) {
@@ -82,8 +94,6 @@ export default function PersonalInfo ({user}) {
         setProviderType(e.currentTarget.value)
     }
 
-    console.log(profileErrors)
-
     const onInfoSubmit = async data => {
         await setGeneralInfo({
                 ...generalInfo,
@@ -103,9 +113,22 @@ export default function PersonalInfo ({user}) {
         })
     }
 
-    //console.log(generalInfo)
-    //console.log(errors)
+    const onAboutYouSubmit = async data => {
+        await setGeneralInfo({
+            ...generalInfo,
+            about: data.about
+        })
+    }
 
+    const onSocialSubmit = async data => {
+        let tempSocial = {name: data.name, link: data.link}
+        console.log(tempSocial)
+        await setGeneralInfo({
+            ...generalInfo,
+            social: [...generalInfo.social, tempSocial]
+        })
+    }
+   
     return (
         <>
             <div className={styles.radioButtons}>
@@ -220,6 +243,51 @@ export default function PersonalInfo ({user}) {
                     
                 </div>
                 
+            </EditContainer>
+            <EditContainer providerType={providerType} title='درباره تو'>
+                <form onSubmit={handleAboutYouSubmit(onAboutYouSubmit)} className={styles.aboutYouForm}>
+                    <div className={editContainerStyles.field}>          
+                        <CustomInput register={aboutYouRegister} 
+                        placeholder='درباره خود و حوزه محتواهایی که تولید میکنید می توانید برای مخاطب خود بنویسید.'
+                        name='about' 
+                        validation={{required: 'پر کردن این فیلد الزامی است'}}
+                        error={aboutErrors.about}
+                        />
+                    </div>
+                    <Button classes={styles.editButton} variant='filled'
+                    type='submit'
+                    >
+                        ویرایش پروفایل
+                    </Button>
+                </form>
+            </EditContainer>
+            <EditContainer providerType={providerType} title='آدرس اینترنتی و شبکه های اجتماعی'>
+                <form onSubmit={handleSocialSubmit(onSocialSubmit)} className={styles.aboutYouForm}>
+                    <div className={editContainerStyles.field}>          
+                        <CustomInput register={socialRegister} 
+                        name='name' 
+                        validation={{required: 'پر کردن این فیلد الزامی است'}}
+                        error={socialErrors.name}
+                        type='select'
+                        list={socials}
+                        classes={styles.selectInput}
+                        />
+                        
+                    </div>
+                    <div className={editContainerStyles.field}>          
+                        <CustomInput register={socialRegister} 
+                        // placeholder='درباره خود و حوزه محتواهایی که تولید میکنید می توانید برای مخاطب خود بنویسید.'
+                        name='link' 
+                        validation={{required: 'پر کردن این فیلد الزامی است'}}
+                        error={socialErrors.link}
+                        />
+                    </div>
+                    <Button classes={styles.editButton} variant='filled'
+                    type='submit'
+                    >
+                        ثبت
+                    </Button>
+                </form>
             </EditContainer>
         </>
     )

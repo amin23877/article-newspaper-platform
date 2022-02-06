@@ -11,7 +11,7 @@ export default function Input({ register, name, validation, type = 'text', label
             <select {...register(name, validation)}
             className={`${styles.input} ${classes}`}
             >
-                <option value="" selected disabled hidden>انتخاب کنید</option>
+                <option value="f" selected disabled hidden>انتخاب کنید</option>
                 {rest.list.map((item) => {
                     return (
                         <option key={item} value={item}>{item}</option>

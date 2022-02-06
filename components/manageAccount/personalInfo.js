@@ -34,6 +34,16 @@ export default function PersonalInfo ({user}) {
                     {name: "content", label: 'محتوا', placeholder: 'در حال تولید چه محتوایی هستید. حداکثر 40 کاراکتر'},
                 ])
 
+    const [admins, setAdmins] = useState([
+        {username: '', phone: ''},
+        {username: '', phone: ''},
+        {username: '', phone: ''},
+    ])
+
+    const [adminIndex, setAdminIndex] = useState(0)
+
+    let currentAdmin = {username: '', phone: ''}
+
     const [generalInfo, setGeneralInfo] = useState(
             {
                 username: '',
@@ -44,7 +54,7 @@ export default function PersonalInfo ({user}) {
                 coverPic: '',
                 content: '',
                 about: '',
-                social: []
+                social: {}
             }
         )
     const socials = [
@@ -57,8 +67,8 @@ export default function PersonalInfo ({user}) {
     ];
 
     useEffect(() => {
-        if (user !== undefined) {
-            if (providerType === Haghighi) {
+        if (user !== undefined) {  
+            if (providerType === 'ناشر حقیقی') {
                 let tempGeneralInfo = {
                     ...generalInfo,
                     username: user.username,
@@ -73,25 +83,51 @@ export default function PersonalInfo ({user}) {
                     setValue(field.name, user[field.name])
                 }
             }
-            else if (providerType === Hoghughi) {
-                let hoghughiGeneralInfo = [
-                    {name: 'نام کاربری', value: user.username},
-                    {name: 'نام کامل شرکت', value: 'نام ثبتی خود را وارد نمایید.'},
-                    {name: 'نوع شرکت', value: user.username || 'نوع شرکت را وارد نمایید'},
-                    {name: 'شماره ثبت', value: 'شماره ثبت شرکت را وارد نمایی.'},
-                    {name: 'شناسه ملی', value: 'شناسه ملی خود را وارد نمایید.'},
-                    {name: 'کد اقتصادی', value: 'کد اقتصادی شرکت را وارد نمایید.'},
-                    {name: 'شماره همراه', value: user.msisdn},
-                    {name: 'پست الکترونیک', value: user.email || 'پست الکترونیکتان را وارد نمایید.'},
-                ]
-                setGeneralFields(hoghughiGeneralInfo)
+            else {
+                let tempGeneralInfo = {
+                    ...generalInfo,
+                    username: user.username,
+                    companyName: '',
+                    companyType: '',
+                    number: '',
+                    nationalCode: '',
+                    financialCode: '',
+                    phone: user.msisdn,
+                    email: '',
+                    admins: [],
+                    profilePic: user.profilePicture,
+                    coverPic: user.coverImage,
+                }
+                setGeneralInfo(tempGeneralInfo)
+                for (let field of generalFields) {
+                    setValue(field.name, user[field.name])
+                }
             }
-            
         }
     },[user, providerType])
 
     const changeType = (e) => {
         setProviderType(e.currentTarget.value)
+        if (e.currentTarget.value === 'ناشر حقوقی') {
+            setGeneralFields([
+                    {name: "username", label: 'نام کاربری'},
+                    {name: "companyName", placeholder: 'نام ثبتی خود را وارد نمایید.', label: 'نام کامل شرکت'},
+                    {name: "companyType", placeholder: 'نوع شرکت را وارد نمایید', label: 'نوع شرکت'},
+                    {name: "number", placeholder: 'شماره ثبت شرکت را وارد نمایی.', label: 'شماره ثبت'},
+                    {name: "nationalCode", placeholder: 'شناسه ملی خود را وارد نمایید.', label: 'شناسه ملی'},
+                    {name: "financialCode", placeholder: 'کد اقتصادی شرکت را وارد نمایید.', label: 'کد اقتصادی'},
+                    {name: "msisdn", label: 'شماره همراه'},
+                    {name: "email", placeholder: 'پست الکترونیکتان را وارد نمایید.', label: 'پست الکترونیک'},
+                ])
+        }
+        else if (e.currentTarget.value === 'ناشر حقیقی') {
+            setGeneralFields([
+                    {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
+                    {name: "nationalID", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
+                    {name: "msisdn", label: 'شماره همراه', placeholder: ''},
+                    {name: "email", label: 'پست الکترونیک', placeholder: 'پست الکترونیکتان را وارد نمایید.'},
+                ])
+        }
     }
 
     const onInfoSubmit = async data => {
@@ -102,6 +138,17 @@ export default function PersonalInfo ({user}) {
                 phone: data.phone,
                 email: data.email
         })
+    }
+
+    const onChangeAdmin = (e, attr) => {
+        currentAdmin[attr] = e.target.value
+    }
+
+    const onAddAdmin = async () => {
+        let tempAdmins = admins
+        tempAdmins[adminIndex] = currentAdmin
+        setAdminIndex(adminIndex + 1)
+        await setAdmins(tempAdmins)
     }
 
     const onPicturesSubmit = async data => {
@@ -122,12 +169,13 @@ export default function PersonalInfo ({user}) {
 
     const onSocialSubmit = async data => {
         let tempSocial = {name: data.name, link: data.link}
-        console.log(tempSocial)
         await setGeneralInfo({
             ...generalInfo,
-            social: [...generalInfo.social, tempSocial]
+            social: tempSocial
         })
     }
+
+    console.log(admins)
    
     return (
         <>
@@ -159,7 +207,6 @@ export default function PersonalInfo ({user}) {
                     {generalFields.map((field) => {
                         return (
                             <div key={field.name} className={editContainerStyles.field}>
-                            
                                 <div className={editContainerStyles.label}>{`${field.label}:`}</div>
                                 <CustomInput register={infoFormRegister} 
                                 placeholder={field.placeholder}
@@ -178,6 +225,54 @@ export default function PersonalInfo ({user}) {
                     </Button>
                 </form> 
             </EditContainer>
+            {providerType === 'ناشر حقوقی' ? 
+            <EditContainer providerType={providerType} title='ادمین'>
+                <div className={styles.addAdminText}>در صورتی که میخواهید به چند نفر دسترسی دهید شماره تلفن و مشخصات افراد را وارد نمایید.</div>
+                {admins.map((admin, index) => {
+                    return (
+                        
+                        <div key={index} className={styles.admin}>
+                            <div className={`${styles.user} ${styles.field}`}>
+                                <div className={styles.label}>نام کاربری:</div>
+                                <CustomInput register={infoFormRegister} 
+                                onChange={(e) => onChangeAdmin(e, 'username')}
+                                placeholder='سمت یا عنوان'
+                                name='adminUser'
+                                //value={admins[index].username}
+                                // error={errors[field.name]}
+                                />
+                            </div>
+                            <div className={`${styles.phone} ${styles.field}`}>
+                                <div className={styles.label}>شماره جهت ورود به حساب کاربری:</div>
+                                <CustomInput register={infoFormRegister} 
+                                onChange={(e) => onChangeAdmin(e, 'phone')}
+                                placeholder='شماره ادمین جدید را وارد نمایید.'
+                                name='adminUser'
+                                //value={admins[index].phone}
+                                // error={errors[field.name]}
+                                />
+                            </div>
+                            <div className={styles.access}>
+                                <Button variant='outline' classes={styles.adminButton}>
+                                    دسترسی
+                                </Button>
+                            </div>
+                        </div>
+                
+                    )
+                })}
+                <Button variant='outline' classes={[styles.adminButton, styles.add]}>
+                    افزودن
+                </Button>
+                <Button classes={styles.editButton} variant='filled'
+                onClick={() => onAddAdmin()}
+                type='submit'
+                >
+                    ویرایش پروفایل
+                </Button>
+            </EditContainer>
+            :null
+            }
             <EditContainer providerType={providerType} title='پروفایل'>
                 <div className={styles.profileContainer} >
                     <form onSubmit={handleProfileSubmit(onPicturesSubmit)} className={styles.profileInfo}>

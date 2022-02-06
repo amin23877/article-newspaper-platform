@@ -105,3 +105,45 @@
     color: $gray;
   }
 }
+.addAdminText {
+  color: $simplegray;
+  font-size: $secondary-size;
+  margin-block: 16px;
+}
+.admin {
+  display: flex;
+  margin-bottom: 8px;
+  border-bottom: 1px solid $lightgray;
+  padding-bottom: 16px;
+  .user {
+    width: 45%;
+    margin-left: 8px;
+  }
+  .phone {
+    width: 35%;
+    margin-left: 8px;
+  }
+  .access {
+    width: 20%;
+  }
+  .field {
+    position: relative;
+    .label {
+      font-weight: 500;
+      color: $dimgray;
+      margin-bottom: 8px;
+    }
+  }
+}
+.adminButton {
+  margin-top: 33px;
+  width: 160px;
+  height: 48px;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: $gray;
+}
+.adminButton.add {
+  margin-top: 8px;
+}

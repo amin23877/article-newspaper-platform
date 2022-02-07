@@ -13,6 +13,7 @@
   color: $dimgray;
   padding-inline: 30px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .button {
@@ -109,4 +110,22 @@
   text-decoration-line: underline;
   color: $dimgray;
   cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: $tertiary-size;
+}
+
+.checkCircle {
+  width: 100px;
+  height: 100px;
+  margin-top: 54px;
+  margin-bottom: 10px;
+}
+.successTitle {
+  font-weight: 500;
+  color: $dimgray;
+  font-size: $header-size;
+  margin-bottom: 16px;
 }

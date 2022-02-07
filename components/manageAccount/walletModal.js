@@ -1,7 +1,8 @@
 import Button from "components/common/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Sadad from 'assets/images/contact/sadad.svg';
 import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg';
+import CheckCircle from "assets/images/contact/check-circle.svg";
 import cardStyles from 'styles/components/profile/contacts/PurchaseCard.module.scss';
 import styles from 'styles/components/manageAccount/ActivateWallet.module.scss';
 import Modal from '@mui/material/Modal';
@@ -24,6 +25,16 @@ export default function WalletModal ({phone, ...rest}) {
 
     const [seconds, formattedTime, setIsActive, reset] = useCountdown({initSeconds: 120})
 
+    const [code, setCode] = useState('')
+    const [codeError, setCodeError] = useState(false)
+
+    useEffect(() => {
+        if (step === 'first') {
+            setSubtitleText('به منظور احراز هویت شماره همراه برای فعال سازی کیف پول، کد فعال سازی به شماره همراه بالا ارسال خواهد شد.')
+            setButtonText('قبول شرایط و ادامه')
+        }
+    },[step])
+
     const onButtonClick = () => {
         switch(step) {
             case 'first': 
@@ -32,11 +43,33 @@ export default function WalletModal ({phone, ...rest}) {
                 setButtonText('تایید')
                 setIsActive(true)
                 break
+            case 'second':
+                if (code.length === 4) {
+                    reset()
+                    setStep('third')
+                    setButtonText('بازگشت به صفحه اصلی')
+                    setSubtitleText('برای برخورداری از مزایایی چون خرید اشتراک، پرداخت نمایش محتوا، تبلیغات و ... میتوانید از کیف پول خود استفاده کنید.')
+                }
+                else {
+                    setCodeError(true)
+                }
+                break
+            case 'third':
+                rest.closeModal()
+                break
         }
     }
 
     const onGoBack = () => {
         setStep('first')
+    }
+
+    const onCodeChange = async (value) => {
+        if (step === 'second' && value.length === 4) {
+            setCodeError(false)
+        }
+        await setCode(value)
+        
     }
 
     async function onResendOtp() {
@@ -51,6 +84,15 @@ export default function WalletModal ({phone, ...rest}) {
                <div className={cardStyles.purchaseHeader}>
                    فعال سازی کیف پول
                </div>
+               {step === 'third' ? 
+               <>
+                <div className={styles.checkCircle}>
+                    <Image src={CheckCircle} alt=''/>
+                </div>
+                <span className={styles.successTitle}>کیف پول شما فعال شد.</span>
+               </>
+               :null
+                }
                {step === 'second' ? 
                 <div className={cardStyles.stepBack} onClick={() => onGoBack()}>
                     <span className={cardStyles.iconContainer}>
@@ -78,13 +120,14 @@ export default function WalletModal ({phone, ...rest}) {
                </div>
                {step === 'second' ? 
                <>
-               <ReactCodeInput type='number' fields={4} className={styles.codeInput}/>
+               <ReactCodeInput type='number' fields={4} className={styles.codeInput} onChange={(v) => onCodeChange(v)}/>
                <div className={styles.timeout}>
                     {formattedTime}
                 </div>
                 <div className={styles.sendAgain} onClick={() => {onResendOtp()}}>
                     ارسال مجدد کد تایید
                 </div>
+                {codeError ? <span className={styles.error}>کد تایید را به درستی وارد کنید.</span> : null}
                </>
                :null
                 }

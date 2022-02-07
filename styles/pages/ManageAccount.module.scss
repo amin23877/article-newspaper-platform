@@ -52,6 +52,9 @@
       border-bottom: 1px solid $lightgray;
       padding-bottom: 12px;
       align-items: flex-start;
+      .statusValue {
+        cursor: pointer;
+      }
     }
     .menuItems {
       list-style-type: none;

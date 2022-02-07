@@ -5,6 +5,8 @@ import {useUser} from "hooks/useUser";
 import MockAvatar from 'assets/images/contact/mock-avatar.png';
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
+import WalletModal from 'components/manageAccount/walletModal';
+import Modal from '@mui/material/Modal';
 import Image from "next/image";
 
 export default function ManageAccount () {
@@ -12,6 +14,10 @@ export default function ManageAccount () {
     const router = useRouter()
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [activeMenu, setActiveMenu] = useState(0)
+
+    const [open, setOpen] = useState(false); // Modal to activate wallet
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         
@@ -58,7 +64,7 @@ export default function ManageAccount () {
                         </div>
                     </div>
                     {user !== undefined && user.balance === 0 ? 
-                    <div className={styles.statusValue}>
+                    <div className={styles.statusValue} onClick={() => handleOpen()}>
                         فعالسازی کیف پول
                         <div className={styles.iconContainer}>
                             <Image src={ArrowLeft} alt=''/>
@@ -84,6 +90,19 @@ export default function ManageAccount () {
             <div>
                 <PersonalInfo user={user}/>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title2"
+                aria-describedby="modal-modal-description2"
+            >
+                <div className={styles.modalContainer}>
+                    <WalletModal phone={user !== undefined ? user.msisdn : ''} 
+                    closeModal={handleClose}
+                    />
+                </div>
+                
+            </Modal>
         </div>
     )
 }

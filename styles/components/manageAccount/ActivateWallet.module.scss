@@ -1,0 +1,36 @@
+@import "styles/vars";
+
+.title {
+  font-weight: 500;
+  font-size: $title-size;
+  color: $primary-color;
+  margin-top: 43px;
+  margin-bottom: 89px;
+}
+
+.cardSubtitle {
+  font-size: $tertiary-size;
+  color: $dimgray;
+  padding-inline: 30px;
+  margin-bottom: 20px;
+}
+
+.button {
+  border-radius: 20px 20px 20px 0px;
+}
+
+.conditionBtn {
+  color: $primary-color;
+  font-size: $tertiary-size;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sadadImage {
+  width: 72px;
+  height: 40px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  position: relative;
+  right: 150px;
+}

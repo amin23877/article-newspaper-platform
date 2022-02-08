@@ -2,10 +2,10 @@ import styles from 'styles/pages/ManageAccount.module.scss';
 import { useState, useEffect } from "react";
 import {useRouter} from "next/router";
 import {useUser} from "hooks/useUser";
-import MockAvatar from 'assets/images/contact/mock-avatar.png';
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
+import IncomeLog from 'components/manageAccount/incomeLog';
 import WalletModal from 'components/manageAccount/walletModal';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
@@ -50,6 +50,8 @@ export default function ManageAccount () {
                 return <PersonalInfo user={user}/>
             case 1:
                 return <OrderList />
+            case 2: 
+                return <IncomeLog />
         }
     }
 

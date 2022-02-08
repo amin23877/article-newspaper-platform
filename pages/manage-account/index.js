@@ -5,6 +5,7 @@ import {useUser} from "hooks/useUser";
 import MockAvatar from 'assets/images/contact/mock-avatar.png';
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
+import OrderList from 'components/manageAccount/orderList';
 import WalletModal from 'components/manageAccount/walletModal';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
@@ -43,9 +44,19 @@ export default function ManageAccount () {
         setActiveMenu(menuIndex)
     }
 
+    const loadMenuPage = () => {
+        switch(activeMenu) {
+            case 0:
+                return <PersonalInfo user={user}/>
+            case 1:
+                return <OrderList />
+        }
+    }
+
     return (
         <div className={styles.manageAccountPage}>
-            <div className={styles.rightCol}>
+            <div className={styles.container}>
+                <div className={styles.rightCol}>
                 <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
                 {user !== undefined && user.isContentProvider ? 
                 <div className={styles.providerTitle}>شما ناشر هستید.</div>
@@ -87,8 +98,8 @@ export default function ManageAccount () {
                 </ul>
                 
             </div>
-            <div>
-                <PersonalInfo user={user}/>
+            <div className={styles.leftCol}>
+                {loadMenuPage()}
             </div>
             <Modal
                 open={open}
@@ -103,6 +114,7 @@ export default function ManageAccount () {
                 </div>
                 
             </Modal>
+            </div>
         </div>
     )
 }

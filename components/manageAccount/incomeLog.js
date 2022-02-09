@@ -1,5 +1,5 @@
 import styles from 'styles/components/manageAccount/IncomeLog.module.scss'
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,13 +28,66 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      rtl: true,
+      position: 'bottom',
+      align: 'start',
+      labels: {
+                boxWidth: 12,
+                boxHeight: 12,
+                color: 'rgba(112, 108, 100, 1)',
+                font: {
+                    size: 12,
+                    weight: 400,
+                    family: 'IRANSans'
+                },
+              }
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart',
+      color: 'rgba(36, 30, 18, 1)',
+      font: {
+        wheight: 500,
+        size: 18,
+        family: 'IRANSans',
+      },
+      position: 'bottom',
+      text: 'نمایش محتوا',
     },
-  }
+  },
+  scales: {
+        y: {
+            max: 750,
+            min: 150,
+            grid: {
+              display: false
+            },
+            ticks: {
+                stepSize: 50,
+                // Include a dollar sign in the ticks
+                callback: function(value, index, ticks) {
+                    switch(value) {
+                      case 200:
+                        return '200'
+                      case 300:
+                        return '300'
+                      case 400:
+                        return '400'
+                      case 500:
+                        return '500'
+                      case 600:
+                        return '600'
+                      case 700:
+                        return '700'
+                    }
+                }
+            }
+        },
+        x: {
+          grid: {
+            display: false,
+          }
+        }
+    },
 };
 
 
@@ -45,16 +98,22 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 200, max: 700 })),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      label: 'رایگان',
+      data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
+      borderColor: 'rgba(21, 90, 97, 1)',
+      backgroundColor: 'rgba(21, 90, 97, 1)',
     },
     {
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 200, max: 700 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      label: 'اشتراک دوره',
+      data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
+      borderColor: 'red',
+      backgroundColor: 'red',
+    },
+    {
+      label: 'پرداخت',
+      data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
+      borderColor: 'yellow',
+      backgroundColor: 'yellow',
     },
   ],
 };
@@ -78,22 +137,34 @@ export default function IncomeLog () {
 
     useEffect(() => {
     ChartJS.register({
-  id: 'quadrants',
-  beforeDraw(chart, args, options) {
-    const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
-    const midX = x.getPixelForValue(0);
-    const midY = y.getPixelForValue(0);
-    const test1 = y.getPixelForValue(600)
-    const test2 = y.getPixelForValue(700)
-    console.log('top: ', top)
-    console.log('midX: ', midX)
-    // console.log('top: ', top)
-    // console.log('right: ', right)
-    ctx.save();
-    ctx.fillStyle = 'rgba(21, 90, 97, 0.15)';
-    ctx.fillRect(midX, top - (test2 - test1), right - midX, test2 - test1);
-    ctx.restore();
-  }
+    id: 'quadrants',
+    beforeDraw(chart, args, options) {
+
+      
+      const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
+      const midX = x.getPixelForValue(0); 
+      const first = y.getPixelForValue(750)
+      const second = y.getPixelForValue(650)
+      const third = y.getPixelForValue(550)
+      const forth = y.getPixelForValue(450)
+      const fifth = y.getPixelForValue(350)
+      const sixth = y.getPixelForValue(250)
+      const seventh = y.getPixelForValue(150)
+      ctx.save();
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.15)';
+      ctx.fillRect(midX, second, right - midX, first - second);
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.19)';
+      ctx.fillRect(midX, third, right - midX, second - third)
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.21)';
+      ctx.fillRect(midX, forth, right - midX, third - forth)
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.29)';
+      ctx.fillRect(midX, fifth, right - midX, forth - fifth)
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.32)';
+      ctx.fillRect(midX, sixth, right - midX, fifth - sixth)
+      ctx.fillStyle = 'rgba(21, 90, 97, 0.35)';
+      ctx.fillRect(midX, seventh, right - midX, sixth - seventh)
+      ctx.restore();
+    }
 });
   }, []);
 
@@ -110,7 +181,6 @@ export default function IncomeLog () {
             })}
         </div>
         <div className={styles.chart}>
-            chart
             <Line options={options} data={data} />
         </div>
         </>

@@ -4,6 +4,7 @@ import TrashIcon from "assets/svg/popup/trash.svg";
 import EditIcon from "assets/svg/popup/edit.svg";
 import CustomInput from 'components/common/input';
 import {useForm} from "react-hook-form";
+import ChevronLeftLight from 'assets/images/manage-account/left-arrow.svg';
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -19,6 +20,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import faker from 'faker';
 import Button from 'components/common/button';
+import Link from 'next/link';
 
 ChartJS.register(
   CategoryScale,
@@ -204,8 +206,22 @@ export default function IncomeLog () {
     }
 
     return (
-        <div style={{minHeight: 1000}}>
+        <>
           {addAccount ? 
+          <>
+          <div className={styles.breadcrumb} id='#'>
+              <span className={styles.before} onClick={() => setAddAccount(false)}>
+                  <Link href='/manage-account'>گزارش مالی</Link>
+              </span>
+              &nbsp;&nbsp;
+              <div className={styles.before}>
+                  <Image src={ChevronLeftLight} alt=''/>
+              </div>
+              &nbsp;&nbsp;
+              <span>
+               افزودن حساب جدید
+              </span>
+          </div>
           <div className={styles.addAccountContainer}>
             <div>
             <div className={styles.title}>افزودن حساب جدید</div>
@@ -288,6 +304,7 @@ export default function IncomeLog () {
             </form>
             </div>
           </div>
+          </>
           :
           <>
             <div className={styles.statusContainer}>
@@ -336,7 +353,9 @@ export default function IncomeLog () {
                   <span>{'234* **** **** 5859'}</span>
                   </div>
 
-                  <div className={styles.addAccount} onClick={() => setAddAccount(true)}>افزودن حساب جدید</div>
+                  <Link href='/manage-account/#' passHref>
+                    <div className={styles.addAccount} onClick={() => setAddAccount(true)}>افزودن حساب جدید</div>
+                  </Link>
               </div>
               <div className={styles.buttonContainer}>
                 <Button >
@@ -348,6 +367,6 @@ export default function IncomeLog () {
           </>
           }
         
-        </div>
+        </>
     )
 }

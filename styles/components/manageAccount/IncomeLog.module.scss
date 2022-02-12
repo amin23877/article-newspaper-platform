@@ -34,8 +34,11 @@
 }
 
 .bottom {
-  display: flex;
+  display: grid;
+  grid-template-columns: 380px 510px;
+  grid-column-gap: 10px;
   margin-top: 24px;
+  width: 900px;
   .container {
     background: #ffffff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -86,11 +89,11 @@
     // }
   }
   .lucrative {
-    margin-left: 10px;
-    width: 398px;
+    //margin-left: 10px;
+    // width: 388px;
   }
   .accounts {
-    width: calc(100% - 408px);
+    // width: 495px;
     .radioButtons {
       width: 580px;
       justify-content: space-between;
@@ -162,6 +165,19 @@
   }
 }
 
+.breadcrumb {
+  display: flex;
+  font-size: $tertiary-size;
+  color: rgba(21, 90, 97, 0.6);
+  div {
+    margin-top: 2px;
+  }
+  .before {
+    color: $lightgray;
+    cursor: pointer;
+  }
+}
+
 .addAccountContainer {
   display: flex;
   flex-direction: column;
@@ -209,6 +225,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          margin-top: 4px;
         }
 
         &:hover {
@@ -218,7 +235,7 @@
     }
   }
   .form {
-    // display: flex;
+    margin-top: 32px;
     .fieldRow {
       width: 100%;
       display: flex;

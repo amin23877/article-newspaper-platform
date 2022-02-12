@@ -7,6 +7,7 @@ import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
 import IncomeLog from 'components/manageAccount/incomeLog';
 import WalletModal from 'components/manageAccount/walletModal';
+import AnalyzeContent from 'components/manageAccount/analyzeContent';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
 
@@ -52,6 +53,8 @@ export default function ManageAccount () {
                 return <OrderList />
             case 2: 
                 return <IncomeLog />
+            case 3: 
+                return <AnalyzeContent />
         }
     }
 

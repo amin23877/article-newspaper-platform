@@ -1,0 +1,32 @@
+@import "styles/vars";
+
+.container {
+  color: $dimgray;
+  .title {
+    font-size: $title-size;
+    margin-bottom: 32px;
+  }
+  .box {
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 56px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    .filterIcon {
+      margin-top: 4px;
+      margin-left: 16px;
+    }
+    .content {
+      width: 20%;
+    }
+    .menu {
+      display: flex;
+      width: 100%;
+      div {
+        width: 15%;
+      }
+    }
+  }
+}

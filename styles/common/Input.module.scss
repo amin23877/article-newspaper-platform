@@ -2,6 +2,7 @@
 
 .inputContainer {
   position: relative;
+  width: -webkit-fill-available;
   .input {
     width: 100%;
     height: 46px;

@@ -1,5 +1,9 @@
 import styles from 'styles/components/manageAccount/IncomeLog.module.scss'
 import LucrativeImage from 'assets/images/manage-account/lucrative-content.png'
+import TrashIcon from "assets/svg/popup/trash.svg";
+import EditIcon from "assets/svg/popup/edit.svg";
+import CustomInput from 'components/common/input';
+import {useForm} from "react-hook-form";
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -189,7 +193,11 @@ export default function IncomeLog () {
 });
   }, []);
 
+  const { register: infoFormRegister, handleSubmit: handleGeneralSubmit, formState: {errors}, setValue  } = useForm();
+
   const [accountIndex, setAccountIndex] = useState()
+  const [addAccount, setAddAccount] = useState(false)
+  const accounts = [{title: 'بانک ملت', number: '234* **** **** 5859'}]
 
   const changeType = (e, index) => {
         setAccountIndex(index)
@@ -197,61 +205,149 @@ export default function IncomeLog () {
 
     return (
         <div style={{minHeight: 1000}}>
-        <div className={styles.statusContainer}>
-            {statusList.map((status) => {
-                return (
-                    <div className={styles.status} key={status.title}>
-                        <div>{status.title}</div>
-                        <div className={styles.value}>{`${status.value} تومان`}</div>
-                    </div>
-                )
-            })}
-        </div>
-        <div className={styles.chart}>
-            <Line options={options} data={data} />
-        </div>
-        <div className={styles.bottom}>
-          <div className={`${styles.lucrative} ${styles.container}`}>
-            <div className={styles.header}>پردرآمد ترین محتوا ها</div>
-            {lucrativePosts.map((post, index) => {
+          {addAccount ? 
+          <div className={styles.addAccountContainer}>
+            <div>
+            <div className={styles.title}>افزودن حساب جدید</div>
+            {accounts.map((account) => {
               return (
-                <div key={index} className={styles.post}>
-                  <div className={styles.right}>
-                    <div className={styles.image}>
-                      <Image src={post.image} alt=''/>
-                    </div>
-                    <div className={styles.title}>{post.title}</div>
+                <div key={account.number} className={styles.account}>
+                  <div className={styles.title}>
+                    <span>{account.title}</span>&nbsp;&nbsp;&nbsp;
+                    <span>{account.number}</span>
                   </div>
-                  <div className={styles.value}>{`${post.value} تومان`}</div>
+                  <div className={styles.options}>
+                    {/* <Link href={(item.link !== undefined) ? item.link : '/'} key={index} passHref> */}
+                    <div className={styles.item} >
+                        <div className={styles.icon}>
+                            <Image src={EditIcon} alt=''/>
+                        </div>
+                        <div className={styles.text}>ویرایش</div>
+                    </div>
+                    {/* </Link> */}
+                    <div className={styles.item} >
+                        <div className={styles.icon}>
+                            <Image src={TrashIcon} alt=''/>
+                        </div>
+                        <div className={styles.text}>حذف</div>
+                    </div>
+                  </div>
                 </div>
               )
             })}
-            <div className={styles.more}>همه موارد</div>
+            </div>
+            <div>
+              <div className={styles.description}>اطلاعات حسای که میخواهید واریز به آن انجام شود را وارد نمایید.</div>
+              <form className={styles.form}>
+              
+              <div className={styles.fieldRow}>
+                <div className={styles.field}>
+                      <div className={styles.label}>نام بانک : &nbsp;</div>
+                      <CustomInput register={infoFormRegister} 
+                      // placeholder={field.placeholder}
+                      name='bankName' 
+                      validation={{required: 'پر کردن این فیلد الزامی است'}}
+                      // error={errors[field.name]}
+                      />
+              </div>
+              <div className={styles.field}>
+                      <div className={styles.label}>شماره حساب : &nbsp;</div>
+                      <CustomInput register={infoFormRegister} 
+                      placeholder='شماره حساب را وارد نمایید.'
+                      name='bankName' 
+                      validation={{required: 'پر کردن این فیلد الزامی است'}}
+                      // error={errors[field.name]}
+                      />
+              </div>
+              </div>
+              <div className={styles.fieldRow}>
+                <div className={styles.field}>
+                      <div className={styles.label}>نام صاحب حساب : &nbsp;</div>
+                      <CustomInput register={infoFormRegister} 
+                      // placeholder={field.placeholder}
+                      name='bankName' 
+                      validation={{required: 'پر کردن این فیلد الزامی است'}}
+                      // error={errors[field.name]}
+                      />
+              </div>
+              <div className={styles.field}>
+                      <div className={styles.label}>شماره شبا : &nbsp;</div>
+                      <CustomInput register={infoFormRegister} 
+                      placeholder='شماره شبا را وارد نمایید.'
+                      name='bankName' 
+                      validation={{required: 'پر کردن این فیلد الزامی است'}}
+                      // error={errors[field.name]}
+                      />
+              </div>
+              </div>
+              <div className={styles.button}>
+                <Button>
+                تایید نهایی
+              </Button>
+              </div>
+            </form>
+            </div>
           </div>
-          <div className={`${styles.accounts} ${styles.container}`}>
-            <div className={styles.header}>حساب های متصل</div>
-            <div className={styles.description}>اطلاعات حسای که میخواهید واریز به آن انجام شود را وارد نمایید.</div>
-            <div className={styles.radioButtons}>
-                <div className={styles.realLabel}>
-                    
-                <label><input type="radio" id="haghighi" name="type" value="بانک ملت"
-                        checked={accountIndex === 0} onChange={(e) => changeType(e, 0)}/>
-                
-                <span></span>
-                </label>
-                <span>بانک ملت</span>&nbsp;&nbsp;&nbsp;
-                 <span>{'234* **** **** 5859'}</span>
-                </div>
+          :
+          <>
+            <div className={styles.statusContainer}>
+              {statusList.map((status) => {
+                  return (
+                      <div className={styles.status} key={status.title}>
+                          <div>{status.title}</div>
+                          <div className={styles.value}>{`${status.value} تومان`}</div>
+                      </div>
+                  )
+              })}
+          </div>
+          <div className={styles.chart}>
+              <Line options={options} data={data} />
+          </div>
+          <div className={styles.bottom}>
+            <div className={`${styles.lucrative} ${styles.container}`}>
+              <div className={styles.header}>پردرآمد ترین محتوا ها</div>
+              {lucrativePosts.map((post, index) => {
+                return (
+                  <div key={index} className={styles.post}>
+                    <div className={styles.right}>
+                      <div className={styles.image}>
+                        <Image src={post.image} alt=''/>
+                      </div>
+                      <div className={styles.title}>{post.title}</div>
+                    </div>
+                    <div className={styles.value}>{`${post.value} تومان`}</div>
+                  </div>
+                )
+              })}
+              <div className={styles.more}>همه موارد</div>
+            </div>
+            <div className={`${styles.accounts} ${styles.container}`}>
+              <div className={styles.header}>حساب های متصل</div>
+              <div className={styles.description}>اطلاعات حسای که میخواهید واریز به آن انجام شود را وارد نمایید.</div>
+              <div className={styles.radioButtons}>
+                  <div className={styles.realLabel}>
+                      
+                  <label><input type="radio" id="haghighi" name="type" value="بانک ملت"
+                          checked={accountIndex === 0} onChange={(e) => changeType(e, 0)}/>
+                  
+                  <span></span>
+                  </label>
+                  <span>بانک ملت</span>&nbsp;&nbsp;&nbsp;
+                  <span>{'234* **** **** 5859'}</span>
+                  </div>
 
-                <div className={styles.addAccount}>افزودن حساب جدید</div>
-            </div>
-            <div className={styles.buttonContainer}>
-              <Button >
-              تسویه حساب
-            </Button>
+                  <div className={styles.addAccount} onClick={() => setAddAccount(true)}>افزودن حساب جدید</div>
+              </div>
+              <div className={styles.buttonContainer}>
+                <Button >
+                تسویه حساب
+              </Button>
+              </div>
             </div>
           </div>
-        </div>
+          </>
+          }
+        
         </div>
     )
 }

@@ -1,5 +1,7 @@
 import styles from 'styles/components/manageAccount/IncomeLog.module.scss'
+import LucrativeImage from 'assets/images/manage-account/lucrative-content.png'
 import { useCallback, useEffect, useState } from 'react';
+import Image from 'next/image';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +14,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import faker from 'faker';
+import Button from 'components/common/button';
 
 ChartJS.register(
   CategoryScale,
@@ -135,6 +138,24 @@ export default function IncomeLog () {
         }
     ]
 
+    const lucrativePosts = [
+      {
+        image: LucrativeImage,
+        title: 'چگونه روی فیلم متن اضافه کنیم؟',
+        value: 1458354
+      },
+      {
+        image: LucrativeImage,
+        title: 'چگونه روی فیلم متن اضافه کنیم؟',
+        value: 1458354
+      },
+      {
+        image: LucrativeImage,
+        title: 'چگونه روی فیلم متن اضافه کنیم؟',
+        value: 1458354
+      },
+    ]
+
     useEffect(() => {
     ChartJS.register({
     id: 'quadrants',
@@ -168,8 +189,14 @@ export default function IncomeLog () {
 });
   }, []);
 
+  const [accountIndex, setAccountIndex] = useState()
+
+  const changeType = (e, index) => {
+        setAccountIndex(index)
+    }
+
     return (
-        <>
+        <div style={{minHeight: 1000}}>
         <div className={styles.statusContainer}>
             {statusList.map((status) => {
                 return (
@@ -183,6 +210,48 @@ export default function IncomeLog () {
         <div className={styles.chart}>
             <Line options={options} data={data} />
         </div>
-        </>
+        <div className={styles.bottom}>
+          <div className={`${styles.lucrative} ${styles.container}`}>
+            <div className={styles.header}>پردرآمد ترین محتوا ها</div>
+            {lucrativePosts.map((post, index) => {
+              return (
+                <div key={index} className={styles.post}>
+                  <div className={styles.right}>
+                    <div className={styles.image}>
+                      <Image src={post.image} alt=''/>
+                    </div>
+                    <div className={styles.title}>{post.title}</div>
+                  </div>
+                  <div className={styles.value}>{`${post.value} تومان`}</div>
+                </div>
+              )
+            })}
+            <div className={styles.more}>همه موارد</div>
+          </div>
+          <div className={`${styles.accounts} ${styles.container}`}>
+            <div className={styles.header}>حساب های متصل</div>
+            <div className={styles.description}>اطلاعات حسای که میخواهید واریز به آن انجام شود را وارد نمایید.</div>
+            <div className={styles.radioButtons}>
+                <div className={styles.realLabel}>
+                    
+                <label><input type="radio" id="haghighi" name="type" value="بانک ملت"
+                        checked={accountIndex === 0} onChange={(e) => changeType(e, 0)}/>
+                
+                <span></span>
+                </label>
+                <span>بانک ملت</span>&nbsp;&nbsp;&nbsp;
+                 <span>{'234* **** **** 5859'}</span>
+                </div>
+
+                <div className={styles.addAccount}>افزودن حساب جدید</div>
+            </div>
+            <div className={styles.buttonContainer}>
+              <Button >
+              تسویه حساب
+            </Button>
+            </div>
+          </div>
+        </div>
+        </div>
     )
 }

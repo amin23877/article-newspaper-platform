@@ -10,20 +10,24 @@ import Completion from 'components/profile/addContent/steps/completion/completio
 import Details from 'components/profile/addContent/steps/details'
 import PublishRight from 'components/profile/addContent/steps/publishRight'
 import Upload from 'components/profile/addContent/steps/upload'
-import {useAsyncState} from "hooks/useAsyncState";
+import { useAsyncState } from "hooks/useAsyncState";
 import axios from "axios";
-import {Endpoints} from "utils/endpoints";
+import { Endpoints } from "utils/endpoints";
 import Cookies from "js-cookie";
+import cookie from "cookie";
+import { getUserProfile } from 'shared/users';
+import { useUploadFile } from 'hooks/useUploadFile';
 
 
-export default function AddContent(props) {
-
+export default function AddContent({ me, accessToken, ...props }) {
+    const [upload, uploadFileData] = useUploadFile();
+    const [fileTst, setFileTst] = useState()
     const steps = [
-        {id: 0, name: 'type', text: 'انتخاب نوع محتوا'},
-        {id: 1, name: 'upload', text: 'بارگزاری محتوا'},
-        {id: 2, name: 'details', text: 'جزئیات'},
-        {id: 3, name: 'publishRight', text: 'حق نشر'},
-        {id: 4, name: 'completion', text: 'تکمیل اطلاعات'},
+        { id: 0, name: 'type', text: 'انتخاب نوع محتوا' },
+        { id: 1, name: 'upload', text: 'بارگزاری محتوا' },
+        { id: 2, name: 'details', text: 'جزئیات' },
+        { id: 3, name: 'publishRight', text: 'حق نشر' },
+        { id: 4, name: 'completion', text: 'تکمیل اطلاعات' },
     ]
 
     const [step, setStep] = useState(steps[0])
@@ -34,6 +38,8 @@ export default function AddContent(props) {
             file: undefined
         }
     )
+
+    console.log('data', data)
 
     function selectUploadType(contentType) {
         setData({
@@ -57,7 +63,7 @@ export default function AddContent(props) {
             file
         }, async (newVal) => {
             try {
-                const {data: {data: {fileId, uploadUrl}}} = await axios.get(Endpoints.baseUrl + `/file/upload/link/pdf`, {
+                const { data: { data: { fileId, uploadUrl } } } = await axios.get(Endpoints.baseUrl + `/file/upload/link/pdf`, {
                     headers: {
                         'Authorization': Cookies.get('accessToken')
                     }
@@ -80,6 +86,7 @@ export default function AddContent(props) {
     }
 
     function onDetailSubmit() {
+
         setStep(steps[3])
     }
 
@@ -114,17 +121,21 @@ export default function AddContent(props) {
     //     props.sharePolicy
     // }
 
-
+    const handleTest = async () => {
+        console.log('ok!', fileTst)
+        let x = await upload(fileTst, 'image', accessToken);
+        console.log('done!', x)
+    }
     return (
         <div className={styles.addContentContainer}>
             <div className={styles.headerContainer} />
             <div className={styles.profileContainer}>
                 <div className={styles.content}>
                     <div className={styles.avatar}>
-                        <Image src={MockAvatar} alt=''/>
+                        <Image src={MockAvatar} alt='' />
                     </div>
                     <div className={styles.name}>
-                        نام کاربری شما
+                        {me.username}
                     </div>
                 </div>
             </div>
@@ -135,11 +146,11 @@ export default function AddContent(props) {
                             (
                                 <div className={styles.stepBack}>
                                     <div className={styles.backIcon}>
-                                        <Image src={ChevronRightLight} alt=''/>
+                                        <Image src={ChevronRightLight} alt='' />
                                     </div>
                                     <div className={styles.text} onClick={stepBack}>بازگشت به مرحله قبل</div>
                                 </div>
-                        ) : ''
+                            ) : ''
                     }
                     <div className={styles.stepsContainer}>
                         <div className={styles.stepperContainer}>
@@ -147,6 +158,8 @@ export default function AddContent(props) {
                             <Stepper steps={steps} activeStep={step.id} />
                         </div>
                         <div className={styles.stepContainer}>
+                            <input type="file" onChange={(e) => { setFileTst(e.target.files[0]) }} />
+                            <button onClick={handleTest}>test</button>
                             {
                                 (() => {
                                     switch (step.id) {
@@ -157,9 +170,9 @@ export default function AddContent(props) {
                                         case 2:
                                             return <Details onDetailSubmit={onDetailSubmit} />
                                         case 3:
-                                            return <PublishRight onStepForward={stepForward}/>
-                                        case 4: 
-                                             return <Completion onEditPublish={stepBack} onEditDetail={editDetail} />
+                                            return <PublishRight onStepForward={stepForward} />
+                                        case 4:
+                                            return <Completion onEditPublish={stepBack} onEditDetail={editDetail} />
                                     }
                                 })()
                             }
@@ -169,4 +182,48 @@ export default function AddContent(props) {
             </div>
         </div>
     )
+}
+
+export async function getServerSideProps(context) {
+
+    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+
+    if (!accessToken) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    try {
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
+
+        if (!me) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            }
+        }
+
+
+
+
+
+        return {
+            props: { me, accessToken }
+        }
+
+    }
+    catch (e) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
 }

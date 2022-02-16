@@ -13,7 +13,8 @@ export default function UploadType ({onUpload, data, onStepForward}) {
         podcast: ['mp3', 'mp4', 'm4a', 'wav'],
         newsletter: ['pdf'],
         magazine: ['pdf'],
-        article: ['pdf']
+        article: ['pdf'],
+        images: ['jpg','png']
     }
 
     const [dropZone, setDropZone] = useState(false)

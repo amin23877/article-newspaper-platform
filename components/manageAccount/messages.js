@@ -5,11 +5,15 @@ import MockUser from 'assets/images/contact/mock-avatar.png'
 import Image from "next/image"
 import DownArrow from "assets/svg/common/chevron-down.svg"
 import { useState } from "react";
+import {useForm} from "react-hook-form";
+import CustomInput from 'components/common/input';
 
 export default function Messages () {
 
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
+
+    const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: {errors}, setValue  } = useForm();
 
     const messages = [
         {
@@ -44,6 +48,10 @@ export default function Messages () {
 
     const changeTab = (index) => {
         setActiveIndex(index)
+    }
+
+    const onReplySubmit = () => {
+        console.log('meow')
     }
     return (
         <>
@@ -101,7 +109,8 @@ export default function Messages () {
             <div className={styles.messageList}>
                 {messages.map((message, index) => {
                     return (
-                        <div className={styles.messageContainer} key={index}>
+                        <form className={styles.messageContainer} key={index} onSubmit={handleReplySubmit(onReplySubmit)}
+                        onClick={() => setActiveMessage(index)} >
                             <div className={styles.info}>
                                 <div className={styles.user}>
                                     <div className={styles.avatar}>
@@ -115,23 +124,30 @@ export default function Messages () {
                                 {message.message}
                             </div>
                             <div className={styles.reply}>
-                                {message.reply !== '' ? 
+                                {(message.reply !== '') || (activeMessage !== index) ? 
                                 `پاسخ : ${message.reply}`
-                                :null
+                                :
+                                <CustomInput register={replyFormRegister} 
+                                // placeholder={field.placeholder}
+                                label='پاسخ:'
+                                name='reply' 
+                                validation={{required: 'پر کردن این فیلد الزامی است'}}
+                                error={errors.reply}
+                                />
                                 }
                             </div>
-                            {activeMessage === index ? 
+                            {activeMessage === index && message.reply === '' ? 
                             <div className={styles.buttons}>
-                                <Button>
+                                <Button type='submit'>
                                     تایید
                                 </Button>
-                                <Button variant='outline'>
+                                <Button variant='outline' type='button'>
                                     بایگانی
                                 </Button>
                             </div>
                             :null
                             }
-                        </div>
+                        </form>
                     )
                 })}
             </div>

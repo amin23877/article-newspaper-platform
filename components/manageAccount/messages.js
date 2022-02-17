@@ -7,11 +7,17 @@ import DownArrow from "assets/svg/common/chevron-down.svg"
 import { useState } from "react";
 import {useForm} from "react-hook-form";
 import CustomInput from 'components/common/input';
+import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 export default function Messages () {
 
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
+    const [mode, setMode] = useState('base')
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+    );
 
     const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: {errors}, setValue  } = useForm();
 
@@ -55,9 +61,19 @@ export default function Messages () {
     }
     return (
         <>
-            <Button classes={styles.newMsgBtn}>
+            <Button classes={[styles.newMsgBtn, mode === 'new' ? styles.new : '']} onClick={() => {
+                if (mode === 'new') {
+                    setMode('base')
+                }
+                else {
+                    setMode('new')
+                }
+            }}
+            >
                 پیام جدید
             </Button>
+            {mode === 'base' ?
+            <>
             <div className={styles.searchContainer}>
                 <div className={styles.search}>
                     <div className={styles.searchIcon}>
@@ -151,6 +167,12 @@ export default function Messages () {
                     )
                 })}
             </div>
+            </>
+            :
+            // <div className={styles.newMessage}>
+                <Editor editorState={editorState} onChange={setEditorState} />
+            
+            }
         </>
     )
 }

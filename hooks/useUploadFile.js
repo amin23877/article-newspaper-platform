@@ -11,7 +11,7 @@ export function useUploadFile() {
     async function upload(file, type, accessToken, limitSize = 5000000) {
         console.log('file is', file)
         console.log('type is', type)
-        if (file.size > limitSize) {
+        if (file?.size > limitSize) {
             return ({ status: 'error', message: 'upload limit size error' })
         }
         try {

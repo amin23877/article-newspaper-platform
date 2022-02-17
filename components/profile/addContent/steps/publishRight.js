@@ -4,21 +4,27 @@ import Button from "components/common/button";
 import WrapperCard from "components/profile/addContent/wrapper-card";
 import CurrencyInput from 'react-currency-input-field';
 
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Image from "next/image";
 import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";
 
 import { DatePicker } from "jalali-react-datepicker";
 import { getThemeProps } from '@mui/system';
 
-export default function PublishRight({onStepForward}) {
+export default function PublishRight({ onSumbit }) {
 
     const [sharePolicy, setSharePolicy] = useState('')
+    const [price, setPrice] = useState(0)
+    const [timing, setTiming] = useState(false)
+    const [publishTime, setPublishTime] = useState()
 
     // const publishRightHandler = ()=>{
     //      setSharePolicy(props.sharePolicy)
     // }
-
+    const selectDate = ({ value }) => {
+        console.log("start ", value);
+        setPublishTime(value)
+    }
     return (
         <div className={styles.publishRightContainer}>
             <WrapperCard className={styles.wrapper} title="اشتراک محتوا" description='محتوایتان را به یکی از روش های زیر به اشتراک بگذارید. بیشتر بدانید'>
@@ -36,12 +42,13 @@ export default function PublishRight({onStepForward}) {
                         <CurrencyInput
                             className={styles.currencyInput}
                             disabled={sharePolicy !== 'payment' ? 'disabled' : ''}
-                            id="input-example"
-                            name="input-name"
+                            id="price"
+                            name="price"
                             placeholder="قیمت خود را وارد کنید"
                             defaultValue={0}
                             decimalsLimit={2}
-                            onValueChange={(value, name) => console.log(value, name)}
+                            value={price}
+                            onValueChange={(value, name) => setPrice(value)}
                         />
                         <span className={styles.label}>تومان</span>
                     </div>
@@ -55,23 +62,27 @@ export default function PublishRight({onStepForward}) {
                     <div className={styles.title}>زمان نمایش محتوا را تعیین می کنم.</div>
                     <div className={styles.selectContainer}>
                         <div className={styles.inputWrapper}>
-                            <input name='time' id='yes' type="radio"/>
+                            <input checked={timing} onChange={(e) => setTiming(true)} name='time' id='yes' type="radio" />
                             <label htmlFor="yes">بله</label>
                         </div>
                         <div className={styles.inputWrapper}>
-                            <input name='time' id='no' type="radio"/>
+                            <input checked={!timing} onChange={(e) => setTiming(false)} name='time' id='no' type="radio" />
                             <label htmlFor="no">نه</label>
                         </div>
                     </div>
                 </div>
-                <div className={styles.desc}>
-                    تاریخ نمایش محتوایتان را تعیین نمایید.
-                </div>
-               
-                <DatePicker disabled={sharePolicy !== 'payment' ? 'disabled' : ''} className={styles.datePicker} open={true} />
+                {
+                    timing && <>
+                        <div className={styles.desc}>
+                            تاریخ نمایش محتوایتان را تعیین نمایید.
+                        </div>
+
+                        <DatePicker onClickSubmitButton={selectDate} disabled={sharePolicy !== 'payment' ? 'disabled' : ''} className={styles.datePicker} open={true} />
+                    </>
+                }
             </div>
             <div className={styles.buttonContainer}>
-                <Button  classes={styles.button} onClick={() => onStepForward() }>
+                <Button classes={styles.button} onClick={() => onSumbit(sharePolicy, price, timing, publishTime)}>
                     تایید
                 </Button>
             </div>
@@ -79,10 +90,10 @@ export default function PublishRight({onStepForward}) {
     )
 }
 
- {/*<div className={styles.buttonsContainer}>*/}
- {/*    <Button variant='outline'>تاریخ</Button>*/}
- {/*    <Button variant='outline'>زمان</Button>*/}
- {/*</div>*/}
+{/*<div className={styles.buttonsContainer}>*/ }
+{/*    <Button variant='outline'>تاریخ</Button>*/ }
+{/*    <Button variant='outline'>زمان</Button>*/ }
+{/*</div>*/ }
 
 
 

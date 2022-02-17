@@ -54,13 +54,13 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                             }
                             <Link href={item.route}>
                                 <a className={
-                                    `${styles.anchor} ${radius ? styles.radius : ''} ${type === 'audio' || type === 'video' ? styles.grayScale : ''}`
+                                    `${styles.anchor} ${radius ? styles.radius : ''} ${item.contentType === 'podcast' || item.contentType === 'video' ? styles.grayScale : ''}`
                                 }>
                                     <div className={styles.iconContainer}>
                                         {
                                             (() => {
-                                                switch (type) {
-                                                    case ('audio'):
+                                                switch (item.contentType) {
+                                                    case ('podcast'):
                                                         return (
                                                             <div className={styles.icon}>
                                                                 <Image src={AudioIcon} alt=""/>
@@ -75,7 +75,7 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                                                 }
                                             })()
                                         }
-                                        <Image className={styles.imageItem} src={image} alt=""/>
+                                        <img className={`${styles.imageItem} ${type=='best'?styles.fixedHeight:""}`} src={item.image} alt=""/>
                                     </div>
                                     {item.title || item.subTitle ?
                                         (

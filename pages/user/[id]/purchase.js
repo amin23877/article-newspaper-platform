@@ -27,18 +27,21 @@ export default function Purchase () {
             <div className={styles.top}>
                 <div className={styles.text}>
                     <div className={styles.subtitle}>برای دسترسی به محتوا لطفا با خرید اشتراک از مهدی حمایت کنید :)</div>
-                    {(paymentType.includes('اشتراک')) ? 
+                    {paymentType !== undefined ?
+                    (paymentType.includes('اشتراک')) ? 
                     <div className={styles.title}>سطح عضویت را انتخاب کنید</div>
                     :
                     <div className={styles.payTitle}>
                         {'هزینه محتوا ' + paymentType + ' هزار تومان می باشد.'}
                     </div>
+                    :
+                    null
                     }
                 </div>
                 <div className={styles.avatarContainer}>
                     
                     <div className={styles.image}>
-                        <Image src={MockAvatar}/>
+                        <Image src={MockAvatar} alt=''/>
                     </div>
                     
                     <span className={styles.name}>
@@ -46,10 +49,12 @@ export default function Purchase () {
                     </span>
                 </div>
             </div>
-            {paymentType.includes('اشتراک') ? 
+            {paymentType !== undefined ?
+            paymentType.includes('اشتراک') ? 
             <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)}/>
             :
             <PurchaseCard balance={5} paymentType={paymentType} paymentAmount={parseInt(paymentType)} title={title}/>
+            :null
             }
             <Modal
                 open={open}
@@ -58,7 +63,7 @@ export default function Purchase () {
                 aria-describedby="modal-modal-description2"
             >
                 <div className={styles.modalContainer}>
-                    <PurchaseCard balance={5} paymentType={membership.title} paymentAmount={membership.cost} title={title}/>
+                    <PurchaseCard balance={5} paymentType={membership !== undefined ? membership.title : ''} paymentAmount={membership !== undefined ? membership.cost : ''} title={title}/>
                 </div>
                 
             </Modal>

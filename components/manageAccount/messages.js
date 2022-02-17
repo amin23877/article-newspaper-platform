@@ -1,6 +1,7 @@
 import Button from "components/common/button";
 import styles from "styles/components/manageAccount/Messages.module.scss"
 import SearchIcon from 'assets/svg/common/search.svg'
+import MockUser from 'assets/images/contact/mock-avatar.png'
 import Image from "next/image"
 import DownArrow from "assets/svg/common/chevron-down.svg"
 import { useState } from "react";
@@ -8,6 +9,38 @@ import { useState } from "react";
 export default function Messages () {
 
     const [activeIndex, setActiveIndex] = useState(1)
+    const [activeMessage, setActiveMessage] = useState(0)
+
+    const messages = [
+        {
+            username: 'Mahdi Azari',
+            image: MockUser,
+            time: '11 ساعت پیش',
+            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+            reply: ''
+        },
+        {
+            username: 'Mahdi Azari',
+            image: MockUser,
+            time: '1 ماه پیش',
+            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+            reply: 'با تشکر از اطلاع رسانی شما'
+        },
+        {
+            username: 'Mahdi Azari',
+            image: MockUser,
+            time: '4 ماه پیش',
+            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+            reply: ''
+        },
+        {
+            username: 'Mahdi Azari',
+            image: MockUser,
+            time: '4 ماه پیش',
+            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+            reply: ''
+        },
+    ]
 
     const changeTab = (index) => {
         setActiveIndex(index)
@@ -63,6 +96,44 @@ export default function Messages () {
                     <div>بایگانی</div>
                     <span>251</span>
                 </div>
+            </div>
+
+            <div className={styles.messageList}>
+                {messages.map((message, index) => {
+                    return (
+                        <div className={styles.messageContainer} key={index}>
+                            <div className={styles.info}>
+                                <div className={styles.user}>
+                                    <div className={styles.avatar}>
+                                        <Image src={message.image} alt=''/>
+                                    </div>
+                                    <div>{message.username}</div>
+                                </div>
+                                <div className={styles.time}>{message.time}</div>
+                            </div>
+                            <div className={styles.message}>
+                                {message.message}
+                            </div>
+                            <div className={styles.reply}>
+                                {message.reply !== '' ? 
+                                `پاسخ : ${message.reply}`
+                                :null
+                                }
+                            </div>
+                            {activeMessage === index ? 
+                            <div className={styles.buttons}>
+                                <Button>
+                                    تایید
+                                </Button>
+                                <Button variant='outline'>
+                                    بایگانی
+                                </Button>
+                            </div>
+                            :null
+                            }
+                        </div>
+                    )
+                })}
             </div>
         </>
     )

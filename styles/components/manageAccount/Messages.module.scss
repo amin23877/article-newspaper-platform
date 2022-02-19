@@ -157,7 +157,7 @@
   .tools {
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: flex-end;
     padding: 16px;
     border-bottom: 1px solid $lightgray;
     button {

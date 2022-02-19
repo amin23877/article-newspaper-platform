@@ -21,7 +21,8 @@ import { useUploadFile } from 'hooks/useUploadFile';
 
 export default function AddContent({ me, accessToken, ...props }) {
     const [upload, uploadFileData] = useUploadFile();
-    const [fileTst, setFileTst] = useState()
+    const [uploadLoading, setUploadLoading] = useState(false)
+
     const steps = [
         { id: 0, name: 'type', text: 'انتخاب نوع محتوا' },
         { id: 1, name: 'upload', text: 'بارگزاری محتوا' },
@@ -57,36 +58,36 @@ export default function AddContent({ me, accessToken, ...props }) {
     //     setStep(steps[4])
     // }
 
-    function uploadFile(file) {
-        setData({
-            ...data,
-            file
-        }, async (newVal) => {
-            try {
-                const { data: { data: { fileId, uploadUrl } } } = await axios.get(Endpoints.baseUrl + `/file/upload/link/pdf`, {
-                    headers: {
-                        'Authorization': Cookies.get('accessToken')
-                    }
-                })
-                // console.log()
+    async function uploadFile(file, type = data.contentType.type, place = 'file') {
+        setUploadLoading(true);
+        console.log('ok!', file)
+        let x = await upload(file, type, accessToken);
+        console.log('done!', x)
+        if (place == 'file') {
+            setData({
+                ...data,
+                fileId: x.fileId,
+                file: file
+            })
+        } else if (place == 'cover') {
+            setData({
+                ...data,
+                coverFileId: x.fileId,
+                cover: file
+            })
+        }
+        setUploadLoading(false);
 
-                const bodyFormData = new FormData();
-                bodyFormData.append('file', newVal)
-                const res = await axios({
-                    method: "put",
-                    url: uploadUrl,
-                    data: bodyFormData,
-                    headers: { "Content-Type": "multipart/form-data", 'Authorization': Cookies.get('accessToken') },
-                })
-            } catch (e) {
-                console.log(e)
-            }
-        })
-        // setStep(steps[1])
     }
 
-    function onDetailSubmit() {
-
+    console.log('data', data)
+    function onDetailSubmit(title, description, subjects) {
+        setData({
+            ...data,
+            title: title,
+            description: description,
+            subjects: subjects
+        })
         setStep(steps[3])
     }
 
@@ -120,12 +121,18 @@ export default function AddContent({ me, accessToken, ...props }) {
     // const PublishRightHandler = () => {
     //     props.sharePolicy
     // }
+    const onSubmitPublishRights = (sharePolicy, price, timing, publishTime) => {
+        setData({
+            ...data,
+            sharePolicy: sharePolicy,
+            price: price,
+            timing: timing,
+            publishTime: publishTime
+        })
+        setStep(steps[4])
 
-    const handleTest = async () => {
-        console.log('ok!', fileTst)
-        let x = await upload(fileTst, 'image', accessToken);
-        console.log('done!', x)
     }
+
     return (
         <div className={styles.addContentContainer}>
             <div className={styles.headerContainer} />
@@ -158,21 +165,21 @@ export default function AddContent({ me, accessToken, ...props }) {
                             <Stepper steps={steps} activeStep={step.id} />
                         </div>
                         <div className={styles.stepContainer}>
-                            <input type="file" onChange={(e) => { setFileTst(e.target.files[0]) }} />
-                            <button onClick={handleTest}>test</button>
+                            {/* <input type="file" onChange={(e) => { setFileTst(e.target.files[0]) }} />
+                            <button onClick={handleTest}>test</button> */}
                             {
                                 (() => {
                                     switch (step.id) {
                                         case 0:
                                             return <Type onTypeSelect={selectUploadType} />
                                         case 1:
-                                            return <Upload onUpload={uploadFile} onStepForward={stepForward} data={data} />
+                                            return <Upload loading={uploadLoading} onUpload={uploadFile} onStepForward={stepForward} data={data} />
                                         case 2:
-                                            return <Details onDetailSubmit={onDetailSubmit} />
+                                            return <Details data={data} loading={uploadLoading} onDetailSubmit={onDetailSubmit} loading={uploadLoading} onUpload={(file) => uploadFile(file, 'image', 'cover')} />
                                         case 3:
-                                            return <PublishRight onStepForward={stepForward} />
+                                            return <PublishRight onSumbit={onSubmitPublishRights} />
                                         case 4:
-                                            return <Completion onEditPublish={stepBack} onEditDetail={editDetail} />
+                                            return <Completion data={data} onEditPublish={stepBack} onEditDetail={editDetail} />
                                     }
                                 })()
                             }

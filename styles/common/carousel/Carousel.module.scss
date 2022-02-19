@@ -39,8 +39,8 @@
     }
   }
   &.grayScale {
-    span {
-      filter: grayscale(0.32);
+    img {
+      filter: grayscale(0.9);
     }
   }
 
@@ -62,6 +62,12 @@
   .imageItem {
     width: 100%;
     object-fit: cover;
+  }
+  .fixedHeight{
+    max-height: 300px;
+    min-height: 300px;
+    height:300px;
+    object-fit: cover;  
   }
 }
 

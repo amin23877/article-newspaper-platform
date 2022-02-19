@@ -10,10 +10,10 @@ import Images from "assets/svg/common/image.svg";
 export default function TypeStep ({ onTypeSelect, ...rest }) {
 
     const items = [
-        {name: 'video', icon: Video},
-        {name: 'newsletter', icon: Docs},
-        {name: 'podcast', icon: Headphones},
-        {name: 'images', icon: Images},
+        {name: 'video', icon: Video , type:'video' , title:'ویدیو'},
+        {name: 'newsletter', icon: Docs , type:'pdf' , title:'روزنامه'},
+        {name: 'podcast', icon: Headphones , type:'audio' , title:'پادکست'},
+        {name: 'images', icon: Images , type:'image' , title:'تصویر'},
     ]
 
     return (
@@ -22,7 +22,7 @@ export default function TypeStep ({ onTypeSelect, ...rest }) {
                 {
                     items.map((item, index) => {
                         return (
-                            <div key={index} className={styles.item} onClick={() => onTypeSelect(item.name)}>
+                            <div key={index} className={styles.item} onClick={() => onTypeSelect(item)}>
                                 <Image src={item.icon}/>
                             </div>
                         )

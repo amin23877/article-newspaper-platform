@@ -1,31 +1,31 @@
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 
-const DetailCheck  = () => {
+const DetailCheck  = ({data}) => {
     return<>
     <Box margin='10px 0  10px 10px'>
            <Typography component='p' fontSize='18px' fontWeight='500' fontFamily='IRANSans' color='#797474' > 
-           عنوان:
+           عنوان: {data.contentType.title}
            </Typography>
           
     </Box>
     <Box margin='10px 0  10px 10px'>
 
              <Typography component='p' fontSize='18px' fontWeight='500' fontFamily='IRANSans' color='#797474' > 
-             توضیحات:
+             توضیحات: {data.description}
               </Typography>
              
     </Box>
     <Box margin='10px 0  10px 10px'>
            <Typography component='span' fontSize='18px' fontWeight='500' fontFamily='IRANSans' color='#797474' > 
-              فهرست پخش:
+              فهرست پخش: 
            </Typography>
           
            
     </Box>
     <Box margin='10px 0  10px 10px'>
            <Typography component='span' fontSize='18px' fontWeight='500' fontFamily='IRANSans' color='#797474' >  
-               موضوع:
+               موضوع: {data.title}
            </Typography>
            {} 
     </Box>   

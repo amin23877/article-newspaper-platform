@@ -16,11 +16,8 @@
     "chartjs": "^0.3.24",
     "classnames": "^2.3.1",
     "cookie": "^0.4.1",
-<<<<<<< HEAD
     "jalali-moment": "^3.3.11",
-=======
     "draft-js": "^0.11.7",
->>>>>>> 3a1b0881b94bcb6bbac021c74b73ee41a9a112b2
     "jalali-react-datepicker": "^1.2.1",
     "js-cookie": "^3.0.1",
     "moment-jalaali": "^0.9.4",

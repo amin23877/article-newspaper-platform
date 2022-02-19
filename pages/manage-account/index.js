@@ -9,6 +9,7 @@ import IncomeLog from 'components/manageAccount/incomeLog';
 import WalletModal from 'components/manageAccount/walletModal';
 import AnalyzeContent from 'components/manageAccount/analyzeContent';
 import Doners from 'components/manageAccount/doners';
+import Messages from 'components/manageAccount/messages';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
 
@@ -58,6 +59,8 @@ export default function ManageAccount () {
                 return <AnalyzeContent />
             case 4: 
                 return <Doners />
+            case 7:
+                return <Messages />
         }
     }
 

@@ -15,12 +15,14 @@ import Feed from "components/profile/tabs/feed";
 import ForYou from "components/profile/tabs/forYou";
 import Archive from "components/profile/tabs/archive";
 import cookie from "cookie";
-import {getUserProfile} from "shared/users";
+import { getUserProfile } from "shared/users";
 import axios from "axios";
-import {Endpoints} from "../../utils/endpoints";
+import { Endpoints } from "../../utils/endpoints";
 import Cookies from 'js-cookie';
+import { useState } from 'react';
 
-export default function Index({me, followers, followings, followingsCount, followersCount}) {
+export default function Index({ me, followers, followings, followingsCount, followersCount }) {
+    const [activeTab, setActiveTab] = useState('feed')
 
     return (
         <div className={styles.profileContainer}>
@@ -31,7 +33,7 @@ export default function Index({me, followers, followings, followingsCount, follo
                             <a>
                                 <span>افزودن محتوا</span>
                                 <span>
-                                    <Image src={FolderPlus}/>
+                                    <Image src={FolderPlus} />
                                 </span>
                             </a>
                         </Link>
@@ -42,7 +44,7 @@ export default function Index({me, followers, followings, followingsCount, follo
                 <div className={styles.rightCol}>
                     <div className={styles.profileContentBox}>
                         <div className={styles.avatarContainer}>
-                            <Image src={MockAvatar}/>
+                            <Image src={MockAvatar} />
                         </div>
                         <div className={styles.name}>
                             {me.username ?? 'کاربر میهمان'}
@@ -60,16 +62,16 @@ export default function Index({me, followers, followings, followingsCount, follo
                     <div className={styles.socialContainer}>
                         <div className={styles.social}>
                             <a href='https://google.com'>
-                                <Image src={Instagram} alt=""/>
+                                <Image src={Instagram} alt="" />
                             </a>
                             <a href='https://google.com'>
-                                <Image src={Twitter} alt=""/>
+                                <Image src={Twitter} alt="" />
                             </a>
                             <a href='https://google.com'>
-                                <Image src={Facebook} alt=""/>
+                                <Image src={Facebook} alt="" />
                             </a>
                             <a href='https://google.com'>
-                                <Image src={Linkedin} alt=""/>
+                                <Image src={Linkedin} alt="" />
                             </a>
                         </div>
                     </div>
@@ -82,21 +84,36 @@ export default function Index({me, followers, followings, followingsCount, follo
                                     {
                                         name: 'feed',
                                         text: 'محتوا',
-                                        content: Feed,
+                                        // content: Feed,
                                     },
                                     {
                                         name: 'forYou',
                                         text: 'برای تو',
-                                        content: ForYou,
+                                        // content: ForYou,
                                     },
                                     {
                                         name: 'archive',
                                         text: 'آرشیو',
-                                        content: Archive,
+                                        // content: Archive,
                                     }
                                 ]
                             }
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
                         />
+                        <div className={styles.contents}>
+                            {
+                                activeTab == 'feed' && <Feed />
+                            }
+                            {
+                                activeTab == 'forYou' && <ForYou me={me}/>
+                            }
+                            {
+                                activeTab == 'archive' && <Archive />
+                            }
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -118,7 +135,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const {data: {data: { me } } } = await getUserProfile(accessToken)
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
 
         if (!me) {
             return {
@@ -129,43 +146,43 @@ export async function getServerSideProps(context) {
             }
         }
 
-        const followersReq = axios.get(Endpoints.baseUrl + '/user/followers?start=0&limit=4&sortBy=_id&sortOrder=-1',{
-            headers: {
-               authorization: accessToken
-            }
-        })
-
-
-        const followingsReq = axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=4&sortBy=_id&sortOrder=-1',{
+        const followersReq = axios.get(Endpoints.baseUrl + '/user/followers?start=0&limit=4&sortBy=_id&sortOrder=-1', {
             headers: {
                 authorization: accessToken
             }
         })
 
-        const followingsCountReq = axios.get(Endpoints.baseUrl + '/user/followings/count',{
+
+        const followingsReq = axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=4&sortBy=_id&sortOrder=-1', {
             headers: {
                 authorization: accessToken
             }
         })
 
-        const followersCountReq = axios.get(Endpoints.baseUrl + '/user/followers/count',{
+        const followingsCountReq = axios.get(Endpoints.baseUrl + '/user/followings/count', {
+            headers: {
+                authorization: accessToken
+            }
+        })
+
+        const followersCountReq = axios.get(Endpoints.baseUrl + '/user/followers/count', {
             headers: {
                 authorization: accessToken
             }
         })
 
         const [
-            { data: {data: {followers} } },
-            { data: {data: {followings} } },
-            { data: {data: {count: followingsCount} } },
-            { data: {data: {count: followersCount} } }
+            { data: { data: { followers } } },
+            { data: { data: { followings } } },
+            { data: { data: { count: followingsCount } } },
+            { data: { data: { count: followersCount } } }
         ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq])
 
         return {
-            props: {me, followers, followings, followingsCount, followersCount}
+            props: { me, followers, followings, followingsCount, followersCount }
         }
 
-    } 
+    }
     catch (e) {
         return {
             redirect: {

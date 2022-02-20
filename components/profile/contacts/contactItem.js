@@ -5,24 +5,28 @@ import Star from "assets/svg/common/star.svg";
 
 import styles from 'styles/components/profile/contacts/ContactItem.module.scss'
 
-export default function ContactItem (props) {
+export default function ContactItem({ info, ...props }) {
+    const renderStars = () => {
+        let tmp = []
+        let star = info?.score;
+        if (star == 0) star = 1;
+        for (let i = 0; i < star; i++) {
+            tmp.push(<div className={styles.star}>
+                <Image src={Star} />
+            </div>)
+        }
+        return tmp;
+    }
     return (
         <div className={styles.contactItemContainer}>
             <div className={styles.avatar}>
-                <Image src={MockAvatar}/>
+                <Image src={MockAvatar} />
             </div>
             <div className={styles.desc}>
-                <div className={styles.name}>Mehdi Azad</div>
+                <div className={styles.name}>{info?.username ?? 'کاربر میهمان'}</div>
                 <div className={styles.stars}>
-                    <div className={styles.star}>
-                        <Image src={Star}/>
-                    </div>
-                    <div className={styles.star}>
-                        <Image src={Star}/>
-                    </div>
-                    <div className={styles.star}>
-                        <Image src={Star}/>
-                    </div>
+                    {renderStars()}
+
                 </div>
             </div>
         </div>

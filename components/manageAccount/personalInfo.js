@@ -9,6 +9,7 @@ import {useForm} from "react-hook-form";
 import styles from 'styles/components/manageAccount/PersonalInfo.module.scss';
 import editContainerStyles from 'styles/components/manageAccount/EditContainer.module.scss';
 import Cookies from 'js-cookie';
+import { updateUser } from 'hooks/useUser';
 
 export default function PersonalInfo ({user}) {
 
@@ -44,41 +45,35 @@ export default function PersonalInfo ({user}) {
 
     let currentAdmin = {username: '', phone: ''}
 
-    const [generalInfo, setGeneralInfo] = useState(
-            {
-                username: '',
-                personNationalId: '',
-                msisdn: '',
-                email: '',
-                profilePic: '',
-                coverPic: '',
-                content: '',
-                about: '',
-                social: {}
-            }
-        )
+    const [generalInfo, setGeneralInfo] = useState()
+    const [initialInfo, setInitialInfo] = useState()
+
     const socials = [
-        'اینستاگرام',
-        'یوتیوب',
-        'آپارات',
-        'لینکدین',
-        'مدیوم',
+        'instagram',
+        'youtube',
+        'aparat',
+        'linkedin',
+        'medium',
         '...'
     ];
 
     useEffect(() => {
         if (user !== undefined) {  
+            console.log(user)
+            setInitialInfo(JSON.parse(JSON.stringify(user)))
+
             if (providerType === 'ناشر حقیقی') {
-                let tempGeneralInfo = {
-                    ...generalInfo,
-                    username: user.username,
-                    personNationalId: '123345556',
-                    msisdn: user.msisdn,
-                    email: '',
-                    profilePic: user.profilePicture,
-                    coverPic: user.coverImage,
-                }
-                setGeneralInfo(tempGeneralInfo)
+                // let tempGeneralInfo = {
+                //     ...generalInfo,
+                //     username: user.username,
+                //     personNationalId: '123345556',
+                //     msisdn: user.msisdn,
+                //     email: '',
+                //     profilePic: user.profilePicture,
+                //     coverPic: user.coverImage,
+                // }
+                
+                setGeneralInfo(user)
                 for (let field of generalFields) {
                     
                     setValue(field.name, user[field.name])
@@ -101,6 +96,7 @@ export default function PersonalInfo ({user}) {
                     coverPic: user.coverImage,
                 }
                 setGeneralInfo(tempGeneralInfo)
+                // initialInfo = tempGeneralInfo
                 for (let field of generalFields) {
                     setValue(field.name, user[field.name])
                 }
@@ -131,6 +127,23 @@ export default function PersonalInfo ({user}) {
                 ])
         }
     }
+
+    const getModifiedValues = (values, initialValues) => {
+        let modifiedValues = {};
+
+        if (values) {
+            Object.entries(values).forEach((entry) => {
+                let key = entry[0];
+                let value = entry[1];
+
+                if (value !== initialValues[key]) {
+                    modifiedValues[key] = value;
+                }
+            });
+        }
+
+        return Object.keys(modifiedValues).length === 0 ? null : modifiedValues;
+    };
 
     const onInfoSubmit = async data => {
         await setGeneralInfo({
@@ -170,15 +183,25 @@ export default function PersonalInfo ({user}) {
     }
 
     const onSocialSubmit = async data => {
-        let tempSocial = {name: data.name, link: data.link}
+        let tempSocial = user.socials
+        tempSocial[data.name] = data.link
         await setGeneralInfo({
             ...generalInfo,
-            social: tempSocial
+            socials: tempSocial
         })
+
+        //const changedInfo = getModifiedValues(initialInfo, generalInfo)
+        //console.log(changedInfo)
+        // console.log('initial:', initialInfo)
+        console.log('final:', generalInfo)
+        const status = await updateUser(generalInfo)
+        if (status === 'ok') {
+            alert('اطاعات با موفقیت ویرایش شد.')
+        }
     }
 
-    // console.log(admins)
-    // console.log(generalInfo.personNationalId)
+   
+    
    
     return (
         <>
@@ -211,7 +234,7 @@ export default function PersonalInfo ({user}) {
                         return (
                             <div key={field.name} className={editContainerStyles.field}>
                                 <div className={editContainerStyles.label}>{`${field.label}:`}</div>
-                                <CustomInput register={infoFormRegister} 
+                                <CustomInput register={infoFormRegister}
                                 placeholder={field.placeholder}
                                 name={field.name} 
                                 validation={{required: 'پر کردن این فیلد الزامی است'}}
@@ -305,12 +328,12 @@ export default function PersonalInfo ({user}) {
 
                         <div className={styles.pictures}>
                             <div className={styles.profilePic}>
-                                <Image src={generalInfo.profilePic ? generalInfo.profilePic : NoProfilePic} alt='profile-pic'
+                                <Image src={NoProfilePic} alt='profile-pic'
                                 width={80} height={80}
                                  />
                             </div>
                             <div>
-                                <Image src={generalInfo.coverPic ? generalInfo.coverPic : NoCoverPic} alt='cover-pic'
+                                <Image src={NoCoverPic} alt='cover-pic'
                                 width={530}
                                 height={130}
                                  />

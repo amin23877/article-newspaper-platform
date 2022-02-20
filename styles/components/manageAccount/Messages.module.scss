@@ -168,3 +168,51 @@
     }
   }
 }
+.modalContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(150, 149, 149, 0.1);
+  border-radius: 10px;
+  outline: none;
+  height: 535px;
+  width: 766px;
+  padding: 24px;
+  .close {
+    position: absolute;
+    left: 24px;
+    top: 16px;
+    cursor: pointer;
+  }
+  .title {
+    font-weight: 700;
+    font-size: $header-size;
+    color: $gray;
+  }
+  .messageInput {
+    margin-top: 24px;
+    width: 711px;
+    height: 348px;
+    background-color: $background-color;
+    border-radius: 7px;
+    position: relative;
+    padding: 13px 15px;
+  }
+  .error {
+    color: $error;
+    font-size: $tertiary-size;
+  }
+  .sendBtn {
+    margin-top: 19px;
+    width: 180px;
+    height: 50px;
+  }
+  textarea:focus-visible {
+    outline: none;
+  }
+}

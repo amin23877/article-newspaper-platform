@@ -7,7 +7,8 @@ import DownArrow from "assets/svg/common/chevron-down.svg"
 import { useState } from "react";
 import {useForm} from "react-hook-form";
 import CustomInput from 'components/common/input';
-import {Editor, EditorState} from 'draft-js';
+import Bold from 'assets/svg/textEditor/bold.svg'
+import {Editor, EditorState, RichUtils} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
 export default function Messages () {
@@ -18,6 +19,7 @@ export default function Messages () {
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
+    const onChange = editorState => setEditorState(editorState)
 
     const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: {errors}, setValue  } = useForm();
 
@@ -58,6 +60,10 @@ export default function Messages () {
 
     const onReplySubmit = () => {
         console.log('meow')
+    }
+
+    const onBoldClick = () => {
+        onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
     }
     return (
         <>
@@ -169,9 +175,19 @@ export default function Messages () {
             </div>
             </>
             :
-            // <div className={styles.newMessage}>
-                <Editor editorState={editorState} onChange={setEditorState} />
-            
+            <div className={styles.newMessage}>
+                <div className={styles.tools}>
+                    <button onClick={onBoldClick}>
+                        <Image src={Bold} alt='' />
+                    </button>
+                </div>
+                <Editor
+                 editorState={editorState} 
+                 onChange={onChange}
+                 placeholder="نوشتن پیام"
+                 textAlignment='right'
+                  />
+            </div>
             }
         </>
     )

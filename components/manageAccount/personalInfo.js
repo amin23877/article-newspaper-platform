@@ -18,12 +18,12 @@ export default function PersonalInfo ({user}) {
 
     const { register: infoFormRegister, handleSubmit: handleGeneralSubmit, formState: {errors}, setValue  } = useForm();
     const { register: profileFormRegister, handleSubmit: handleProfileSubmit, formState: {errors: profileErrors}  } = useForm();
-    const { register: aboutYouRegister, handleSubmit: handleAboutYouSubmit, formState: {errors: aboutErrors}  } = useForm();
+    const { register: aboutYouRegister, handleSubmit: handleAboutYouSubmit, formState: {errors: aboutErrors} , setValue: setAbout } = useForm();
     const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}  } = useForm();
 
     const [generalFields, setGeneralFields] = useState([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
-                    {name: "nationalID", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
+                    {name: "personNationalId", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
                     {name: "msisdn", label: 'شماره همراه', placeholder: ''},
                     {name: "email", label: 'پست الکترونیک', placeholder: 'پست الکترونیکتان را وارد نمایید.'},
                 ])
@@ -47,8 +47,8 @@ export default function PersonalInfo ({user}) {
     const [generalInfo, setGeneralInfo] = useState(
             {
                 username: '',
-                nationalID: '',
-                phone: '',
+                personNationalId: '',
+                msisdn: '',
                 email: '',
                 profilePic: '',
                 coverPic: '',
@@ -72,16 +72,18 @@ export default function PersonalInfo ({user}) {
                 let tempGeneralInfo = {
                     ...generalInfo,
                     username: user.username,
-                    nationalID: '',
-                    phone: user.msisdn,
+                    personNationalId: '123345556',
+                    msisdn: user.msisdn,
                     email: '',
                     profilePic: user.profilePicture,
                     coverPic: user.coverImage,
                 }
                 setGeneralInfo(tempGeneralInfo)
                 for (let field of generalFields) {
+                    
                     setValue(field.name, user[field.name])
                 }
+                setAbout('about', user.aboutMe)
             }
             else {
                 let tempGeneralInfo = {
@@ -92,7 +94,7 @@ export default function PersonalInfo ({user}) {
                     number: '',
                     nationalCode: '',
                     financialCode: '',
-                    phone: user.msisdn,
+                    msisdn: user.msisdn,
                     email: '',
                     admins: [],
                     profilePic: user.profilePicture,
@@ -123,7 +125,7 @@ export default function PersonalInfo ({user}) {
         else if (e.currentTarget.value === 'ناشر حقیقی') {
             setGeneralFields([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
-                    {name: "nationalID", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
+                    {name: "personNationalId", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
                     {name: "msisdn", label: 'شماره همراه', placeholder: ''},
                     {name: "email", label: 'پست الکترونیک', placeholder: 'پست الکترونیکتان را وارد نمایید.'},
                 ])
@@ -134,8 +136,8 @@ export default function PersonalInfo ({user}) {
         await setGeneralInfo({
                 ...generalInfo,
                 username: data.username,
-                nationalID: data.nationalID,
-                phone: data.phone,
+                personNationalId: data.personNationalId,
+                msisdn: data.msisdn,
                 email: data.email
         })
     }
@@ -175,7 +177,8 @@ export default function PersonalInfo ({user}) {
         })
     }
 
-    console.log(admins)
+    // console.log(admins)
+    // console.log(generalInfo.personNationalId)
    
     return (
         <>
@@ -245,7 +248,7 @@ export default function PersonalInfo ({user}) {
                             <div className={`${styles.phone} ${styles.field}`}>
                                 <div className={styles.label}>شماره جهت ورود به حساب کاربری:</div>
                                 <CustomInput register={infoFormRegister} 
-                                onChange={(e) => onChangeAdmin(e, 'phone')}
+                                onChange={(e) => onChangeAdmin(e, 'msisdn')}
                                 placeholder='شماره ادمین جدید را وارد نمایید.'
                                 name='adminUser'
                                 //value={admins[index].phone}

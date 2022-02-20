@@ -53,7 +53,7 @@ export async function updateUser(data) {
         const accessToken = Cookies.get('accessToken')
         try {
 
-            const { data: {status} } = await axios.put(`${Endpoints.baseUrl}/user`, {data}, {
+            const { data: {status} } = await axios.put(`${Endpoints.baseUrl}/user`, data, {
                 headers: {
                     authorization: accessToken
                 }

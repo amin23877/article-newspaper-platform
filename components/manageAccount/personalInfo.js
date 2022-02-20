@@ -181,7 +181,7 @@ export default function PersonalInfo ({user}) {
         let x = await upload(data.profilePic[0], 'image', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU3ZTBjMTk1ZDNjNjAwMWM1YWUxMzkiLCJyb2xlIjoidXNlciIsImlhdCI6MTY0NTM3MjAxMSwiZXhwIjoxNjQ2NTcyMDExfQ.bn7IzDl1dZe5M4Y7uRgHrNJZDn9Rn14wlPwPYVR-n6Og0Qw5Yr7G2FUQqLJ2XX2We2qo4teQiEUswoB2sB9764eWo_wH8KlljURXoroWl3sw_SGxY5r2h6mqEwqYPcNaHopemvN9t7VcMXLcA5S1mOUXh3VpqacPMdcVO0_M0FBDs6UcKAWgpra8n86QQ7TJZ7XhrhvpPfchSfNUgVzVXpBnFp-3ingi5iHXgnPaXlTpwNZKiqkhLlV3wmfCQ72kSQNdtrI2vSrgTwhVCaITlHzDu3i8-0Ch48LAHUoaaqNTVwKiCPOdDyMFgcSkP9rF0lCaUhpp5yEmV2JMCBvXRQ');
         await setGeneralInfo({
             ...generalInfo,
-            profilePicture: x.fileId
+            profilePicture: '62126366f2ccc7001c004442'
         })
         console.log('done!', x)
     }

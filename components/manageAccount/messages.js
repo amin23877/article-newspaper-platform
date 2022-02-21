@@ -4,11 +4,12 @@ import SearchIcon from 'assets/svg/common/search.svg'
 import MockUser from 'assets/images/contact/mock-avatar.png'
 import Image from "next/image"
 import DownArrow from "assets/svg/common/chevron-down.svg"
+import CloseCircle from "assets/images/manage-account/close-circle.svg"
 import { useState } from "react";
 import {useForm} from "react-hook-form";
 import CustomInput from 'components/common/input';
-import Bold from 'assets/svg/textEditor/bold.svg'
-import {Editor, EditorState, RichUtils} from 'draft-js';
+import Modal from '@mui/material/Modal';
+import {EditorState, RichUtils} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
 export default function Messages () {
@@ -16,12 +17,14 @@ export default function Messages () {
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
     const [mode, setMode] = useState('base')
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
-    );
-    const onChange = editorState => setEditorState(editorState)
+
+    const [open, setOpen] = useState(false); // Modal to send new message
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: {errors}, setValue  } = useForm();
+
+    const { register: newMessageRegister, handleSubmit: handleMessageSubmit, formState: {errors: messageErrors}} = useForm();
 
     const messages = [
         {
@@ -62,24 +65,20 @@ export default function Messages () {
         console.log('meow')
     }
 
-    const onBoldClick = () => {
-        onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
+    const onSendMessage = () => {
+        alert('meow')
     }
+
+    console.log(messageErrors)
+
     return (
         <>
-            <Button classes={[styles.newMsgBtn, mode === 'new' ? styles.new : '']} onClick={() => {
-                if (mode === 'new') {
-                    setMode('base')
-                }
-                else {
-                    setMode('new')
-                }
+            <Button classes={styles.newMsgBtn} onClick={() => {
+                handleOpen()
             }}
             >
                 پیام جدید
             </Button>
-            {mode === 'base' ?
-            <>
             <div className={styles.searchContainer}>
                 <div className={styles.search}>
                     <div className={styles.searchIcon}>
@@ -173,22 +172,37 @@ export default function Messages () {
                     )
                 })}
             </div>
-            </>
-            :
-            <div className={styles.newMessage}>
-                <div className={styles.tools}>
-                    <button onClick={onBoldClick}>
-                        <Image src={Bold} alt='' />
-                    </button>
-                </div>
-                <Editor
-                 editorState={editorState} 
-                 onChange={onChange}
-                 placeholder="نوشتن پیام"
-                 textAlignment='right'
-                  />
-            </div>
-            }
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title2"
+                aria-describedby="modal-modal-description2"
+            >
+                <form className={styles.modalContainer} onSubmit={handleMessageSubmit(onSendMessage)}>
+                    <div className={styles.close} onClick={handleClose}>
+                        <Image src={CloseCircle} alt='x'/>
+                    </div>
+                    <div className={styles.title}>پیام جدید</div>
+                    
+                    <textarea 
+                    {...newMessageRegister("message", {
+                        required: 'پر کردن این فیلد الزامی است'
+                    })}
+                    className={styles.messageInput}
+                    placeholder='پیام خود را وارد نمایید.'
+                    name='message' 
+                    rows='7'
+                    error={messageErrors.message}
+                    />
+                    <span className={styles.error}>{messageErrors.message !== undefined ? messageErrors.message.message : null}</span>
+
+                    <Button classes={styles.sendBtn} type='submit'>
+                        ارسال پیام
+                    </Button>
+                </form>
+                
+            </Modal>
         </>
     )
 }

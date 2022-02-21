@@ -18,6 +18,7 @@ export function useUploadFile() {
             const fileData = await getUploadUrl(type, accessToken);
             const info = await uploadFile(fileData.uploadUrl, file, accessToken);
             const done = await uploadDone(fileData.fileId, accessToken);
+            // const link = await getDownloadLink(fileData.fileId, accessToken)
             return ({ status: 'ok', message: 'success', fileId: fileData.fileId })
 
         }
@@ -63,6 +64,21 @@ export function useUploadFile() {
                 }
             });
             console.log('response', response);
+            return response;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const getDownloadLink = async (fileId, accessToken) => {
+        try {
+
+            const response = await axios.get(`${Endpoints.baseUrl}/file/downloadUrl/${fileId}`, {}, {
+                headers: {
+                    authorization: accessToken
+                }
+            });
+            console.log('link response', response);
             return response;
         } catch (e) {
             console.log(e);

@@ -22,11 +22,12 @@ export default function PersonalInfo ({user}) {
     const Hoghughi = 'ناشر حقوقی'
 
     const [profilePic , setProfilePic] = useState()
+    const [coverPic, setCoverPic] = useState()
 
     const { register: infoFormRegister, handleSubmit: handleGeneralSubmit, formState: {errors}, setValue  } = useForm();
     const { register: profileFormRegister, handleSubmit: handleProfileSubmit, formState: {errors: profileErrors}  } = useForm();
     const { register: aboutYouRegister, handleSubmit: handleAboutYouSubmit, formState: {errors: aboutErrors} , setValue: setAbout } = useForm();
-    const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}  } = useForm();
+    const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}, setValue: setSocials, getValues: getSocials  } = useForm();
 
     const [generalFields, setGeneralFields] = useState([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
@@ -55,11 +56,10 @@ export default function PersonalInfo ({user}) {
     const [initialInfo, setInitialInfo] = useState()
 
     const socials = [
+        'facebook',
         'instagram',
-        'youtube',
-        'aparat',
         'linkedin',
-        'medium',
+        'twitter',
         '...'
     ];
 
@@ -74,9 +74,13 @@ export default function PersonalInfo ({user}) {
                     setValue(field.name, user[field.name])
                 }
                 if (user.profilePicture !== null) {
-                    setProfilePic(user.profilePicture.url)
+                    setProfilePic(user.profilePicture.url) 
+                }
+                if (user.coverImage !== null) {
+                    setCoverPic(user.coverImage.url)
                 }
                 setAbout('about', user.aboutMe)
+                setSocials('socials', user.socials)
             }
             else {
                 let tempGeneralInfo = {
@@ -168,28 +172,33 @@ export default function PersonalInfo ({user}) {
         await setAdmins(tempAdmins)
     }
 
+    const onProfileChange = async (e) => {
+        if (e.target.name === 'profilePic') { 
+            await setProfilePic(URL.createObjectURL(e.target.files[0]))
+        }
+        if (e.target.name === 'coverPic') {
+            await setCoverPic(URL.createObjectURL(e.target.files[0]))
+        }
+    }
+
     const onPicturesSubmit = async data => {
-        
-        // await setGeneralInfo({
-        //         ...generalInfo,
-        //         profilePic: URL.createObjectURL(data.profilePic[0]),
-        //         coverPic: URL.createObjectURL(data.coverPic[0]),
-        //         content: data.content
-        // })
         const accessToken = Cookies.get('accessToken')
         console.log(accessToken)
-        let x = await upload(data.profilePic[0], 'image', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU3ZTBjMTk1ZDNjNjAwMWM1YWUxMzkiLCJyb2xlIjoidXNlciIsImlhdCI6MTY0NTM3MjAxMSwiZXhwIjoxNjQ2NTcyMDExfQ.bn7IzDl1dZe5M4Y7uRgHrNJZDn9Rn14wlPwPYVR-n6Og0Qw5Yr7G2FUQqLJ2XX2We2qo4teQiEUswoB2sB9764eWo_wH8KlljURXoroWl3sw_SGxY5r2h6mqEwqYPcNaHopemvN9t7VcMXLcA5S1mOUXh3VpqacPMdcVO0_M0FBDs6UcKAWgpra8n86QQ7TJZ7XhrhvpPfchSfNUgVzVXpBnFp-3ingi5iHXgnPaXlTpwNZKiqkhLlV3wmfCQ72kSQNdtrI2vSrgTwhVCaITlHzDu3i8-0Ch48LAHUoaaqNTVwKiCPOdDyMFgcSkP9rF0lCaUhpp5yEmV2JMCBvXRQ');
+        let profile = await upload(data.profilePic[0], 'image', accessToken);
+        let cover = await upload(data.coverPic[0], 'image', accessToken);
         await setGeneralInfo({
             ...generalInfo,
-            profilePicture: '62126366f2ccc7001c004442'
+            profilePicture: profile.fileId,
+            coverImage: cover.fileId
         })
-        console.log('done!', x)
+        console.log('profile:', profile)
+        console.log('cover', cover)
     }
 
     const onAboutYouSubmit = async data => {
         await setGeneralInfo({
             ...generalInfo,
-            about: data.about
+            aboutMe: data.about
         })
     }
 
@@ -212,8 +221,19 @@ export default function PersonalInfo ({user}) {
         }
     }
 
-   
-    // console.log(accessToken)
+    const showSocials = () => {
+        let socials = []
+        for (const social in getSocials('socials')) {
+            
+            if (social !== '_id' && getSocials('socials')[social]) {
+                let tempSocial  = {}
+                tempSocial.name = social
+                tempSocial.address = getSocials('socials')[social]
+                socials.push(tempSocial)
+            }
+        }
+        return socials
+    }
    
     return (
         <>
@@ -328,6 +348,7 @@ export default function PersonalInfo ({user}) {
                                         <CustomInput register={profileFormRegister} 
                                         placeholder={field.placeholder}
                                         name={field.name} 
+                                        onChange={onProfileChange}
                                         // validation={{required: 'پر کردن این فیلد الزامی است'}}
                                         error={profileErrors[field.name]}
                                         type={field.name.includes('Pic') ? 'file' : 'text'}
@@ -345,7 +366,7 @@ export default function PersonalInfo ({user}) {
                                  />
                             </div>
                             <div>
-                                <Image src={NoCoverPic} alt='cover-pic'
+                                <img src={coverPic !== undefined ? coverPic : NoCoverPic} alt='cover-pic'
                                 width={530}
                                 height={130}
                                  />
@@ -414,6 +435,17 @@ export default function PersonalInfo ({user}) {
                         // validation={{required: 'پر کردن این فیلد الزامی است'}}
                         error={socialErrors.link}
                         />
+                    </div>
+                    <div style={{marginTop: 20, marginRight: 5}}>
+                        {showSocials().map((social, index) => {
+                            return (
+                                <div key={index}>
+                                    
+                                    <span>{social.address}</span>
+                                    <span>{` : ${social.name}`}</span>
+                                </div>
+                            )
+                        })}
                     </div>
                     <Button classes={styles.editButton} variant='filled'
                     type='submit'

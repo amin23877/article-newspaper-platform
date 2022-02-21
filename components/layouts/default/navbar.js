@@ -21,7 +21,7 @@ export default function Navbar() {
 
     const [user, getUser, hasInitialized] = useUser()
     const [showPopup, setShowPopup] = useState(false)
-
+    
     useEffect(() => {
         if (!hasInitialized)
             getUser()

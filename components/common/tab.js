@@ -1,11 +1,10 @@
 
-import {useState} from 'react'
+import { useState } from 'react'
 
 import styles from 'styles/common/Tab.module.scss'
 
-export default function Tab({ items = [{name: ''}], ...rest }) {
+export default function Tab({ items = [{ name: '' }], activeTab, setActiveTab, ...rest }) {
 
-    const [activeTab, setActiveTab] = useState(items[0].name)
 
     return (
         <div className={styles.tabsContainer}>
@@ -22,7 +21,7 @@ export default function Tab({ items = [{name: ''}], ...rest }) {
                     )
                 })}
             </div>
-            <div className={styles.contents}>
+            {/* <div className={styles.contents}>
                 {items.map((item, itemIndex) => {
                     return (
                         <div key={itemIndex} className={styles.contentContainer}>
@@ -30,7 +29,7 @@ export default function Tab({ items = [{name: ''}], ...rest }) {
                         </div>
                     )
                 })}
-            </div>
+            </div> */}
         </div>
     )
 }

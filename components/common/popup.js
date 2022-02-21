@@ -22,14 +22,14 @@ export default function Popup({items = [], containerClass, popupSet,  ...rest}) 
             {rest.children}
             {items.map((item, index) => {
                 return (
-                    <Link href={(item.link !== undefined) ? item.link : '/'} key={index} passHref>
-                    <div className={styles.item} onClick={item.action()}>
+                    // <Link href={(item.link !== undefined) ? item.link : '/'} key={index} passHref>
+                    <div className={styles.item} onClick={()=>item.action()}>
                         <div className={styles.icon}>
                             <Image src={item.icon} alt=''/>
                         </div>
                         <div className={styles.text}>{item.text}</div>
                     </div>
-                    </Link>
+                    // </Link>
                 )
             })}
         </div>

@@ -8,7 +8,7 @@ import { Endpoints } from "../../../utils/endpoints";
 import cookie from 'cookie'
 import jMoment from "moment-jalaali";
 import { useEffect, useState } from "react";
-export default function Archive(props) {
+export default function Archive({ followings, doFollow, ...props }) {
     const [start, setStart] = useState(0)
     const [posts, setPosts] = useState()
 
@@ -32,7 +32,11 @@ export default function Archive(props) {
             <FilterBar />
             <div>
                 {posts ? posts.map((post) => (
-                    <ArchivePost post={{ ...post.post, updatedAt: post.updatedAt, user: post.user }} />
+                    <ArchivePost
+                        followings={followings}
+                        doFollow={doFollow}
+                        post={{ ...post.post, updatedAt: post.updatedAt }}
+                    />
 
                 )) : <p>loading...</p>}
 

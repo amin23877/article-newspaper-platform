@@ -21,9 +21,24 @@ import { Endpoints } from "../../utils/endpoints";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 
-export default function Index({ me, followers, followings, followingsCount, followersCount }) {
+export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount }) {
     const [activeTab, setActiveTab] = useState('feed')
+    const [followings, setFollowings] = useState(followingsProp)
+    const [followingsCount, setFollowingsCount] = useState(followingsCountProp)
+    console.log('followingsProp', followingsProp)
+    const doFollow = async (state, id) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
 
+            let follow = await axios({
+                method: state ? 'POST' : 'DELETE',
+                url: Endpoints.baseUrl + `/user/follow/${id}`,
+                headers: { authorization: accessToken },
+            });
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
@@ -106,10 +121,13 @@ export default function Index({ me, followers, followings, followingsCount, foll
                                 activeTab == 'feed' && <Feed />
                             }
                             {
-                                activeTab == 'forYou' && <ForYou me={me}/>
+                                activeTab == 'forYou' && <ForYou me={me} />
                             }
                             {
-                                activeTab == 'archive' && <Archive />
+                                activeTab == 'archive' && <Archive
+                                    followings={followings}
+                                    doFollow={doFollow}
+                                />
                             }
 
                         </div>
@@ -179,7 +197,7 @@ export async function getServerSideProps(context) {
         ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq])
 
         return {
-            props: { me, followers, followings, followingsCount, followersCount }
+            props: { me, followers, followingsProp: followings, followingsCountProp: followingsCount, followersCount }
         }
 
     }

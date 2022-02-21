@@ -28,11 +28,8 @@ export function useUser() {
             // console.log(Cookies.get('membership'))
             setMemberType(Cookies.get('membership'))
         }
-<<<<<<< HEAD
         const {accessToken} = cookie.parse(document.cookie)
         // const accessToken = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjBmYTcyYTdjOWQ0YTAwMWMyYTE4NWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTY0NTE5MzA0NCwiZXhwIjoxNjQ2MzkzMDQ0fQ.cPiB7hvIZAkLh9dnW7AXx0a_vij_7t9mJhA2SsDOiQ7cdpNTm8SoqbPsrrmkOcIrcmEPMNbvg3rir2r5yP3z7cGPcjQ0qJd_oiZn6Nl-D-gpbzfrb2nRLxnkMKhF2Sug1X8B-JdSEepyRe-KqP4HYENfq3fAv5IuydsoQgy1WeMDac6Cu6HHdteztaUKgQEfkXOqllILXi9dkSPfYXQRMjphh44ngQg0vHqcFagWcb7bzxElK1UvmpD3WgQU3fqlu0laB1QyO7O9O3kdwDgNAyV7AqiBLAGxjOxWAOC9SqGTTEH5eTLIpxeBr9Yl_-wrvhrZboAt07x73Xia-PQSKw"
-=======
->>>>>>> 158534273682416b219748d74cd9f5e8981bb4f8
 
         if (!accessToken) {
             setHasInitialized(true)

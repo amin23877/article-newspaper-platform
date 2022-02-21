@@ -12,16 +12,16 @@ import Button from '@mui/material/Button';
 import edit from 'assets/svg/popup/edit.svg'
 import { useEffect } from 'react';
 
-export default function Completion({ onEditPublish, onEditDetail, data }) {
+export default function Completion({ onEditPublish, onEditDetail, data, handleAddPost, openDialog, setOpenDialog }) {
 
     useEffect(() => {
-        if (data.file && data.contentType.type=='image') {
+        if (data.file) {
             const src = URL.createObjectURL(data.file);
             const preview = document.getElementById("image-placeholder");
             preview.srcset = '';
             preview.src = src;
         }
-    }, [data])
+    }, [])
     return (
         <div className={styles.completionContainer}>
             <div className={styles.cardContainer}  >
@@ -43,7 +43,7 @@ export default function Completion({ onEditPublish, onEditDetail, data }) {
                             <Typography component='p' fontSize='14px' fontWeight='400' fontFamily='IRANSans' color='#797474'>ویرایش</Typography>
                         </Button>
                     </Box>
-                    <DetailCheck data={data}/>
+                    <DetailCheck data={data} />
                 </div>
                 <div className={styles.contentPublishRight}>
                     <Box width='100%' display='flex' justifyContent='space-between' margin='5px'>
@@ -53,11 +53,15 @@ export default function Completion({ onEditPublish, onEditDetail, data }) {
                             <Typography component='p' fontSize='14px' fontWeight='400' fontFamily='IRANSans' color='#797474'>ویرایش</Typography>
                         </Button>
                     </Box>
-                    <PublishCheck data={data}/>
+                    <PublishCheck data={data} />
                 </div>
             </div>
             <div className={styles.buttonsContainer}>
-                <SimpleBackdrop classes={styles.button}></SimpleBackdrop>
+                <SimpleBackdrop
+                    handleAddPost={handleAddPost}
+                    openDialog={openDialog}
+                    setOpenDialog={setOpenDialog}
+                    classes={styles.button}></SimpleBackdrop>
             </div>
         </div>
 

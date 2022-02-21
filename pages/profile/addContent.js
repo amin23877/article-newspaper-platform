@@ -19,9 +19,10 @@ import { getUserProfile } from 'shared/users';
 import { useUploadFile } from 'hooks/useUploadFile';
 
 
-export default function AddContent({ me, accessToken, ...props }) {
+export default function AddContent({ me, accessToken, tags, ...props }) {
     const [upload, uploadFileData] = useUploadFile();
     const [uploadLoading, setUploadLoading] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
 
     const steps = [
         { id: 0, name: 'type', text: 'انتخاب نوع محتوا' },
@@ -36,7 +37,16 @@ export default function AddContent({ me, accessToken, ...props }) {
     const [data, setData] = useAsyncState(
         {
             contentType: undefined,
-            file: undefined
+            file: undefined,
+            title: '',
+            description: '',
+            subjects: [],
+            descriptionCount: 0,
+            titleCount: 0,
+            timing: false,
+            publishTime: null,
+            sharePolicy: 'free',
+            price: '0'
         }
     )
 
@@ -81,13 +91,13 @@ export default function AddContent({ me, accessToken, ...props }) {
     }
 
     console.log('data', data)
-    function onDetailSubmit(title, description, subjects) {
-        setData({
-            ...data,
-            title: title,
-            description: description,
-            subjects: subjects
-        })
+    function onDetailSubmit() {
+        // setData({
+        //     ...data,
+        //     title: title,
+        //     description: description,
+        //     subjects: subjects
+        // })
         setStep(steps[3])
     }
 
@@ -121,18 +131,35 @@ export default function AddContent({ me, accessToken, ...props }) {
     // const PublishRightHandler = () => {
     //     props.sharePolicy
     // }
-    const onSubmitPublishRights = (sharePolicy, price, timing, publishTime) => {
-        setData({
-            ...data,
-            sharePolicy: sharePolicy,
-            price: price,
-            timing: timing,
-            publishTime: publishTime
-        })
+    const onSubmitPublishRights = () => {
         setStep(steps[4])
-
     }
 
+    const handleAddPost = async () => {
+        try {
+            const result = await axios.post(Endpoints.baseUrl + '/post',
+                {
+                    "contentType": data.contentType.name,
+                    "title": data.title,
+                    "description": data.description,
+                    "tags": data.subjects,
+                    "files": [data.fileId],
+                    "coverImage": data.coverFileId,
+                    "paymentType": [
+                        data.sharePolicy
+                    ],
+                    "price": data.price,
+                    "bankAccount": null
+                }, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setOpenDialog(true)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <div className={styles.addContentContainer}>
             <div className={styles.headerContainer} />
@@ -173,13 +200,37 @@ export default function AddContent({ me, accessToken, ...props }) {
                                         case 0:
                                             return <Type onTypeSelect={selectUploadType} />
                                         case 1:
-                                            return <Upload loading={uploadLoading} onUpload={uploadFile} onStepForward={stepForward} data={data} />
+                                            return <Upload
+                                                loading={uploadLoading}
+                                                onUpload={uploadFile}
+                                                onStepForward={stepForward}
+                                                data={data}
+                                            />
                                         case 2:
-                                            return <Details data={data} loading={uploadLoading} onDetailSubmit={onDetailSubmit} loading={uploadLoading} onUpload={(file) => uploadFile(file, 'image', 'cover')} />
+                                            return <Details
+                                                tags={tags}
+                                                data={data}
+                                                setData={setData}
+                                                loading={uploadLoading}
+                                                onDetailSubmit={onDetailSubmit}
+                                                loading={uploadLoading}
+                                                onUpload={(file) => uploadFile(file, 'image', 'cover')}
+                                            />
                                         case 3:
-                                            return <PublishRight onSumbit={onSubmitPublishRights} />
+                                            return <PublishRight
+                                                data={data}
+                                                setData={setData}
+                                                onSumbit={onSubmitPublishRights}
+                                            />
                                         case 4:
-                                            return <Completion data={data} onEditPublish={stepBack} onEditDetail={editDetail} />
+                                            return <Completion
+                                                data={data}
+                                                onEditPublish={stepBack}
+                                                handleAddPost={handleAddPost}
+                                                openDialog={openDialog}
+                                                setOpenDialog={setOpenDialog}
+                                                onEditDetail={editDetail}
+                                            />
                                     }
                                 })()
                             }
@@ -215,13 +266,15 @@ export async function getServerSideProps(context) {
                 },
             }
         }
-
-
-
+        const tags = await axios.get(Endpoints.baseUrl + '/post/tags', {
+            headers: {
+                authorization: accessToken
+            }
+        })
 
 
         return {
-            props: { me, accessToken }
+            props: { me, accessToken, tags: tags.data.data.tags }
         }
 
     }

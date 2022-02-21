@@ -340,7 +340,7 @@ export default function PersonalInfo ({user}) {
 
                         <div className={styles.pictures}>
                             <div className={styles.profilePic}>
-                                <img src={profilePic !== undefined ? profilePic : NoProfilePic} alt='profile-pic'
+                                <Image src={profilePic !== undefined ? profilePic : NoProfilePic} alt='profile-pic'
                                 width={80} height={80}
                                  />
                             </div>

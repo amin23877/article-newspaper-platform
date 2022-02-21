@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from "next/image";
-import {useRef} from "react";
+import { useRef } from "react";
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper';
@@ -15,7 +15,7 @@ import ChevronLeft from 'assets/svg/common/chevron-left.svg'
 import ChevronRight from 'assets/svg/common/chevron-right.svg'
 import styles from 'styles/common/carousel/Carousel.module.scss'
 
-export default function Carousel({items = [], swiperOptions, radius = true, type = '', image = MockNews}) {
+export default function Carousel({ items = [], swiperOptions, radius = true, type = '', image = MockNews }) {
 
     SwiperCore.use([Navigation]);
 
@@ -47,10 +47,10 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                         <SwiperSlide key={index}>
                             {
                                 item.bestSeller ?
-                                (<div className={styles.bestSellerBadge}>
-                                    <Image src={bestSellerBadge} alt=''/>
-                                </div>) :
-                                ''
+                                    (<div className={styles.bestSellerBadge}>
+                                        <Image src={bestSellerBadge} alt='' />
+                                    </div>) :
+                                    ''
                             }
                             <Link href={item.route}>
                                 <a className={
@@ -63,28 +63,28 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                                                     case ('podcast'):
                                                         return (
                                                             <div className={styles.icon}>
-                                                                <Image src={AudioIcon} alt=""/>
+                                                                <Image src={AudioIcon} alt="" />
                                                             </div>
                                                         )
                                                     case ('video'):
                                                         return (
                                                             <div className={styles.icon}>
-                                                                <Image src={VideoIcon} alt=""/>
+                                                                <Image src={VideoIcon} alt="" />
                                                             </div>
                                                         )
                                                 }
                                             })()
                                         }
-                                        <img className={`${styles.imageItem} ${type=='best'?styles.fixedHeight:""}`} src={item.image} alt=""/>
+                                        <Image loader={() => item.image} height={type == 'best' ?'300px':(type=='magazine' || type=='article')?'250px':'200px'} width="100%" className={`${styles.imageItem}`} src={item.image} alt="" />
                                     </div>
                                     {item.title || item.subTitle ?
                                         (
-                                        <div className={styles.descriptionContainer}>
-                                            {item.title ? <div className={styles.title}>{item.title}</div> : null}
-                                            {item.subTitle ? <div className={styles.subTitle}>{item.subTitle}</div> : null}
-                                        </div>
+                                            <div className={styles.descriptionContainer}>
+                                                {item.title ? <div className={styles.title}>{item.title}</div> : null}
+                                                {item.subTitle ? <div className={styles.subTitle}>{item.subTitle}</div> : null}
+                                            </div>
                                         ) :
-                                    ''}
+                                        ''}
                                 </a>
                             </Link>
                         </SwiperSlide>
@@ -92,10 +92,10 @@ export default function Carousel({items = [], swiperOptions, radius = true, type
                 })
             }
             <div className={styles.prevNav} ref={prevRef}>
-                    <Image src={ChevronRight} alt=""/>
+                <Image src={ChevronRight} alt="" />
             </div>
             <div className={styles.nextNav} ref={nextRef}>
-                    <Image src={ChevronLeft} alt=""/>
+                <Image src={ChevronLeft} alt="" />
             </div>
         </Swiper>
     );

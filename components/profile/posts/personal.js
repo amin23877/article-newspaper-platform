@@ -47,8 +47,8 @@ export default function PersonalPost({ post, me, ...props }) {
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
                 <div className={styles.imageItem}>
-                    <img layout='fill'
-                        objectFit='cover' src={post.coverImage?.url} alt="" />
+                    <Image loader={() => post.coverImage?.url || MockNews} layout='fill'
+                        objectFit='cover' src={post.coverImage?.url || MockNews} alt="" />
                 </div>
             </div>
             <div className={styles.descriptionContainer}>

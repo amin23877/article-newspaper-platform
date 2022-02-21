@@ -11,28 +11,22 @@ import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";
 import { DatePicker } from "jalali-react-datepicker";
 import { getThemeProps } from '@mui/system';
 
-export default function PublishRight({ onSumbit }) {
+export default function PublishRight({ onSumbit, data, setData }) {
 
-    const [sharePolicy, setSharePolicy] = useState('')
-    const [price, setPrice] = useState(0)
-    const [timing, setTiming] = useState(false)
-    const [publishTime, setPublishTime] = useState()
 
-    // const publishRightHandler = ()=>{
-    //      setSharePolicy(props.sharePolicy)
-    // }
+
     const selectDate = ({ value }) => {
         console.log("start ", value);
-        setPublishTime(value)
+        setData({ ...data, publishTime: value })
     }
     return (
         <div className={styles.publishRightContainer}>
             <WrapperCard className={styles.wrapper} title="اشتراک محتوا" description='محتوایتان را به یکی از روش های زیر به اشتراک بگذارید. بیشتر بدانید'>
                 <div className={styles.content}>
                     <div className={styles.buttonsContainer}>
-                        <Button onClick={() => setSharePolicy('free')} variant={sharePolicy === 'free' ? 'filled' : 'outline'}>رایگان</Button>
-                        <Button onClick={() => setSharePolicy('subscription')} variant={sharePolicy === 'subscription' ? 'filled' : 'outline'}>خرید اشتراک</Button>
-                        <Button onClick={() => setSharePolicy('payment')} variant={sharePolicy === 'payment' ? 'filled' : 'outline'}>پرداخت</Button>
+                        <Button onClick={() => setData({ ...data, sharePolicy: 'free' })} variant={data.sharePolicy === 'free' ? 'filled' : 'outline'}>رایگان</Button>
+                        <Button onClick={() => setData({ ...data, sharePolicy: 'subscription' })} variant={data.sharePolicy === 'subscription' ? 'filled' : 'outline'}>خرید اشتراک</Button>
+                        <Button onClick={() => setData({ ...data, sharePolicy: 'payment' })} variant={data.sharePolicy === 'payment' ? 'filled' : 'outline'}>پرداخت</Button>
                     </div>
                 </div>
             </WrapperCard>
@@ -41,14 +35,14 @@ export default function PublishRight({ onSumbit }) {
                     <div className={styles.inputContainer}>
                         <CurrencyInput
                             className={styles.currencyInput}
-                            disabled={sharePolicy !== 'payment' ? 'disabled' : ''}
+                            disabled={data.sharePolicy !== 'payment' ? 'disabled' : ''}
                             id="price"
                             name="price"
                             placeholder="قیمت خود را وارد کنید"
                             defaultValue={0}
                             decimalsLimit={2}
-                            value={price}
-                            onValueChange={(value, name) => setPrice(value)}
+                            value={data.price}
+                            onValueChange={(value, name) => setData({ ...data, price: value })}
                         />
                         <span className={styles.label}>تومان</span>
                     </div>
@@ -62,27 +56,27 @@ export default function PublishRight({ onSumbit }) {
                     <div className={styles.title}>زمان نمایش محتوا را تعیین می کنم.</div>
                     <div className={styles.selectContainer}>
                         <div className={styles.inputWrapper}>
-                            <input checked={timing} onChange={(e) => setTiming(true)} name='time' id='yes' type="radio" />
+                            <input checked={data.timing} onChange={(e) => setData({ ...data, timing: true })} name='time' id='yes' type="radio" />
                             <label htmlFor="yes">بله</label>
                         </div>
                         <div className={styles.inputWrapper}>
-                            <input checked={!timing} onChange={(e) => setTiming(false)} name='time' id='no' type="radio" />
+                            <input checked={!data.timing} onChange={(e) => setData({ ...data, timing: true })} name='time' id='no' type="radio" />
                             <label htmlFor="no">نه</label>
                         </div>
                     </div>
                 </div>
                 {
-                    timing && <>
+                    data.timing && <>
                         <div className={styles.desc}>
                             تاریخ نمایش محتوایتان را تعیین نمایید.
                         </div>
 
-                        <DatePicker onClickSubmitButton={selectDate} disabled={sharePolicy !== 'payment' ? 'disabled' : ''} className={styles.datePicker} open={true} />
+                        <DatePicker onClickSubmitButton={selectDate} disabled={data.sharePolicy !== 'payment' ? 'disabled' : ''} className={styles.datePicker} open={true} />
                     </>
                 }
             </div>
             <div className={styles.buttonContainer}>
-                <Button classes={styles.button} onClick={() => onSumbit(sharePolicy, price, timing, publishTime)}>
+                <Button classes={styles.button} onClick={() => onSumbit()}>
                     تایید
                 </Button>
             </div>

@@ -18,7 +18,7 @@ import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
 import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
+export default function FeedPost ({paid,memberType,paymentType, postProp , ...rest}) {
 
     const popupItems = [
         {text: 'حذف', icon: TrashIcon, action: () => {}},
@@ -31,7 +31,7 @@ export default function FeedPost ({paid,memberType,paymentType, ...rest}) {
 
     const post = {
         image: MockNews,
-        title: 'عنوان',
+        title: postProp.title,
         time: '11 ساعت پیش',
         description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
         likeCount: 22, 

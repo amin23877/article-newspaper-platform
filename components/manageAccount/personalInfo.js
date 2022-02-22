@@ -4,6 +4,7 @@ import Button from "components/common/button";
 import NoProfilePic from 'assets/svg/common/no-profile.svg';
 import NoCoverPic from 'assets/svg/common/no-cover.svg';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useAsyncState} from 'react';
 import {useForm} from "react-hook-form";
@@ -22,11 +23,12 @@ export default function PersonalInfo ({user}) {
     const Hoghughi = 'ناشر حقوقی'
 
     const [profilePic , setProfilePic] = useState()
+    const [coverPic, setCoverPic] = useState()
 
     const { register: infoFormRegister, handleSubmit: handleGeneralSubmit, formState: {errors}, setValue  } = useForm();
-    const { register: profileFormRegister, handleSubmit: handleProfileSubmit, formState: {errors: profileErrors}  } = useForm();
+    const { register: profileFormRegister, handleSubmit: handleProfileSubmit, formState: {errors: profileErrors}, setValue: setAboutContent  } = useForm();
     const { register: aboutYouRegister, handleSubmit: handleAboutYouSubmit, formState: {errors: aboutErrors} , setValue: setAbout } = useForm();
-    const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}  } = useForm();
+    const { register: socialRegister, handleSubmit: handleSocialSubmit, formState: {errors: socialErrors}, setValue: setSocials, getValues: getSocials  } = useForm();
 
     const [generalFields, setGeneralFields] = useState([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
@@ -38,7 +40,7 @@ export default function PersonalInfo ({user}) {
     const [profileFields, setProfileFields] = useState([
                     {name: "profilePic", label: 'عکس پروفایل', placeholder: ''},
                     {name: "coverPic", label: 'عکس کاور', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
-                    {name: "content", label: 'محتوا', placeholder: 'در حال تولید چه محتوایی هستید. حداکثر 40 کاراکتر'},
+                    {name: "aboutUserContent", label: 'محتوا', placeholder: 'در حال تولید چه محتوایی هستید. حداکثر 40 کاراکتر'},
                 ])
 
     const [admins, setAdmins] = useState([
@@ -55,11 +57,10 @@ export default function PersonalInfo ({user}) {
     const [initialInfo, setInitialInfo] = useState()
 
     const socials = [
+        'facebook',
         'instagram',
-        'youtube',
-        'aparat',
         'linkedin',
-        'medium',
+        'twitter',
         '...'
     ];
 
@@ -67,33 +68,24 @@ export default function PersonalInfo ({user}) {
         if (user !== undefined) {  
             console.log(user)
             setInitialInfo(JSON.parse(JSON.stringify(user)))
-
-            if (providerType === 'ناشر حقیقی') {
+            if (user.accountType === 'personal') {
                 setGeneralInfo(user)
                 for (let field of generalFields) {  
                     setValue(field.name, user[field.name])
                 }
                 if (user.profilePicture !== null) {
-                    setProfilePic(user.profilePicture.url)
+                    setProfilePic(user.profilePicture.url) 
                 }
+                if (user.coverImage !== null) {
+                    setCoverPic(user.coverImage.url)
+                }
+                setAboutContent('aboutUserContent', user.aboutUserContent)
                 setAbout('about', user.aboutMe)
+                setSocials('socials', user.socials)
             }
             else {
-                let tempGeneralInfo = {
-                    ...generalInfo,
-                    username: user.username,
-                    companyName: '',
-                    companyType: '',
-                    number: '',
-                    nationalCode: '',
-                    financialCode: '',
-                    msisdn: user.msisdn,
-                    email: '',
-                    admins: [],
-                    profilePic: user.profilePicture,
-                    coverPic: user.coverImage,
-                }
-                setGeneralInfo(tempGeneralInfo)
+                setProviderType(Hoghughi)
+                setGeneralInfo(user)
                 // initialInfo = tempGeneralInfo
                 for (let field of generalFields) {
                     setValue(field.name, user[field.name])
@@ -103,21 +95,25 @@ export default function PersonalInfo ({user}) {
         console.log(generalInfo)
     },[user, providerType])
 
-    const changeType = (e) => {
-        setProviderType(e.currentTarget.value)
-        if (e.currentTarget.value === 'ناشر حقوقی') {
+    const changeType = async (e) => {
+        await setProviderType(e.target.value)
+        await setGeneralInfo({
+            ...generalInfo,
+            accountType: (e.target.value === Haghighi) ? 'personal' : 'company'
+        })
+        if (e.target.value === 'ناشر حقوقی') {
             setGeneralFields([
                     {name: "username", label: 'نام کاربری'},
                     {name: "companyName", placeholder: 'نام ثبتی خود را وارد نمایید.', label: 'نام کامل شرکت'},
                     {name: "companyType", placeholder: 'نوع شرکت را وارد نمایید', label: 'نوع شرکت'},
-                    {name: "number", placeholder: 'شماره ثبت شرکت را وارد نمایی.', label: 'شماره ثبت'},
-                    {name: "nationalCode", placeholder: 'شناسه ملی خود را وارد نمایید.', label: 'شناسه ملی'},
-                    {name: "financialCode", placeholder: 'کد اقتصادی شرکت را وارد نمایید.', label: 'کد اقتصادی'},
+                    {name: "companyRegisterNum", placeholder: 'شماره ثبت شرکت را وارد نمایی.', label: 'شماره ثبت'},
+                    {name: "companyNationalId", placeholder: 'شناسه ملی خود را وارد نمایید.', label: 'شناسه ملی'},
+                    {name: "companyEconomicId", placeholder: 'کد اقتصادی شرکت را وارد نمایید.', label: 'کد اقتصادی'},
                     {name: "msisdn", label: 'شماره همراه'},
                     {name: "email", placeholder: 'پست الکترونیکتان را وارد نمایید.', label: 'پست الکترونیک'},
                 ])
         }
-        else if (e.currentTarget.value === 'ناشر حقیقی') {
+        else if (e.target.value === 'ناشر حقیقی') {
             setGeneralFields([
                     {name: "username", label: 'نام نام خانوادگی', placeholder: ''},
                     {name: "personNationalId", label: 'کد ملی', placeholder: 'کد ملی خود را بدون خط تیره وارد نمایید.'},
@@ -143,18 +139,34 @@ export default function PersonalInfo ({user}) {
                 }
             // }
         }
-        console.log(JSON.stringify(changedValues))
         return changedValues;
     }
 
     const onInfoSubmit = async data => {
-        await setGeneralInfo({
+        if (providerType === Hoghughi) {
+            await setGeneralInfo({
+                ...generalInfo,
+                username: data.username,
+                companyName: data.companyName,
+                companyType: data.companyType,
+                companyRegisterNum: data.companyRegisterNum,
+                companyNationalId: data.companyNationalId,
+                companyEconomicId: data.companyEconomicId,
+                msisdn: data.msisdn,
+                email: data.email
+            })
+        }
+        else {
+            await setGeneralInfo({
                 ...generalInfo,
                 username: data.username,
                 personNationalId: data.personNationalId,
                 msisdn: data.msisdn,
                 email: data.email
-        })
+            })
+        }
+        
+        
     }
 
     const onChangeAdmin = (e, attr) => {
@@ -168,28 +180,32 @@ export default function PersonalInfo ({user}) {
         await setAdmins(tempAdmins)
     }
 
+    const onProfileChange = async (e) => {
+        if (e.target.name === 'profilePic') { 
+            await setProfilePic(URL.createObjectURL(e.target.files[0]))
+        }
+        if (e.target.name === 'coverPic') {
+            await setCoverPic(URL.createObjectURL(e.target.files[0]))
+        }
+    }
+
     const onPicturesSubmit = async data => {
-        
-        // await setGeneralInfo({
-        //         ...generalInfo,
-        //         profilePic: URL.createObjectURL(data.profilePic[0]),
-        //         coverPic: URL.createObjectURL(data.coverPic[0]),
-        //         content: data.content
-        // })
         const accessToken = Cookies.get('accessToken')
         console.log(accessToken)
-        let x = await upload(data.profilePic[0], 'image', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU3ZTBjMTk1ZDNjNjAwMWM1YWUxMzkiLCJyb2xlIjoidXNlciIsImlhdCI6MTY0NTM3MjAxMSwiZXhwIjoxNjQ2NTcyMDExfQ.bn7IzDl1dZe5M4Y7uRgHrNJZDn9Rn14wlPwPYVR-n6Og0Qw5Yr7G2FUQqLJ2XX2We2qo4teQiEUswoB2sB9764eWo_wH8KlljURXoroWl3sw_SGxY5r2h6mqEwqYPcNaHopemvN9t7VcMXLcA5S1mOUXh3VpqacPMdcVO0_M0FBDs6UcKAWgpra8n86QQ7TJZ7XhrhvpPfchSfNUgVzVXpBnFp-3ingi5iHXgnPaXlTpwNZKiqkhLlV3wmfCQ72kSQNdtrI2vSrgTwhVCaITlHzDu3i8-0Ch48LAHUoaaqNTVwKiCPOdDyMFgcSkP9rF0lCaUhpp5yEmV2JMCBvXRQ');
+        let profile = await upload(data.profilePic[0], 'image', accessToken);
+        let cover = await upload(data.coverPic[0], 'image', accessToken);
         await setGeneralInfo({
             ...generalInfo,
-            profilePicture: '62126366f2ccc7001c004442'
+            profilePicture: profile.fileId,
+            coverImage: cover.fileId,
+            aboutUserContent: data.aboutUserContent
         })
-        console.log('done!', x)
     }
 
     const onAboutYouSubmit = async data => {
         await setGeneralInfo({
             ...generalInfo,
-            about: data.about
+            aboutMe: data.about
         })
     }
 
@@ -207,17 +223,28 @@ export default function PersonalInfo ({user}) {
         console.log('final', generalInfo)
         const status = await updateUser(changedInfo)
         if (status === 'ok') {
-            alert('اطاعات با موفقیت ویرایش شد.')
-            router.reload()
+            //alert('اطاعات با موفقیت ویرایش شد.')
+            //router.reload()
         }
     }
 
-   
-    // console.log(accessToken)
+    const showSocials = () => {
+        let socials = []
+        for (const social in getSocials('socials')) {
+            
+            if (social !== '_id' && getSocials('socials')[social]) {
+                let tempSocial  = {}
+                tempSocial.name = social
+                tempSocial.address = getSocials('socials')[social]
+                socials.push(tempSocial)
+            }
+        }
+        return socials
+    }
    
     return (
         <>
-            <div className={styles.radioButtons}>
+            <div className={styles.radioButtons} id="#">
                 <div className={styles.realLabel}>
                     ناشر حقیقی
                 <label><input type="radio" id="haghighi" name="type" value="ناشر حقیقی"
@@ -328,6 +355,7 @@ export default function PersonalInfo ({user}) {
                                         <CustomInput register={profileFormRegister} 
                                         placeholder={field.placeholder}
                                         name={field.name} 
+                                        onChange={onProfileChange}
                                         // validation={{required: 'پر کردن این فیلد الزامی است'}}
                                         error={profileErrors[field.name]}
                                         type={field.name.includes('Pic') ? 'file' : 'text'}
@@ -345,7 +373,7 @@ export default function PersonalInfo ({user}) {
                                  />
                             </div>
                             <div>
-                                <Image src={NoCoverPic} alt='cover-pic'
+                                <img src={coverPic !== undefined ? coverPic : NoCoverPic} alt='cover-pic'
                                 width={530}
                                 height={130}
                                  />
@@ -415,11 +443,24 @@ export default function PersonalInfo ({user}) {
                         error={socialErrors.link}
                         />
                     </div>
+                    <div style={{marginTop: 20, marginRight: 5}}>
+                        {showSocials().map((social, index) => {
+                            return (
+                                <div key={index}>
+                                    
+                                    <span>{social.address}</span>
+                                    <span>{` : ${social.name}`}</span>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    {/* <Link href='/manage-account/#' passHref> */}
                     <Button classes={styles.editButton} variant='filled'
                     type='submit'
                     >
                         ثبت
                     </Button>
+                    {/* </Link> */}
                 </form>
             </EditContainer>
         </>

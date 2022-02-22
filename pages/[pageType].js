@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { getUserProfile } from 'shared/users';
 import cookie from "cookie";
 
-export default function MainPages({ pageInfo, tags }) {
+export default function MainPages({ pageInfo, tags=[] }) {
 
     console.log('pageInfo', pageInfo)
     const [sections, setSections] = useState()
@@ -89,34 +89,51 @@ export default function MainPages({ pageInfo, tags }) {
     )
 }
 
-export async function getServerSideProps(context) {
-
-    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
-
-    if (!accessToken) {
+export const getStaticPaths = async (context) => {
+    console.log('connn',context.req)
+    const pagesInfo = await axios.get(`${Endpoints.baseUrl}/pages`)
+    const data = pagesInfo.data.data.pages;
+    const paths = data.map(page => {
         return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
+            params: { pageType: page.pageType.toString() }
+
         }
+    })
+    return {
+        paths,
+        fallback: false
     }
+}
+
+export async function getStaticProps(context) {
+    console.log('context', context);
+
+    // const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+
+    // if (!accessToken) {
+    //     return {
+    //         redirect: {
+    //             destination: '/',
+    //             permanent: false,
+    //         },
+    //     }
+    // }
 
     try {
-        const { data: { data: { me } } } = await getUserProfile(accessToken)
+        // const { data: { data: { me } } } = await getUserProfile(accessToken)
 
-        console.log('context', context.query);
-        const pageInfo = await axios.get(`${Endpoints.baseUrl}/pages/${context.query.pageType}`)
-        const tags = await axios.get(`${Endpoints.baseUrl}/post/tags`, {
-            headers: {
-                authorization: accessToken
-            }
-        })
+        console.log('context', context.params);
+        const pageInfo = await axios.get(`${Endpoints.baseUrl}/pages/${context.params.pageType}`)
+        // const tags = await axios.get(`${Endpoints.baseUrl}/post/tags`, {
+        //     headers: {
+        //         authorization: 'accessToken'
+        //     }
+        // })
 
         return {
             props: {
                 pageInfo: pageInfo.data.data.page,
-                tags: tags.data.data.tags
+                // tags: tags.data.data.tags
             }, // will be passed to the page component as props
 
         };

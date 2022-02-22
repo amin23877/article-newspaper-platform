@@ -3,10 +3,16 @@ import HeaderOnly from 'layouts/header-only.js'
 import styles from 'styles/pages/Home.module.scss'
 import CarouselContainer from "components/common/carousel/carouselContainer";
 import Accordion from "components/common/accordion";
+import Categories from "components/homepage/categories";
+import Button from "components/common/button";
+import { useRouter } from "next/router";
 import axios from 'axios';
 import { Endpoints } from 'utils/endpoints'
 import { useEffect, useState } from 'react'
-export default function Home({ pageInfo }) {
+import { getUserProfile } from 'shared/users';
+import cookie from "cookie";
+
+export default function MainPages({ pageInfo, tags }) {
 
     console.log('pageInfo', pageInfo)
     const [sections, setSections] = useState()
@@ -48,7 +54,9 @@ export default function Home({ pageInfo }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className='container'>
-             
+
+                <Categories tags={tags} />
+
                 {sections?.map((carousel) => (
                     <CarouselContainer
                         key={carousel.title}
@@ -65,7 +73,14 @@ export default function Home({ pageInfo }) {
                         }
                     />
                 ))}
-         
+
+                <div className={styles.showMore}>
+                    <Button classes={styles.showMoreBtn}>
+                        موارد بیشتر
+                    </Button>
+                </div>
+
+
                 <div className={styles.accordionContainer}>
                     <Accordion />
                 </div>
@@ -76,13 +91,38 @@ export default function Home({ pageInfo }) {
 
 export async function getServerSideProps(context) {
 
-    const pageInfo = await axios.get(`${Endpoints.baseUrl}/pages/home`)
+    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
 
-    return {
-        props: {
-            pageInfo: pageInfo.data.data.page
-        }, // will be passed to the page component as props
+    if (!accessToken) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
 
-    };
+    try {
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
+
+        console.log('context', context.query);
+        const pageInfo = await axios.get(`${Endpoints.baseUrl}/pages/${context.query.pageType}`)
+        const tags = await axios.get(`${Endpoints.baseUrl}/post/tags`, {
+            headers: {
+                authorization: accessToken
+            }
+        })
+
+        return {
+            props: {
+                pageInfo: pageInfo.data.data.page,
+                tags: tags.data.data.tags
+            }, // will be passed to the page component as props
+
+        };
+    }
+    catch (e) {
+
+    }
 
 }

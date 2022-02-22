@@ -8,23 +8,23 @@ import { Endpoints } from "../../../utils/endpoints";
 import cookie from 'cookie'
 import jMoment from "moment-jalaali";
 import { useEffect, useState } from "react";
-export default function Archive({ followings, doFollow, ...props }) {
-    const [start, setStart] = useState(0)
-    const [posts, setPosts] = useState()
+export default function Archive(
+    {
+        followings,
+        doFollow,
+        handleRemoveBookmark,
+        posts,
+        setPosts,
+        getPosts,
+        handleDeleteBookamrk,
+        handleAddToSearch,
+        handleSharePost,
+        ...props
+    }
+) {
 
     useEffect(async () => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-
-            let tPosts = await axios.get(Endpoints.baseUrl + `/post/bookmarks?start=${start}&limit=10`, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            setPosts(tPosts.data.data.bookmarks)
-        } catch (e) {
-            console.log(e)
-        }
+        getPosts()
     }, [])
 
     return (
@@ -35,6 +35,9 @@ export default function Archive({ followings, doFollow, ...props }) {
                     <ArchivePost
                         followings={followings}
                         doFollow={doFollow}
+                        handleDeleteBookamrk={handleDeleteBookamrk}
+                        handleAddToSearch={handleAddToSearch}
+                        handleSharePost={handleSharePost}
                         post={{ ...post.post, updatedAt: post.updatedAt }}
                     />
 

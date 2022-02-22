@@ -34,6 +34,7 @@
         align-items: center;
         height: 100%;
         .linkItem {
+          width:max-content;
           font-style: normal;
           font-weight: 500;
           font-size: $secondary-size;

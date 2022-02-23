@@ -13,7 +13,7 @@ export default function Contacts({type = 'follower', count, data = [], ...rest})
                 {
                     data.map((item, index) => {
                         return (
-                            <Link key={index} href="/">
+                            <Link key={index} href={`/user/${item.targetAccount?._id || item.user._id}`}>
                                 <a>
                                     <div className={styles.item}>
                                         <ContactItem />

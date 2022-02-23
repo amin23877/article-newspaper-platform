@@ -65,7 +65,7 @@ export default function Navbar({pages}) {
                             </Link>
                         </div>
                         <div className={styles.linksContainer}>
-                            {pages.map((link, index) => {
+                            {pages?.map((link, index) => {
                                 return (
                                     <ActiveLink key={index} activeClassName={styles.activeLink} href={link.pageType=='home'?'/':`/${link.pageType}`}>
                                         <a className={styles.linkItem}>{link.title}</a>

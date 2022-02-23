@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import MockAvatar from 'assets/images/contact/mock-avatar.png'
 import GoldRank from 'assets/images/contact/gold-rank.svg'
 import styles from 'styles/pages/ContactUs.module.scss'
@@ -9,8 +9,8 @@ import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";
 import About from "components/profile/tabs/about";
 import LoginModal from 'components/common/login-modal';
-import {useUser} from "hooks/useUser";
-import {useEffect, useState} from "react";
+import { useUser } from "hooks/useUser";
+import { useEffect, useState } from "react";
 import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
 import Twitter from "assets/svg/social-media/twitter-green-circle.svg";
 import Facebook from "assets/svg/social-media/facebook-green-circle.svg";
@@ -19,14 +19,18 @@ import MembershipPlans from 'components/profile/contacts/membershipPlans';
 import PurchaseCard from 'components/profile/contacts/purchaseCard';
 import Modal from '@mui/material/Modal';
 import Dots from "assets/svg/common/dots.svg";
+import cookie from "cookie";
+import axios from 'axios'
+import { getUserProfile } from 'shared/users';
+import { Endpoints } from 'utils/endpoints';
+export default function Index({ userInfo, id, accessToken }) {
+    console.log('user', userInfo)
 
-export default function Index() {
-
-    
-    const [followed, setFollowed] = useState(false)
+    const [followed, setFollowed] = useState(userInfo.isFollowing)
     const [membership, setMembership] = useState('')
     const [membershipCost, setMembershipCost] = useState(0)
     const [user, getUser, hasInitialized, memberType] = useUser()
+    const [activeTab, setActiveTab] = useState('feed')
 
     const [loginOpen, setLoginOpen] = useState(false); // modal for logging in
     const handleLoginOpen = () => setOpen(true);
@@ -43,18 +47,26 @@ export default function Index() {
     const router = useRouter()
 
     useEffect(() => {
-        
+
         if (!hasInitialized) {
             getUser()
         }
         return
-    },[hasInitialized, getUser])
+    }, [hasInitialized, getUser])
 
-    const onFollow = () => {
+
+    const onFollow = async () => {
         if (!user) {
             handleLoginOpen()
         }
-        else setFollowed(!followed)
+        else {
+            let follow = await axios({
+                method: !followed ? 'POST' : 'DELETE',
+                url: Endpoints.baseUrl + `/user/follow/${id}`,
+                headers: { authorization: accessToken },
+            });
+            setFollowed(!followed)
+        }
     }
 
     const selectMembership = (membershipType) => {
@@ -66,58 +78,58 @@ export default function Index() {
             <div className={styles.headerContainer}>
                 <div className={`${styles.buttonContainer} container`}>
                     <Button classes={styles.addContentButton} variant={followed ? 'outline' : 'filled'}
-                     onClick={() => onFollow()}
-                     >
-                            <a>
-                                <span>{followed ? 'دنبال می کنید' : 'دنبال کردن'}</span>
-                            </a>
+                        onClick={() => onFollow()}
+                    >
+                        <a>
+                            <span>{followed ? 'دنبال می کنید' : 'دنبال کردن'}</span>
+                        </a>
                     </Button>
                 </div>
                 <div className={styles.avatarContainer}>
-                    <Image src={MockAvatar} alt=""/>
+                    <Image src={userInfo.userData.coverImage || MockAvatar} alt="" />
                 </div>
-                {memberType.includes('اشتراک') ? 
-                <div className={styles.rankContainer}>
-                    <Image src={GoldRank} alt=""/>
-                </div>
-                :null
+                {memberType.includes('اشتراک') ?
+                    <div className={styles.rankContainer}>
+                        <Image src={GoldRank} alt="" />
+                    </div>
+                    : null
                 }
             </div>
             <div className={styles.contentContainer}>
-                
+
                 <div className={styles.name}>
-                    {'mehdi salamati'}
+                    {userInfo.userData.username}
                 </div>
                 <div className={styles.status}>
                     در حال ایجاد دوره های هنری، تصاویر و پادکست های آموزشی ویدیویی است
                 </div>
-                
 
-                {!(memberType.includes('اشتراک')) ? 
-                <>
-                <div className={styles.title}>
-                    انتخاب عضویت
-                </div>
-                <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)}/>
-                </>
-                :null
+
+                {!(memberType.includes('اشتراک')) ?
+                    <>
+                        <div className={styles.title}>
+                            انتخاب عضویت
+                        </div>
+                        <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)} />
+                    </>
+                    : null
                 }
 
                 <div className={styles.followersSection}>
                     <span>{853} نفر دنبال کننده</span>
-                    
+
                     <div className={styles.social}>
                         <a href='https://google.com'>
-                            <Image src={Instagram} alt=""/>
+                            <Image src={Instagram} alt="" />
                         </a>
                         <a href='https://google.com'>
-                            <Image src={Twitter} alt=""/>
+                            <Image src={Twitter} alt="" />
                         </a>
                         <a href='https://google.com'>
-                            <Image src={Facebook} alt=""/>
+                            <Image src={Facebook} alt="" />
                         </a>
                         <a href='https://google.com'>
-                            <Image src={Linkedin} alt=""/>
+                            <Image src={Linkedin} alt="" />
                         </a>
                     </div>
                 </div>
@@ -145,18 +157,29 @@ export default function Index() {
                                 {
                                     name: 'feed',
                                     text: 'محتوا',
-                                    content: Feed,
+                                    // content: Feed,
                                 },
                                 {
                                     name: 'forYou',
                                     text: 'درباره',
-                                    content: About
+                                    // content: About
                                 },
                             ]
                         }
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
                     />
+                    <div className={styles.contents}>
+                        {
+                            activeTab == 'feed' && <Feed id={id} />
+                        }
+                        {
+                            activeTab == 'forYou' && <About />
+                        }
+
+                    </div>
                 </div>
-        
+
             </div>
 
             <LoginModal open={loginOpen} handleClose={handleLoginClose} />
@@ -167,12 +190,58 @@ export default function Index() {
                 aria-describedby="modal-modal-description2"
             >
                 <div className={styles.modalContainer}>
-                    <PurchaseCard balance={60} paymentType={membership} paymentAmount={membershipCost} closeModal={handleClose}/>
+                    <PurchaseCard balance={60} paymentType={membership} paymentAmount={membershipCost} closeModal={handleClose} />
                 </div>
-                
+
             </Modal>
         </div>
     )
 }
 
 
+export async function getServerSideProps(context) {
+    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+    console.log('context.reqcontext.query.idcontext.query.idcontext.query.idcontext.query.idcontext.query.id', context.query.id)
+    if (!accessToken) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    try {
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
+
+        if (!me) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            }
+        }
+
+        const userInfo = await axios.get(Endpoints.baseUrl + '/user/profile/' + context.query.id, {
+            headers: {
+                authorization: accessToken
+            }
+        })
+
+
+        return {
+            props: { userInfo: userInfo.data.data, id: context.query.id, accessToken: accessToken },
+        }
+
+    }
+    catch (e) {
+        console.log('errrrrr', e)
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+}

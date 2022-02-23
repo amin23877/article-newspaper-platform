@@ -11,7 +11,7 @@ import { Endpoints } from "../../../utils/endpoints";
 import cookie from 'cookie'
 import jMoment from "moment-jalaali";
 
-export default function Feed(props) {
+export default function Feed({ id, ...props }) {
 
     //const [membership, setMembership] = useState('')
     // const [user, getUser, hasInitialized, memberType] = useUser()
@@ -21,13 +21,21 @@ export default function Feed(props) {
     useEffect(async () => {
         try {
             const { accessToken } = cookie.parse(document?.cookie)
-
-            let tPosts = await axios.get(Endpoints.baseUrl + '/post/feeds', {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            setPosts(tPosts.data.data.feeds)
+            if (id) {
+                let tPosts = await axios.get(Endpoints.baseUrl + '/post/userPosts/' + id, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setPosts(tPosts.data.data.posts)
+            } else {
+                let tPosts = await axios.get(Endpoints.baseUrl + '/post/feeds', {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setPosts(tPosts.data.data.feeds)
+            }
         } catch (e) {
             console.log(e)
         }

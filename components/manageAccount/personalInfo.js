@@ -3,6 +3,7 @@ import CustomInput from 'components/common/input';
 import Button from "components/common/button";
 import NoProfilePic from 'assets/svg/common/no-profile.svg';
 import NoCoverPic from 'assets/svg/common/no-cover.svg';
+import TrashIcon from 'assets/images/manage-account/trash.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -67,9 +68,18 @@ export default function PersonalInfo ({user}) {
     useEffect(() => {
         if (user !== undefined) {  
             console.log(user)
-            setInitialInfo(JSON.parse(JSON.stringify(user)))
-            if (user.accountType === 'personal') {
-                setGeneralInfo(user)
+            let keys = Object.keys(user)
+            let tempUser = {}
+            if (!keys.includes('personNationalId')) {
+                tempUser.personNationalId = ''
+            }
+            if (!keys.includes('accountType')) {
+                tempUser.accountType = 'personal'
+                setGeneralInfo({...tempUser, user})
+            }
+            setGeneralInfo({...tempUser, user})
+            setInitialInfo(JSON.parse(JSON.stringify({...tempUser, user})))
+            if (!(keys.includes('accountType')) || user.accountType === 'personal') {
                 for (let field of generalFields) {  
                     setValue(field.name, user[field.name])
                 }
@@ -126,13 +136,13 @@ export default function PersonalInfo ({user}) {
     function changedValues(object1, object2) {
         const keys1 = Object.keys(object1);
         const keys2 = Object.keys(object2);
-        if (keys1.length !== keys2.length) {
-            return false;
-        }
+        // if (keys1.length !== keys2.length) {
+        //     return false;
+        // }
         let changedValues = {}
         console.log('key1', keys1)
         console.log('key2:', keys2)
-        for (let key of keys1) {
+        for (let key of keys2) {
             // if (typeof(object1[key]) !== 'object') {
                 if (object1[key] !== object2[key]) {
                     changedValues[key] = object2[key]
@@ -162,7 +172,8 @@ export default function PersonalInfo ({user}) {
                 username: data.username,
                 personNationalId: data.personNationalId,
                 msisdn: data.msisdn,
-                email: data.email
+                email: data.email,
+                isContentProvider: false,
             })
         }
         
@@ -182,10 +193,10 @@ export default function PersonalInfo ({user}) {
 
     const onProfileChange = async (e) => {
         if (e.target.name === 'profilePic') { 
-            await setProfilePic(URL.createObjectURL(e.target.files[0]))
+            //await setProfilePic(URL.createObjectURL(e.target.files[0]))
         }
         if (e.target.name === 'coverPic') {
-            await setCoverPic(URL.createObjectURL(e.target.files[0]))
+            //await setCoverPic(URL.createObjectURL(e.target.files[0]))
         }
     }
 
@@ -210,20 +221,22 @@ export default function PersonalInfo ({user}) {
     }
 
     const onSocialSubmit = async data => {
-        let tempSocial = user.socials
-        tempSocial[data.name] = data.link
-        await setGeneralInfo({
-            ...generalInfo,
-            socials: tempSocial
-        })
+        if (data.link !== '') {
+            let tempSocial = user.socials
+            tempSocial[data.name] = data.link
+            await setGeneralInfo({
+                ...generalInfo,
+                socials: tempSocial
+            })
+        }
 
-        const changedInfo = changedValues(initialInfo, generalInfo)
+        const changedInfo = changedValues(initialInfo.user, generalInfo.user)
         console.log(changedInfo)
         console.log('initial', initialInfo)
         console.log('final', generalInfo)
         const status = await updateUser(changedInfo)
         if (status === 'ok') {
-            //alert('اطاعات با موفقیت ویرایش شد.')
+            alert('اطاعات با موفقیت ویرایش شد.')
             //router.reload()
         }
     }
@@ -241,9 +254,21 @@ export default function PersonalInfo ({user}) {
         }
         return socials
     }
+
+    const deleteSocialLink = async (name) => {
+        let tempSocial = user.socials
+        tempSocial[name] = ''
+        
+        const status = await updateUser({socials: tempSocial})
+        if (status === 'ok') {
+            alert('آدرس مورد نظر حذف شد.')
+            router.reload()
+        }
+    }
    
     return (
         <>
+            {user !== undefined && user.isContentProvider ? 
             <div className={styles.radioButtons} id="#">
                 <div className={styles.realLabel}>
                     ناشر حقیقی
@@ -264,6 +289,8 @@ export default function PersonalInfo ({user}) {
                 </label>
                 </div>
             </div>
+            :null
+            }
             <EditContainer
             providerType={providerType}
             title={providerType ===  'ناشر حقیقی'? 'اطلاعات شخصی': 'اطلاعات حقوقی'}
@@ -368,7 +395,7 @@ export default function PersonalInfo ({user}) {
 
                         <div className={styles.pictures}>
                             <div className={styles.profilePic}>
-                                <Image src={profilePic !== undefined ? profilePic : NoProfilePic} alt='profile-pic'
+                                <img src={profilePic !== undefined ? profilePic : NoProfilePic} alt='profile-pic'
                                 width={80} height={80}
                                  />
                             </div>
@@ -381,6 +408,7 @@ export default function PersonalInfo ({user}) {
                         </div>
                         </div>
 
+                        {user !== undefined && user.isContentProvider ?
                         <div key={profileFields[2].name} className={styles.field}>
                             <div className={styles.label}>{`${profileFields[2].label}:`}</div>
                             {profileFields[2].name.includes('Pic') ? 
@@ -395,6 +423,8 @@ export default function PersonalInfo ({user}) {
                             type={profileFields[2].name.includes('Pic') ? 'file' : 'text'}
                             />
                         </div>
+                        :null
+                        }
                         <Button classes={styles.editButton} variant='filled'
                         type='submit'
                         >
@@ -405,6 +435,7 @@ export default function PersonalInfo ({user}) {
                 </div>
                 
             </EditContainer>
+            {user !== undefined && user.isContentProvider ? 
             <EditContainer providerType={providerType} title='درباره تو'>
                 <form onSubmit={handleAboutYouSubmit(onAboutYouSubmit)} className={styles.aboutYouForm}>
                     <div className={editContainerStyles.field}>          
@@ -422,6 +453,8 @@ export default function PersonalInfo ({user}) {
                     </Button>
                 </form>
             </EditContainer>
+            :null
+            }
             <EditContainer providerType={providerType} title='آدرس اینترنتی و شبکه های اجتماعی'>
                 <form onSubmit={handleSocialSubmit(onSocialSubmit)} className={styles.aboutYouForm}>
                     <div className={editContainerStyles.field}>          
@@ -435,7 +468,7 @@ export default function PersonalInfo ({user}) {
                         />
                         
                     </div>
-                    <div className={editContainerStyles.field}>          
+                    <div className={editContainerStyles.field} style={{maxWidth: 670}}>          
                         <CustomInput register={socialRegister} 
                         // placeholder='درباره خود و حوزه محتواهایی که تولید میکنید می توانید برای مخاطب خود بنویسید.'
                         name='link' 
@@ -443,13 +476,12 @@ export default function PersonalInfo ({user}) {
                         error={socialErrors.link}
                         />
                     </div>
-                    <div style={{marginTop: 20, marginRight: 5}}>
+                    <div className={styles.socialLinks}>
                         {showSocials().map((social, index) => {
                             return (
-                                <div key={index}>
-                                    
-                                    <span>{social.address}</span>
-                                    <span>{` : ${social.name}`}</span>
+                                <div key={index} className={styles.link}>
+                                    <Image src={TrashIcon} alt='delete' onClick={() => deleteSocialLink(social.name)}/>
+                                    <a href={social.address}>{social.address}</a>
                                 </div>
                             )
                         })}

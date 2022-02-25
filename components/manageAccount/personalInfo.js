@@ -143,11 +143,14 @@ export default function PersonalInfo ({user}) {
         console.log('key1', keys1)
         console.log('key2:', keys2)
         for (let key of keys2) {
-            // if (typeof(object1[key]) !== 'object') {
+            if (typeof(object1[key]) !== 'object') {
                 if (object1[key] !== object2[key]) {
                     changedValues[key] = object2[key]
                 }
-            // }
+            }
+            else {
+                changedValues[key] = JSON.parse(JSON.stringify(object2[key]))
+            }
         }
         return changedValues;
     }
@@ -193,24 +196,27 @@ export default function PersonalInfo ({user}) {
 
     const onProfileChange = async (e) => {
         if (e.target.name === 'profilePic') { 
-            //await setProfilePic(URL.createObjectURL(e.target.files[0]))
+            await setProfilePic(URL.createObjectURL(e.target.files[0]))
         }
         if (e.target.name === 'coverPic') {
-            //await setCoverPic(URL.createObjectURL(e.target.files[0]))
+            await setCoverPic(URL.createObjectURL(e.target.files[0]))
         }
     }
 
     const onPicturesSubmit = async data => {
         const accessToken = Cookies.get('accessToken')
-        console.log(accessToken)
+        //console.log(accessToken)
         let profile = await upload(data.profilePic[0], 'image', accessToken);
         let cover = await upload(data.coverPic[0], 'image', accessToken);
+        let info = generalInfo.user
+        info.profilePicture = profile.fileId
+        info.coverImage = cover.fileId
+        info.aboutUserContent = data.aboutUserContent
         await setGeneralInfo({
             ...generalInfo,
-            profilePicture: profile.fileId,
-            coverImage: cover.fileId,
-            aboutUserContent: data.aboutUserContent
+            user: info
         })
+        console.log(generalInfo)
     }
 
     const onAboutYouSubmit = async data => {
@@ -230,7 +236,7 @@ export default function PersonalInfo ({user}) {
             })
         }
 
-        const changedInfo = changedValues(initialInfo.user, generalInfo.user)
+        const changedInfo = changedValues(initialInfo, generalInfo)
         console.log(changedInfo)
         console.log('initial', initialInfo)
         console.log('final', generalInfo)

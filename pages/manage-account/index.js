@@ -12,24 +12,26 @@ import Doners from 'components/manageAccount/doners';
 import Messages from 'components/manageAccount/messages';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
-
-export default function ManageAccount () {
+import { getUserProfile } from 'shared/users';
+import cookie from 'cookie'
+export default function ManageAccount ({user}) {
 
     const router = useRouter()
-    const [user, getUser, hasInitialized, memberType] = useUser()
+    // const [user, getUser, hasInitialized, memberType] = useUser()
     const [activeMenu, setActiveMenu] = useState(0)
 
     const [open, setOpen] = useState(false); // Modal to activate wallet
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    useEffect(() => {
+
+    // useEffect(() => {
         
-        if (!hasInitialized) {
-            getUser()
-        }
-        return
-    },[hasInitialized, getUser])
+    //     if (!hasInitialized) {
+    //         getUser()
+    //     }
+    //     return
+    // },[hasInitialized, getUser])
 
     let menuItems = []
 
@@ -156,4 +158,45 @@ export default function ManageAccount () {
             </div>
         </div>
     )
+}
+export async function getServerSideProps(context) {
+
+    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+
+    if (!accessToken) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    try {
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
+
+        if (!me) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            }
+        }
+
+    
+
+        return {
+            props: {user: me }
+        }
+
+    }
+    catch (e) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
 }

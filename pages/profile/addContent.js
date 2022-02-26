@@ -213,7 +213,6 @@ export default function AddContent({ me, accessToken, tags, ...props }) {
                                                 setData={setData}
                                                 loading={uploadLoading}
                                                 onDetailSubmit={onDetailSubmit}
-                                                loading={uploadLoading}
                                                 onUpload={(file) => uploadFile(file, 'image', 'cover')}
                                             />
                                         case 3:

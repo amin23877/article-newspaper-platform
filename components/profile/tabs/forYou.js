@@ -32,8 +32,8 @@ export default function ForYou({ me, ...props }) {
             <FilterBar />
             <div>
                 {
-                    posts ? posts.map((post) => (
-                        <PersonalPost post={post} me={me} />
+                    posts ? posts.map((post , i) => (
+                        <PersonalPost post={post} me={me} key={i}/>
 
                     ))
                         : <p>loading...</p>

@@ -31,8 +31,9 @@ export default function Archive(
         <div>
             <FilterBar />
             <div>
-                {posts ? posts.map((post) => (
+                {posts ? posts.map((post , i) => (
                     <ArchivePost
+                        key={i}
                         followings={followings}
                         doFollow={doFollow}
                         handleDeleteBookamrk={handleDeleteBookamrk}

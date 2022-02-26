@@ -33,9 +33,10 @@ export default function FeedPost ({paid,memberType,paymentType, postProp , ...re
         image: MockNews,
         title: postProp.title,
         time: '11 ساعت پیش',
-        description: 'منبعی از درآمد و سوددهی شد. گرفت. صنعت ساخت و نمایش فیلم‌های متحرک تقریبًا به محض عمومی شدن، تبدیل به اولین تصاویر متحرک در اواخر دهه 0881 با ظهور فیلم عکاسی سلولوید در دسترس قرار',
-        likeCount: 22, 
-        commentCount: 12
+        description: postProp.description,
+        likeCount: postProp.likesCount, 
+        commentCount: postProp.commentsCount, 
+        updatedAt:postProp.updatedAt
 
     }
 
@@ -53,12 +54,28 @@ export default function FeedPost ({paid,memberType,paymentType, postProp , ...re
         }
     },[memberType])
 
+    const renderTime = () => {
+        var updated_at = Math.floor(new Date(post.updatedAt).getTime() / 1000);
+        var now = Math.floor(Date.now() / 1000);
+        var diff = Math.abs(now - updated_at);
+        if (diff < 60) {
+            return `${diff} ثانیه پیش`
+        } else if (diff < 3600) {
+            return `${Math.floor(diff / 60)} دقیقه پیش`
+        } else if(diff<86400){
+            return `${Math.floor(diff / 3600)} ساعت پیش`
+        }else {
+            return `${Math.floor(diff / 86400)} روز پیش`
+        }
+
+    }
+
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
                 <div className={`${styles.imageItem} ${!showContent ? styles.paidImageItem : ''}`}>
-                    <Image layout='fill'
-                           objectFit='cover' src={MockNews} alt=""/>
+                <Image loader={() => postProp.coverImage?.url || MockNews} layout='fill'
+                        objectFit='cover' src={postProp.coverImage?.url || MockNews} alt="" />
                     {paid && !(paymentType == memberType) ? 
                     <div className={styles.paidImageContent}>
                         <div className={styles.paidLock}>
@@ -80,7 +97,7 @@ export default function FeedPost ({paid,memberType,paymentType, postProp , ...re
             </div>
             <div className={styles.descriptionContainer}>
                 <div className={`${styles.timingRow} ${showContent ? '' : styles.paidTime}`}>
-                    <div className={styles.time}>{post.time}</div>
+                    <div className={styles.time}>{renderTime()}</div>
                     {!paid || paymentType == memberType ? 
                     <div className={styles.moreActions} onClick={() => setShowPopup(!showPopup)}>
                         <Image src={MoreOptions} alt=""/>

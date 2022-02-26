@@ -1,7 +1,7 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useUser } from "hooks/useUser";
+import {useRouter} from "next/router";
+import {useUser, updateUser} from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
@@ -58,20 +58,45 @@ export default function ManageAccount({ user }) {
         }
     }
 
-    const menuItems = [
-        'اطلاعات شخصی',
-        'لیست سفارش ها',
-        'گزارش مالی',
-        'آنالیز محتوا',
-        'حامی ها',
-        'دنبال کننده ها',
-        'جستجوهای ذخیره شده',
-        'پیام ها',
-        'خروج'
-    ]
+    let menuItems = []
+
+    if (user !== undefined && user.isContentProvider) {
+        menuItems = [
+            'اطلاعات شخصی',
+            'لیست سفارش ها',
+            'گزارش مالی',
+            'آنالیز محتوا',
+            'حامی ها',
+            'دنبال کننده ها',
+            'جستجوهای ذخیره شده',
+            'پیام ها',
+            'خروج'
+        ]
+    }
+    else {
+        menuItems  = [
+            'اطلاعات شخصی',
+            'لیست سفارش ها',
+            'آنالیز محتوا',
+            'دنبال کننده ها',
+            'جستجوهای ذخیره شده',
+            'پیام ها',
+            'خروج'
+        ]
+    }
 
     const onChangeMenu = (menuIndex) => {
         setActiveMenu(menuIndex)
+    }
+
+    const setContentProvider = async (state) => {
+        const status = await updateUser({
+            "isContentProvider": !(state)
+        })
+        if (status === 'ok') {
+            alert('اطاعات با موفقیت ویرایش شد.')
+            router.reload()
+        }
     }
 
     const loadMenuPage = () => {
@@ -100,11 +125,14 @@ export default function ManageAccount({ user }) {
         <div className={styles.manageAccountPage}>
             <div className={styles.container}>
                 <div className={styles.rightCol}>
-                    <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
-                    {user !== undefined && user.isContentProvider ?
-                        <div className={styles.providerTitle}>شما ناشر هستید.</div>
-                        : null
-                    }
+                <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
+                {user !== undefined && user.isContentProvider ? 
+                <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
+                    شما ناشر هستید.
+                </div>
+                :<div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
+                onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                }
 
                     <div className={styles.status}>
                         <div className={styles.statusTitle}>امتیاز شما</div>

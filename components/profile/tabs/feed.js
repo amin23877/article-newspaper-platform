@@ -18,6 +18,9 @@ export default function Feed({ id, ...props }) {
     const [posts, setPosts] = useState();
 
     useEffect(async () => {
+        await loadPosts()
+    }, []);
+    const loadPosts = async () => {
         try {
             const { accessToken } = cookie.parse(document?.cookie);
             if (id) {
@@ -28,24 +31,92 @@ export default function Feed({ id, ...props }) {
                 });
                 setPosts(tPosts.data.data.posts);
             } else {
-                let tPosts = await axios.get(Endpoints.baseUrl + "/post/feeds", {
+                let tPosts = await axios.get(Endpoints.baseUrl + '/post/me/posts', {
                     headers: {
-                        authorization: accessToken,
-                    },
-                });
-                setPosts(tPosts.data.data.feeds);
+                        authorization: accessToken
+                    }
+                })
+                setPosts(tPosts.data.data.posts);
             }
         } catch (e) {
             console.log(e);
         }
-    }, []);
+    }
 
+    const deletePost = async (id) => {
+
+    }
+    function sharePost(id) {
+        var textArea = document.createElement("textarea");
+        textArea.value = 'http://localhost:3000/post/'+id;
+        
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+      
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+      
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+          console.log('Fallback: Copying text command was ' + msg);
+          alert('لینک پست در کلیپ بورد ذخیره شد')
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+        }
+      
+        document.body.removeChild(textArea);
+      }
+      function copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+          fallbackCopyTextToClipboard(text);
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+          console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      }
+
+    const hidePost = async (postId, hide = true) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
+            if (hide) {
+                let hide = await axios.post(Endpoints.baseUrl + "/post/hide/" + postId, {}, {
+                    headers: {
+                        authorization: accessToken,
+                    },
+                });
+                loadPosts();
+            } else {
+                let show = await axios.post(Endpoints.baseUrl + "/post/show/" + postId, {}, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                loadPosts();
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
     return (
         <div>
             <FilterBar />
             <div>
                 {posts ? (
-                    posts.map((post, i) => <FeedPost postProp={post} memberType={memberType} type="text" key={i} />)
+                    posts.map((post, i) => <FeedPost
+                        postProp={post}
+                        memberType={memberType}
+                        type="text"
+                        key={i}
+                        hidePost={hidePost}
+                        sharePost={sharePost}
+                    />)
                 ) : (
                     <p>loading...</p>
                 )}

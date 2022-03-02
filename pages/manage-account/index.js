@@ -1,7 +1,7 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
 import { useState, useEffect } from "react";
-import {useRouter} from "next/router";
-import {useUser, updateUser} from "hooks/useUser";
+import { useRouter } from "next/router";
+import { useUser, updateUser } from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
@@ -19,8 +19,10 @@ import { Endpoints } from 'utils/endpoints';
 export default function ManageAccount({ user }) {
 
     const router = useRouter()
+
+    const { activeIndex } = router.query
     // const [user, getUser, hasInitialized, memberType] = useUser()
-    const [activeMenu, setActiveMenu] = useState(0)
+    const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0)
 
     const [open, setOpen] = useState(false); // Modal to activate wallet
     const [messages, setMessages] = useState(); // Modal to activate wallet
@@ -74,7 +76,7 @@ export default function ManageAccount({ user }) {
         ]
     }
     else {
-        menuItems  = [
+        menuItems = [
             'اطلاعات شخصی',
             'لیست سفارش ها',
             'آنالیز محتوا',
@@ -125,14 +127,14 @@ export default function ManageAccount({ user }) {
         <div className={styles.manageAccountPage}>
             <div className={styles.container}>
                 <div className={styles.rightCol}>
-                <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
-                {user !== undefined && user.isContentProvider ? 
-                <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
-                    شما ناشر هستید.
-                </div>
-                :<div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
-                onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
-                }
+                    <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
+                    {user !== undefined && user.isContentProvider ?
+                        <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
+                            شما ناشر هستید.
+                        </div>
+                        : <div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
+                            onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                    }
 
                     <div className={styles.status}>
                         <div className={styles.statusTitle}>امتیاز شما</div>

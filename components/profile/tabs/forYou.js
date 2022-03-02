@@ -14,26 +14,51 @@ export default function ForYou({ me, ...props }) {
     const [posts, setPosts] = useState()
 
     useEffect(async () => {
+        await loadPost()
+    }, [])
+    const loadPost = async () => {
         try {
             const { accessToken } = cookie.parse(document?.cookie)
 
-            let tPosts = await axios.get(Endpoints.baseUrl + '/post/me/posts', {
+            let tPosts = await axios.get(Endpoints.baseUrl + '/post/feeds', {
                 headers: {
                     authorization: accessToken
                 }
             })
-            setPosts(tPosts.data.data.posts)
+            setPosts(tPosts.data.data.feeds)
         } catch (e) {
             console.log(e)
         }
-    }, [])
+    }
+    const handleLikePost = async (pid, like = true) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
+
+            if (like) {
+                await axios.post(Endpoints.baseUrl + '/post/like/' + pid, {}, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+            } else {
+                await axios.delete(Endpoints.baseUrl + '/post/like/' + pid, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+            }
+            loadPost();
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <div>
             <FilterBar />
             <div>
                 {
-                    posts ? posts.map((post , i) => (
-                        <PersonalPost post={post} me={me} key={i}/>
+                    posts ? posts.map((post, i) => (
+                        <PersonalPost post={post} me={me} key={i} handleLikePost={handleLikePost} />
 
                     ))
                         : <p>loading...</p>

@@ -21,6 +21,7 @@ import { Endpoints } from "../../utils/endpoints";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import transform from 'utils/transform';
+import About from 'components/profile/tabs/about';
 
 export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount }) {
     const [activeTab, setActiveTab] = useState('feed')
@@ -96,7 +97,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
             console.log(e)
         }
     }
-    const handleSharePost = (id)=>{
+    const handleSharePost = (id) => {
         transform.copyToClipboard(`https://diginashr.ir/post/${id}?type=text`)
         alert('لینک پست در کلیپ بورد ذخیره شد')
 
@@ -138,16 +139,16 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                     </div>
                     <div className={styles.socialContainer}>
                         <div className={styles.social}>
-                            <a href='https://google.com'>
+                            <a href={me?.socials?.instagram}>
                                 <Image src={Instagram} alt="" />
                             </a>
-                            <a href='https://google.com'>
+                            <a href={me?.socials?.twitter}>
                                 <Image src={Twitter} alt="" />
                             </a>
-                            <a href='https://google.com'>
+                            <a href={me?.socials?.facebook}>
                                 <Image src={Facebook} alt="" />
                             </a>
-                            <a href='https://google.com'>
+                            <a href={me?.socials?.linkedin}>
                                 <Image src={Linkedin} alt="" />
                             </a>
                         </div>
@@ -172,6 +173,11 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                                         name: 'archive',
                                         text: 'آرشیو',
                                         // content: Archive,
+                                    },
+                                    {
+                                        name: 'about',
+                                        text: 'درباره',
+                                        // content: Archive,
                                     }
                                 ]
                             }
@@ -180,7 +186,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                         />
                         <div className={styles.contents}>
                             {
-                                activeTab == 'feed' && <Feed />
+                                activeTab == 'feed' && <Feed me={me} />
                             }
                             {
                                 activeTab == 'forYou' && <ForYou me={me} />
@@ -195,6 +201,11 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                                     handleDeleteBookamrk={handleDeleteBookamrk}
                                     handleAddToSearch={handleAddToSearch}
                                     handleSharePost={handleSharePost}
+                                />
+                            }
+                            {
+                                activeTab == 'about' && <About
+                                    me={me}
                                 />
                             }
 

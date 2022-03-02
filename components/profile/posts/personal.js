@@ -1,6 +1,7 @@
 
 import styles from 'styles/components/profile/posts/Personal.module.scss'
 import Heart from "assets/svg/common/heart.svg";
+import RHeart from "assets/svg/common/heart-filled.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
 import Image from "next/image";
 
@@ -16,7 +17,7 @@ import SlashIcon from "../../../assets/svg/popup/slash.svg";
 import FlagIcon from "../../../assets/svg/popup/flag.svg";
 import { useState } from "react";
 
-export default function PersonalPost({ post, me, ...props }) {
+export default function PersonalPost({ post, me, handleLikePost, ...props }) {
 
     const popupItems = [
         { text: 'لغو دنبال کردن', icon: PersonMinusIcon, action: () => { } },
@@ -43,6 +44,9 @@ export default function PersonalPost({ post, me, ...props }) {
         }
 
     }
+    const likePost = () => {
+        handleLikePost(post._id , !post.liked)
+    }
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
@@ -54,7 +58,7 @@ export default function PersonalPost({ post, me, ...props }) {
             <div className={styles.descriptionContainer}>
                 <div className={styles.timingRow}>
                     <div className={styles.userContainer}>
-                        <ContactItem info={me} />
+                        <ContactItem info={post.user} />
                     </div>
                     <div className={styles.time}>{renderTime()}</div>
                 </div>
@@ -73,8 +77,8 @@ export default function PersonalPost({ post, me, ...props }) {
                 <div className={styles.actionsRow}>
                     <div className={styles.actions}>
                         <div className={styles.like}>
-                            <div className={styles.icon}>
-                                <Image src={Heart} alt="" />
+                            <div onClick={likePost} className={styles.icon}>
+                                <Image src={post.liked ? RHeart : Heart} alt="" />
                             </div>
                             <div className={styles.count}>{post.likesCount}</div>
                         </div>

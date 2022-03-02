@@ -18,6 +18,34 @@
         object-fit: cover;
       }
     }
+    .paidImageContent {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      filter: brightness(100%);
+      .paidLock {
+        margin-bottom: 24px;
+        img {
+          filter: brightness(100%);
+          width: 42px;
+          height: 46px;
+        }
+      }
+      .donateButton {
+        margin-top: 15px;
+        border-radius: 30px;
+        border: none;
+        color: black;
+        font-weight: 700;
+        font-size: $secondary-size;
+        padding-inline: 24px;
+        min-width: fit-content;
+      }
+    }
   }
   .descriptionContainer {
     padding: 8px 20px;

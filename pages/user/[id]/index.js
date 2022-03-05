@@ -3,7 +3,7 @@ import Image from 'next/image'
 import {useRouter} from "next/router";
 import MockAvatar from 'assets/images/contact/mock-avatar.png'
 import GoldRank from 'assets/images/contact/gold-rank.svg'
-import styles from 'styles/pages/ContactUs.module.scss'
+import styles from 'styles/pages/User.module.scss'
 import Button from "components/common/button";
 import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";

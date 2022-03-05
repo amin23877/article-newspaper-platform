@@ -1,0 +1,27 @@
+@import "styles/vars";
+
+.container {
+  margin: 32px auto;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  color: $primary-color;
+  margin: 32px 0;
+}
+
+.text {
+  color: $gray;
+}
+
+.heading {
+  composes: text;
+  margin: 0;
+}
+
+.paragraph {
+  composes: text;
+  margin-top: 0;
+}

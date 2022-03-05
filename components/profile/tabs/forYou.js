@@ -1,4 +1,4 @@
-import FilterBar from "components/common/filterBar";
+import FilterBar from "components/common/filterBar/filterBar";
 import PersonalPost from "components/profile/posts/personal";
 import Button from "components/common/button";
 

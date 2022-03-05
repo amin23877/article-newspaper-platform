@@ -1,4 +1,4 @@
-import FilterBar from "components/common/filterBar";
+import FilterBar from "components/common/filterBar/filterBar";
 import Button from "components/common/button";
 
 import styles from 'styles/components/profile/TabsCommon.module.scss'

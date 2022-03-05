@@ -6,23 +6,15 @@
 }
 
 .title {
-  font-weight: 500;
   font-size: 18px;
   text-align: center;
-  color: $primary-color;
   margin-top: 32px;
 }
 
-.text {
-  color: $gray;
-}
-
 .heading {
-  composes: text;
   margin: 0;
 }
 
 .paragraph {
-  composes: text;
   margin-top: 0;
 }

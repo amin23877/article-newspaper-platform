@@ -14,13 +14,34 @@ import ShareIcon from 'assets/svg/popup/share.svg'
 import PersonMinusIcon from 'assets/svg/popup/person-minus.svg'
 import TrashIcon from 'assets/svg/popup/trash.svg'
 
-export default function ArchivePost({ post, ...props }) {
+export default function ArchivePost({
+    post,
+    followings,
+    doFollow,
+    handleDeleteBookamrk,
+    handleAddToSearch,
+    handleSharePost,
+    ...props
+}) {
+
+    const followed = () => {
+        let flag = false;
+        followings.map((follow) => {
+            if (follow.targetAccount?._id == post.user) {
+                flag = true
+            }
+        })
+        return flag;
+    }
+    console.log('vvd', post.user)
+    console.log('vvd', followings)
+    console.log('vvd', followed())
 
     const popupItems = [
-        { text: 'لغو دنبال کردن', icon: PersonMinusIcon, action: () => { } },
-        { text: 'حذف', icon: TrashIcon, action: () => { } },
-        { text: 'افزودن به جستجو های ذخیره شده', icon: ArchiveIcon, action: () => { } },
-        { text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => { } },
+        { text: `${followed() ? 'لغو' : ''} دنبال کردن`, icon: PersonMinusIcon, action: () => { doFollow(!followed(), post.user) } },
+        { text: 'حذف', icon: TrashIcon, action: () => { handleDeleteBookamrk(post._id) } },
+        { text: 'افزودن به جستجو های ذخیره شده', icon: ArchiveIcon, action: () => { handleAddToSearch(post._id) } },
+        { text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => { handleSharePost(post._id)} },
     ]
 
     const [showPopup, setShowPopup] = useState(false)

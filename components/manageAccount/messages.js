@@ -5,14 +5,14 @@ import MockUser from 'assets/images/contact/mock-avatar.png'
 import Image from "next/image"
 import DownArrow from "assets/svg/common/chevron-down.svg"
 import CloseCircle from "assets/images/manage-account/close-circle.svg"
-import { useState } from "react";
-import {useForm} from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import CustomInput from 'components/common/input';
 import Modal from '@mui/material/Modal';
-import {EditorState, RichUtils} from 'draft-js';
+import { EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
-export default function Messages () {
+export default function Messages({ getMessages, sendMessage, messages, me }) {
 
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
@@ -21,41 +21,58 @@ export default function Messages () {
     const [open, setOpen] = useState(false); // Modal to send new message
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    useEffect(() => {
+        getMessages();
+    }, [])
+    const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: { errors }, setValue } = useForm();
 
-    const { register: replyFormRegister, handleSubmit: handleReplySubmit, formState: {errors}, setValue  } = useForm();
+    const { register: newMessageRegister, handleSubmit: handleMessageSubmit, formState: { errors: messageErrors } } = useForm();
+    console.log('messages', messages)
 
-    const { register: newMessageRegister, handleSubmit: handleMessageSubmit, formState: {errors: messageErrors}} = useForm();
+    const renderTime = (post) => {
+        var updated_at = Math.floor(new Date(post.updatedAt).getTime() / 1000);
+        var now = Math.floor(Date.now() / 1000);
+        var diff = Math.abs(now - updated_at);
+        if (diff < 60) {
+            return `${diff} ثانیه پیش`
+        } else if (diff < 3600) {
+            return `${Math.floor(diff / 60)} دقیقه پیش`
+        } else {
+            return `${Math.floor(diff / 3600)} ساعت پیش`
 
-    const messages = [
-        {
-            username: 'Mahdi Azari',
-            image: MockUser,
-            time: '11 ساعت پیش',
-            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
-            reply: ''
-        },
-        {
-            username: 'Mahdi Azari',
-            image: MockUser,
-            time: '1 ماه پیش',
-            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
-            reply: 'با تشکر از اطلاع رسانی شما'
-        },
-        {
-            username: 'Mahdi Azari',
-            image: MockUser,
-            time: '4 ماه پیش',
-            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
-            reply: ''
-        },
-        {
-            username: 'Mahdi Azari',
-            image: MockUser,
-            time: '4 ماه پیش',
-            message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
-            reply: ''
-        },
-    ]
+        }
+
+    }
+    // const messages = [
+    //     {
+    //         username: 'Mahdi Azari',
+    //         image: MockUser,
+    //         time: '11 ساعت پیش',
+    //         message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+    //         reply: ''
+    //     },
+    //     {
+    //         username: 'Mahdi Azari',
+    //         image: MockUser,
+    //         time: '1 ماه پیش',
+    //         message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+    //         reply: 'با تشکر از اطلاع رسانی شما'
+    //     },
+    //     {
+    //         username: 'Mahdi Azari',
+    //         image: MockUser,
+    //         time: '4 ماه پیش',
+    //         message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+    //         reply: ''
+    //     },
+    //     {
+    //         username: 'Mahdi Azari',
+    //         image: MockUser,
+    //         time: '4 ماه پیش',
+    //         message: 'با سلام، اطلاعات حسابتان را تکمیل نمایید.',
+    //         reply: ''
+    //     },
+    // ]
 
     const changeTab = (index) => {
         setActiveIndex(index)
@@ -65,8 +82,8 @@ export default function Messages () {
         console.log('meow')
     }
 
-    const onSendMessage = () => {
-        alert('meow')
+    const onSendMessage = (e) => {
+        sendMessage('support', e.message)
     }
 
     console.log(messageErrors)
@@ -75,6 +92,7 @@ export default function Messages () {
         <>
             <Button classes={styles.newMsgBtn} onClick={() => {
                 handleOpen()
+                handleClose();
             }}
             >
                 پیام جدید
@@ -82,32 +100,32 @@ export default function Messages () {
             <div className={styles.searchContainer}>
                 <div className={styles.search}>
                     <div className={styles.searchIcon}>
-                        <Image src={SearchIcon} alt=""/>
+                        <Image src={SearchIcon} alt="" />
                     </div>
                     <input className={styles.searchInput} placeholder='جستجوی پیام ها' />
                 </div>
                 <div className={styles.filter}>
                     زمان
                     <div className={styles.arrow}>
-                        <Image src={DownArrow} alt='' className={styles.arrow}/>
+                        <Image src={DownArrow} alt='' className={styles.arrow} />
                     </div>
                 </div>
                 <div className={styles.filter}>
                     نوع
                     <div className={styles.arrow}>
-                        <Image src={DownArrow} alt='' className={styles.arrow}/>
+                        <Image src={DownArrow} alt='' className={styles.arrow} />
                     </div>
                 </div>
                 <div className={styles.filter}>
                     موضوع
                     <div className={styles.arrow}>
-                        <Image src={DownArrow} alt='' className={styles.arrow}/>
+                        <Image src={DownArrow} alt='' className={styles.arrow} />
                     </div>
                 </div>
                 <div className={styles.filter}>
                     برچسب
                     <div className={styles.arrow}>
-                        <Image src={DownArrow} alt='' className={styles.arrow}/>
+                        <Image src={DownArrow} alt='' className={styles.arrow} />
                     </div>
                 </div>
             </div>
@@ -128,45 +146,45 @@ export default function Messages () {
             </div>
 
             <div className={styles.messageList}>
-                {messages.map((message, index) => {
+                {messages?.map((message, index) => {
                     return (
                         <form className={styles.messageContainer} key={index} onSubmit={handleReplySubmit(onReplySubmit)}
-                        onClick={() => setActiveMessage(index)} >
+                            onClick={() => setActiveMessage(index)} >
                             <div className={styles.info}>
                                 <div className={styles.user}>
                                     <div className={styles.avatar}>
-                                        <Image src={message.image} alt=''/>
+                                        <Image src={MockUser} alt='' />
                                     </div>
-                                    <div>{message.username}</div>
+                                    <div>{me.username}</div>
                                 </div>
-                                <div className={styles.time}>{message.time}</div>
+                                <div className={styles.time}>{renderTime(message)}</div>
                             </div>
                             <div className={styles.message}>
-                                {message.message}
+                                {message.text}
                             </div>
                             <div className={styles.reply}>
-                                {(message.reply !== '') || (activeMessage !== index) ? 
-                                `پاسخ : ${message.reply}`
-                                :
-                                <CustomInput register={replyFormRegister} 
-                                // placeholder={field.placeholder}
-                                label='پاسخ:'
-                                name='reply' 
-                                validation={{required: 'پر کردن این فیلد الزامی است'}}
-                                error={errors.reply}
-                                />
+                                {(message.reply !== '') || (activeMessage !== index) ?
+                                    `پاسخ : ${message.reply}`
+                                    :
+                                    <CustomInput register={replyFormRegister}
+                                        // placeholder={field.placeholder}
+                                        label='پاسخ:'
+                                        name='reply'
+                                        validation={{ required: 'پر کردن این فیلد الزامی است' }}
+                                        error={errors.reply}
+                                    />
                                 }
                             </div>
-                            {activeMessage === index && message.reply === '' ? 
-                            <div className={styles.buttons}>
-                                <Button type='submit'>
-                                    تایید
-                                </Button>
-                                <Button variant='outline' type='button'>
-                                    بایگانی
-                                </Button>
-                            </div>
-                            :null
+                            {activeMessage === index && message.reply === '' ?
+                                <div className={styles.buttons}>
+                                    <Button type='submit'>
+                                        تایید
+                                    </Button>
+                                    <Button variant='outline' type='button'>
+                                        بایگانی
+                                    </Button>
+                                </div>
+                                : null
                             }
                         </form>
                     )
@@ -181,19 +199,19 @@ export default function Messages () {
             >
                 <form className={styles.modalContainer} onSubmit={handleMessageSubmit(onSendMessage)}>
                     <div className={styles.close} onClick={handleClose}>
-                        <Image src={CloseCircle} alt='x'/>
+                        <Image src={CloseCircle} alt='x' />
                     </div>
                     <div className={styles.title}>پیام جدید</div>
-                    
-                    <textarea 
-                    {...newMessageRegister("message", {
-                        required: 'پر کردن این فیلد الزامی است'
-                    })}
-                    className={styles.messageInput}
-                    placeholder='پیام خود را وارد نمایید.'
-                    name='message' 
-                    rows='7'
-                    error={messageErrors.message}
+
+                    <textarea
+                        {...newMessageRegister("message", {
+                            required: 'پر کردن این فیلد الزامی است'
+                        })}
+                        className={styles.messageInput}
+                        placeholder='پیام خود را وارد نمایید.'
+                        name='message'
+                        rows='7'
+                        error={messageErrors.message}
                     />
                     <span className={styles.error}>{messageErrors.message !== undefined ? messageErrors.message.message : null}</span>
 
@@ -201,7 +219,7 @@ export default function Messages () {
                         ارسال پیام
                     </Button>
                 </form>
-                
+
             </Modal>
         </>
     )

@@ -20,10 +20,87 @@ import axios from "axios";
 import { Endpoints } from "../../utils/endpoints";
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import transform from 'utils/transform';
 
-export default function Index({ me, followers, followings, followingsCount, followersCount }) {
+export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount }) {
     const [activeTab, setActiveTab] = useState('feed')
+    const [followings, setFollowings] = useState(followingsProp)
+    const [followingsCount, setFollowingsCount] = useState(followingsCountProp)
+    const [bookmarks, setBookmarks] = useState()
+    console.log('followingsProp', followingsProp)
+    const doFollow = async (state, id) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
 
+            let follow = await axios({
+                method: state ? 'POST' : 'DELETE',
+                url: Endpoints.baseUrl + `/user/follow/${id}`,
+                headers: { authorization: accessToken },
+            });
+
+            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=4&sortBy=_id&sortOrder=-1', {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+
+            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count', {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setFollowings(followingsReq.data.data.followings)
+            setFollowingsCount(followingsCountReq.data.data.count)
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const getBookmarks = async (start = 0) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
+            let tPosts = await axios.get(Endpoints.baseUrl + `/post/bookmarks?start=${start}&limit=10`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setBookmarks(tPosts.data.data.bookmarks)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleDeleteBookamrk = async (id) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
+            let tPosts = await axios.delete(Endpoints.baseUrl + `/post/bookmark/${id}`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            getBookmarks()
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const handleAddToSearch = async (id) => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
+            let tPosts = await axios.delete(Endpoints.baseUrl + `/post/searchlist/${id}`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            alert('پست به لیست جستجو های شما افزوده شد')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const handleSharePost = (id)=>{
+        transform.copyToClipboard(`https://diginashr.ir/post/${id}?type=text`)
+        alert('لینک پست در کلیپ بورد ذخیره شد')
+
+    }
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
@@ -106,10 +183,19 @@ export default function Index({ me, followers, followings, followingsCount, foll
                                 activeTab == 'feed' && <Feed />
                             }
                             {
-                                activeTab == 'forYou' && <ForYou me={me}/>
+                                activeTab == 'forYou' && <ForYou me={me} />
                             }
                             {
-                                activeTab == 'archive' && <Archive />
+                                activeTab == 'archive' && <Archive
+                                    followings={followings}
+                                    doFollow={doFollow}
+                                    getPosts={getBookmarks}
+                                    posts={bookmarks}
+                                    setPosts={setBookmarks}
+                                    handleDeleteBookamrk={handleDeleteBookamrk}
+                                    handleAddToSearch={handleAddToSearch}
+                                    handleSharePost={handleSharePost}
+                                />
                             }
 
                         </div>
@@ -179,7 +265,7 @@ export async function getServerSideProps(context) {
         ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq])
 
         return {
-            props: { me, followers, followings, followingsCount, followersCount }
+            props: { me, followers, followingsProp: followings, followingsCountProp: followingsCount, followersCount }
         }
 
     }

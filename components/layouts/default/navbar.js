@@ -16,7 +16,7 @@ import SettingIcon from "../../../assets/svg/popup/settings.svg";
 import InfoIcon from "../../../assets/svg/popup/info.svg";
 import SlashIcon from "../../../assets/svg/popup/slash.svg";
 
-export default function Navbar() {
+export default function Navbar({pages}) {
     const { pathname, route } = useRouter()
 
     const [user, getUser, hasInitialized] = useUser()
@@ -65,10 +65,10 @@ export default function Navbar() {
                             </Link>
                         </div>
                         <div className={styles.linksContainer}>
-                            {links.map((link, index) => {
+                            {pages?.map((link, index) => {
                                 return (
-                                    <ActiveLink key={index} activeClassName={styles.activeLink} href='/' as={link.route}>
-                                        <a className={styles.linkItem}>{link.text}</a>
+                                    <ActiveLink key={index} activeClassName={styles.activeLink} href={link.pageType=='home'?'/':`/${link.pageType}`}>
+                                        <a className={styles.linkItem}>{link.title}</a>
                                     </ActiveLink>
                                 )
                             })}
@@ -117,7 +117,7 @@ export default function Navbar() {
                                             </div>
                                             <div className={styles.headerTexts}>
                                                 <div className={styles.headerUsername}>{user.username ?? 'کاربر میهمان'}</div>
-                                                <Link href='/manage-account' passHref><div className={styles.headerLink}>مدیریت حساب دیجی نشر</div></Link>
+                                                <Link href='/manage-account'><div className={styles.headerLink}>مدیریت حساب دیجی نشر</div></Link>
                                             </div>
                                         </div>
                                         </Popup>

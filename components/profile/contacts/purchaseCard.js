@@ -17,13 +17,13 @@ import cookie from 'cookie'
 import axios from 'axios'
 import { Endpoints } from 'utils/endpoints';
 
-export default function PurchaseCard({ balance, paymentType, paymentAmount, title, username, ...rest }) {
+export default function PurchaseCard({ balance, Istep, paymentType, paymentAmount, title, username, me, ...rest }) {
 
     const { register: amountFormRegister, handleSubmit: handlePhoneSubmit, formState: { isValid: isPhoneValid } } = useForm();
 
     const router = useRouter()
 
-    const [step, setStep] = useState('default')
+    const [step, setStep] = useState(Istep || 'default')
     const [headerText, setHeaderText] = useState('')
     const [titleText, setTitleText] = useState(title)
     const [subTitleText, setSubtitleText] = useState('')
@@ -45,7 +45,7 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
         try {
             const { accessToken } = cookie.parse(document?.cookie)
 
-            await axios.post(Endpoints.baseUrl + '/post/buyPost/'+rest?.postId,{}, {
+            await axios.post(Endpoints.baseUrl + '/post/buyPost/' + rest?.postId, {}, {
                 headers: {
                     authorization: accessToken
                 }
@@ -54,7 +54,7 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
             console.log(e)
         }
     }
-    const onFilledButton = () => {
+    const onFilledButton = async () => {
         if (step === 'default') {
             /// dargah pardakht
         }
@@ -74,7 +74,25 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
             else setStep('chargeWallet')
         }
         else if (step === 'chargeWallet') {
+            const { accessToken } = cookie.parse(document?.cookie)
+
             /// dargah pardakht
+            let paymentId = await axios.post(Endpoints.baseUrl +'/payment', {
+                "paymentType": "bank",
+                "amount": amount * 1000
+            }, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            let payment = await axios.get(Endpoints.baseUrl +'/payment/' + paymentId.data.data.payment._id + '/dev', {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            window.location.reload()
+
+
         }
     }
 
@@ -121,7 +139,7 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
             case 'chargeWallet':
                 header = 'افزایش موجودی'
                 titleText = `افزایش اعتبار : ${amount} هزار تومان`
-                subTitle = 'شما در حال افزایش موجودی برای کیف پول به شماره تلفن 09333655504 هستید.'
+                subTitle = 'شما در حال افزایش موجودی برای کیف پول به شماره تلفن ' + me.msisdn + ' هستید.'
                 filledButton = 'افزایش موجودی'
                 break
         }
@@ -232,22 +250,22 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
                                 </a>
                             </Button>
                             <Button variant='outline'
-                                onClick={() => changeAmount('amount', 100)}
+                                onClick={() => changeAmount('amount', 200)}
                                 classes={styles.amountBtn}
                             >
                                 <a>
                                     <span>
-                                        100 هزار تومان
+                                        200 هزار تومان
                                     </span>
                                 </a>
                             </Button>
                             <Button variant='outline'
-                                onClick={() => changeAmount('amount', 100)}
+                                onClick={() => changeAmount('amount', 500)}
                                 classes={styles.amountBtn}
                             >
                                 <a>
                                     <span>
-                                        100 هزار تومان
+                                        500 هزار تومان
                                     </span>
                                 </a>
                             </Button>
@@ -281,7 +299,7 @@ export default function PurchaseCard({ balance, paymentType, paymentAmount, titl
                     : null
                 }
                 <div className={styles.cancelPay} onClick={rest.closeModal}>
-                    <Link href='/user/1' >انصراف</Link>
+                    <Link href='#' >انصراف</Link>
                 </div>
 
                 <div className={styles.bottom}>

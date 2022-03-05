@@ -5,7 +5,7 @@ import { useUser } from 'hooks/useUser';
 import { useEffect, useState } from 'react';
 import styles from 'styles/pages/ContactUs.module.scss'
 
-const PayOptions = ({ openModal, setOpenModal, postId, balance, title = "", username, paymentType, paymentAmount, me }) => {
+const PayOptions = ({ openModal,step, setOpenModal, postId, balance, title = "", username, paymentType, paymentAmount, me }) => {
     const [loginOpen, setLoginOpen] = useState(false); // modal for logging in
     const [user, getUser, hasInitialized, memberType] = useUser()
 
@@ -38,7 +38,7 @@ const PayOptions = ({ openModal, setOpenModal, postId, balance, title = "", user
                 aria-describedby="modal-modal-description2"
             >
                 <div className={styles.modalContainer}>
-                    <PurchaseCard postId={postId} title={title} balance={balance} username={username} paymentType={paymentType} paymentAmount={paymentAmount} closeModal={handleClose} />
+                    <PurchaseCard me={me} Istep={step} postId={postId} title={title} balance={balance} username={username} paymentType={paymentType} paymentAmount={paymentAmount} closeModal={handleClose} />
                 </div>
 
             </Modal>

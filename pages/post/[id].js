@@ -195,8 +195,8 @@ export default function Post({ postInfo }) {
 
                             <div className={styles.rightColContainer}>
                                 <div className={styles.membershipHeader}>اشتراک ها</div>
-                                {packages && packages.map((pack) => (
-                                    <div className={styles.membership}>
+                                {packages && packages.map((pack , i) => (
+                                    <div className={styles.membership} key={i}>
                                         <div className={styles.membershipImage}>
                                             <Image src={GoldPlan} alt='gold-plan' />
                                         </div>

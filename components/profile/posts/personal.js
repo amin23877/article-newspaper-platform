@@ -20,8 +20,10 @@ import Link from 'next/link';
 
 import { useState } from "react";
 import Button from 'components/common/button';
+import { useRouter } from 'next/router';
 
 export default function PersonalPost({ post, me, handleLikePost, _handlePay, ...props }) {
+    const router = useRouter()
 
     const popupItems = [
         { text: 'لغو دنبال کردن', icon: PersonMinusIcon, action: () => { } },
@@ -101,7 +103,7 @@ console.log('meeee',me)
                     {post.description}
                     <div className={styles.mask} />
                 </div>
-                <div className={styles.readMoreRow}>
+                <div onClick={()=>{router.push('/post/'+post._id)}} className={styles.readMoreRow}>
                     <div className={styles.readMore}>
                         مطالعه بیشتر
                     </div>

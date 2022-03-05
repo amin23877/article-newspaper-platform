@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import styles from 'styles/common/Text.module.scss'
 
-function Text({color = 'gray', size = 'm', weight = 'normal', component: Component = 'p', children, className}) {
+function Text({color = 'gray', size = 'm', weight = 'normal', component: Component = 'p', children, className, ...rest}) {
     const classes = classNames({
         [styles[color]]: color,
         [styles[size]]: size,
@@ -12,7 +12,7 @@ function Text({color = 'gray', size = 'm', weight = 'normal', component: Compone
     })
 
     return (
-        <Component className={classes}>{children}</Component>
+        <Component {...rest} className={classes}>{children}</Component>
     );
 }
 

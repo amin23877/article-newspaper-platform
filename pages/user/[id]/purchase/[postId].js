@@ -116,7 +116,6 @@ export async function getServerSideProps(context) {
         return {
             props: { postInfo: postInfo, userInfo: userInfo.data.data, id: context.query.id, accessToken: accessToken },
         }
-
     }
     catch (e) {
         console.log('errrrrr', e)

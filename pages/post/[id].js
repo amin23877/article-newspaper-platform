@@ -27,7 +27,6 @@ export default function Post({ postInfo }) {
     console.log('post', postInfo)
     const router = useRouter()
     const { type, id } = router.query
-
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [showAd, setShowAd] = useState(true)
     const [packages, setPackages] = useState()

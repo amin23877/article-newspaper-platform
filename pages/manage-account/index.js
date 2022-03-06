@@ -16,6 +16,7 @@ import { getUserProfile } from 'shared/users';
 import cookie from 'cookie'
 import axios from 'axios';
 import { Endpoints } from 'utils/endpoints';
+import Followers from "components/manageAccount/followers";
 export default function ManageAccount({ user }) {
 
     const router = useRouter()
@@ -111,6 +112,8 @@ export default function ManageAccount({ user }) {
                 return <AnalyzeContent />
             case 4:
                 return <Doners />
+            case 5:
+                return <Followers/>
             case 7:
                 return <Messages
                     getMessages={getMessages}

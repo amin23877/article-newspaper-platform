@@ -31,22 +31,54 @@ export default function Post({ postInfo }) {
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [showAd, setShowAd] = useState(true)
     const [packages, setPackages] = useState()
+    const [comments, setComments] = useState()
+    const [commentText, setCommentText] = useState('')
 
     useEffect(() => {
         getUser()
         getPackages()
+        getComments()
         return
     }, [])
 
     const getPackages = async () => {
         const { accessToken } = cookie.parse(document?.cookie);
 
-        let p = await axios.get(Endpoints.baseUrl + '/payment/packages',{
+        let p = await axios.get(Endpoints.baseUrl + '/payment/packages', {
             headers: {
                 authorization: accessToken
             }
         })
         setPackages(p.data.data.packages)
+    }
+    const getComments = async () => {
+        const { accessToken } = cookie.parse(document?.cookie);
+
+        let p = await axios.get(Endpoints.baseUrl + `/post/comments/${postInfo._id}?start=0&limit=10&sortBy=createdAt&sortOrder=-1`, {
+            headers: {
+                authorization: accessToken
+            }
+        })
+        setComments(p.data.data.comments)
+    }
+    const addComment = async () => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.post(Endpoints.baseUrl + `/post/comment/${postInfo._id}`,
+                {
+                    "text": commentText
+                },
+                {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+            setComments(p.data.data.comments)
+        }
+        catch (e) {
+            alert('برای ثبت کامنت ابتدا حامی شوید')
+        }
     }
 
     const closeAd = () => {
@@ -96,51 +128,6 @@ export default function Post({ postInfo }) {
         }
     ]
 
-    const comments = [
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-
-    ]
     const renderTime = (post) => {
         var updated_at = Math.floor(new Date(post.updatedAt).getTime() / 1000);
         var now = Math.floor(Date.now() / 1000);
@@ -149,9 +136,9 @@ export default function Post({ postInfo }) {
             return `${diff} ثانیه پیش`
         } else if (diff < 3600) {
             return `${Math.floor(diff / 60)} دقیقه پیش`
-        } else if(diff < 86400) {
+        } else if (diff < 86400) {
             return `${Math.floor(diff / 3600)} ساعت پیش`
-        }else{
+        } else {
             return `${Math.floor(diff / 86400)} روز پیش`
 
         }
@@ -186,16 +173,17 @@ export default function Post({ postInfo }) {
                         null
                         :
                         <>
-                            <Button classes={styles.joinButton} variant='filled'
-                            >
-                                <Link href={{ pathname: '/user/1/purchase', query: { paymentType: 'اشتراک', title: 'عنوان' } }} passHref>
+                            <Link href={`/user/${postInfo.user._id}/purchase/${postInfo._id}`} passHref>
+
+                                <Button classes={styles.joinButton} variant='filled'
+                                >
                                     <span>حامی شوید</span>
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
 
                             <div className={styles.rightColContainer}>
                                 <div className={styles.membershipHeader}>اشتراک ها</div>
-                                {packages && packages.map((pack , i) => (
+                                {packages && packages.map((pack, i) => (
                                     <div className={styles.membership} key={i}>
                                         <div className={styles.membershipImage}>
                                             <Image src={GoldPlan} alt='gold-plan' />
@@ -264,21 +252,21 @@ export default function Post({ postInfo }) {
                     <div className={styles.postTitle}>{postInfo.title}</div>
                     <div className={styles.postTime}>{renderTime(postInfo)}</div>
                 </div>
-                <div className={styles.members}>756 مشترک</div>
+                {/* <div className={styles.members}>756 مشترک</div> */}
                 <div className={styles.videoButtons}>
                     <div className={styles.actions}>
                         <div className={styles.like}>
                             <div className={styles.icon}>
                                 <Image src={Heart} alt="" />
                             </div>
-                            <div className={styles.count}>{latestPosts[0].likeCount}</div>
+                            <div className={styles.count}>{postInfo.likesCount}</div>
                         </div>
                         <div className={styles.comment}>
                             <div className={styles.icon}>
                                 <Image src={Comment} alt="" />
                             </div>
                             <div className={styles.count}>
-                                {latestPosts[0].commentCount}
+                                {postInfo.commentsCount}
                             </div>
                         </div>
                     </div>
@@ -299,11 +287,11 @@ export default function Post({ postInfo }) {
                         <Image src={MockAvatar} alt='' />
                     </div>
                     <div className={styles.userNewComment}>
-                        <div className={styles.sendBtn}><Image src={Send} alt='' /></div>
-                        <input type='text' placeholder='دیدگاه خود را وارد نمایید ...' />
+                        <div onClick={addComment} className={styles.sendBtn}><Image src={Send} alt='' /></div>
+                        <input onChange={(e) => setCommentText(e.target.value)} value={commentText} type='text' placeholder='دیدگاه خود را وارد نمایید ...' />
                     </div>
                 </div>
-                {comments.map((comment, index) => {
+                {comments && comments.map((comment, index) => {
                     return (
                         <div key={index} className={styles.comment}>
                             <div className={styles.commentAvatar}>

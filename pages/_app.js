@@ -24,6 +24,10 @@ MyApp.getInitialProps = async ({ ctx }) => {
             };
         } catch (err) {
             console.warn('error',err)
+
+            return {
+                pagesInfo: null
+            };
         }
     }
 

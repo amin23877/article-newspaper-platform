@@ -1,19 +1,29 @@
 import styles from 'styles/common/Table.module.scss'
+import Button from "components/common/button";
+import React from "react";
 
-export default function Table({children, headers}) {
+export default function Table({children, headers, maxRowsCount, size = 10, onLoadMore}) {
     return (
-        <table className={styles.table}>
-            <thead>
+        <>
+            <table className={styles.table}>
+                <thead>
                 <tr className={styles.thead}>
                     {headers.map((header, index) => (
                         <th className={styles.cell} key={index}>{header}</th>
                     ))}
                 </tr>
-            </thead>
+                </thead>
 
-            <tbody>
-               {children}
-            </tbody>
-        </table>
+                {children}
+            </table>
+
+            {maxRowsCount && maxRowsCount > size && (
+                <div style={{marginTop: 16, display: 'grid', placeItems: 'center'}}>
+                    <Button onClick={onLoadMore}>
+                        موارد بیشتر
+                    </Button>
+                </div>
+            )}
+        </>
     )
 }

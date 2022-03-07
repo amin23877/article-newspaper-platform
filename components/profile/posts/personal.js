@@ -1,6 +1,7 @@
 
 import styles from 'styles/components/profile/posts/Personal.module.scss'
 import Heart from "assets/svg/common/heart.svg";
+import RHeart from "assets/svg/common/heart-filled.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
 import Image from "next/image";
 
@@ -14,9 +15,15 @@ import ArchiveIcon from "../../../assets/svg/popup/archive.svg";
 import DislikeIcon from "../../../assets/svg/popup/thumbs-down.svg";
 import SlashIcon from "../../../assets/svg/popup/slash.svg";
 import FlagIcon from "../../../assets/svg/popup/flag.svg";
-import { useState } from "react";
+import PaidLockIcon from "assets/images/contact/lock.svg"
+import Link from 'next/link';
 
-export default function PersonalPost({ post, me, ...props }) {
+import { useState } from "react";
+import Button from 'components/common/button';
+import { useRouter } from 'next/router';
+
+export default function PersonalPost({ post, me, handleLikePost, _handlePay, ...props }) {
+    const router = useRouter()
 
     const popupItems = [
         { text: 'لغو دنبال کردن', icon: PersonMinusIcon, action: () => { } },
@@ -26,7 +33,7 @@ export default function PersonalPost({ post, me, ...props }) {
         { text: 'توصیه نمی شود', icon: SlashIcon, action: () => { } },
         { text: 'گزارش تخلف', icon: FlagIcon, action: () => { } },
     ]
-
+console.log('meeee',me)
 
     const [showPopup, setShowPopup] = useState(false)
     const renderTime = () => {
@@ -43,18 +50,49 @@ export default function PersonalPost({ post, me, ...props }) {
         }
 
     }
+    const handlePay = () => {
+        _handlePay({
+            balance:me.balance,
+            paymentType:'buy',
+            paymentAmount:1000,
+            title:post.title,
+            postId:post._id,
+            username:post.user.username
+        })
+    }
+    const likePost = () => {
+        handleLikePost(post._id, !post.liked)
+    }
     return (
         <div className={styles.postContainer}>
             <div className={styles.mediaPlaceHolder}>
                 <div className={styles.imageItem}>
                     <Image loader={() => post.coverImage?.url || MockNews} layout='fill'
                         objectFit='cover' src={post.coverImage?.url || MockNews} alt="" />
+                    {/* {paid && !(paymentType == memberType) ? */}
+                    <div className={styles.paidImageContent}>
+                        <div className={styles.paidLock}>
+                            <Image src={PaidLockIcon} alt="" />
+                        </div>
+                        <div>
+                            قفل این محتوا را با تبدیل شدن به یک حامی باز کنید.
+                        </div>
+                        <Button variant='outline' classes={styles.donateButton}
+                            onClick={handlePay}
+                        >
+                            {/* <Link href={{ pathname: '/user/1/purchase', query: { paymentType: paymentType, title: post.title } }} passHref> */}
+                            <span>خرید کنید </span>
+                            {/* </Link> */}
+                        </Button>
+                    </div>
+                    {/* : null
+                    } */}
                 </div>
             </div>
             <div className={styles.descriptionContainer}>
                 <div className={styles.timingRow}>
                     <div className={styles.userContainer}>
-                        <ContactItem info={me} />
+                        <ContactItem info={post.user} />
                     </div>
                     <div className={styles.time}>{renderTime()}</div>
                 </div>
@@ -65,7 +103,7 @@ export default function PersonalPost({ post, me, ...props }) {
                     {post.description}
                     <div className={styles.mask} />
                 </div>
-                <div className={styles.readMoreRow}>
+                <div onClick={()=>{router.push('/post/'+post._id)}} className={styles.readMoreRow}>
                     <div className={styles.readMore}>
                         مطالعه بیشتر
                     </div>
@@ -73,8 +111,8 @@ export default function PersonalPost({ post, me, ...props }) {
                 <div className={styles.actionsRow}>
                     <div className={styles.actions}>
                         <div className={styles.like}>
-                            <div className={styles.icon}>
-                                <Image src={Heart} alt="" />
+                            <div onClick={likePost} className={styles.icon}>
+                                <Image src={post.liked ? RHeart : Heart} alt="" />
                             </div>
                             <div className={styles.count}>{post.likesCount}</div>
                         </div>

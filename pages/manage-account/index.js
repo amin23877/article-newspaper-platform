@@ -1,7 +1,7 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
 import { useState, useEffect } from "react";
-import {useRouter} from "next/router";
-import {useUser, updateUser} from "hooks/useUser";
+import { useRouter } from "next/router";
+import { useUser, updateUser } from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
@@ -16,15 +16,28 @@ import { getUserProfile } from 'shared/users';
 import cookie from 'cookie'
 import axios from 'axios';
 import { Endpoints } from 'utils/endpoints';
+import PayOptions from 'components/payOptions/PayOptions';
 import Followers from "components/manageAccount/followers";
 import Followings from "components/manageAccount/followings";
 export default function ManageAccount({ user }) {
 
     const router = useRouter()
+
+    const { activeIndex } = router.query
     // const [user, getUser, hasInitialized, memberType] = useUser()
-    const [activeMenu, setActiveMenu] = useState(0)
+    const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0)
 
     const [open, setOpen] = useState(false); // Modal to activate wallet
+    const [openPay, setOpenPay] = useState(false); // Modal to activate wallet
+    const [payInfo, setPayInfo] = useState({
+        balance: user.balance,
+        paymentAmount: 5,
+        paymentType: 'increasePay',
+        title: 'افزایش اعتبار',
+        postId: 0,
+        username: 0,
+        step: 'chargeWallet',
+    })
     const [messages, setMessages] = useState(); // Modal to activate wallet
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -77,7 +90,7 @@ export default function ManageAccount({ user }) {
         ]
     }
     else {
-        menuItems  = [
+        menuItems = [
             'اطلاعات شخصی',
             'لیست سفارش ها',
             'آنالیز محتوا',
@@ -103,28 +116,52 @@ export default function ManageAccount({ user }) {
     }
 
     const loadMenuPage = () => {
-        switch (activeMenu) {
-            case 0:
-                return <PersonalInfo user={user} />
-            case 1:
-                return <OrderList />
-            case 2:
-                return <IncomeLog />
-            case 3:
-                return <AnalyzeContent />
-            case 4:
-                return <Doners />
-            case 5:
+        if (user !== undefined && user.isContentProvider) {
+
+            switch (activeMenu) {
+                case 0:
+                    return <PersonalInfo user={user} />
+                case 1:
+                    return <OrderList />
+                case 2:
+                    return <IncomeLog />
+                case 3:
+                    return <AnalyzeContent />
+                case 4:
+                    return <Doners />
+                case 5:
                 return <Followers/>
             case 6:
                 return <Followings/>
             case 7:
-                return <Messages
-                    getMessages={getMessages}
-                    messages={messages}
-                    sendMessage={sendMessage}
-                    me={user}
-                />
+                    return <Messages
+                        getMessages={getMessages}
+                        messages={messages}
+                        sendMessage={sendMessage}
+                        me={user}
+                    />
+            }
+        }
+        else {
+
+            switch (activeMenu) {
+                case 0:
+                    return <PersonalInfo user={user} />
+                case 1:
+                    return <OrderList />
+
+                case 2:
+                    return <AnalyzeContent />
+                case 4:
+                    return <Doners />
+                case 7:
+                    return <Messages
+                        getMessages={getMessages}
+                        messages={messages}
+                        sendMessage={sendMessage}
+                        me={user}
+                    />
+            }
         }
     }
 
@@ -132,14 +169,14 @@ export default function ManageAccount({ user }) {
         <div className={styles.manageAccountPage}>
             <div className={styles.container}>
                 <div className={styles.rightCol}>
-                <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
-                {user !== undefined && user.isContentProvider ? 
-                <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
-                    شما ناشر هستید.
-                </div>
-                :<div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
-                onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
-                }
+                    <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
+                    {user !== undefined && user.isContentProvider ?
+                        <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
+                            شما ناشر هستید.
+                        </div>
+                        : <div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
+                            onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                    }
 
                     <div className={styles.status}>
                         <div className={styles.statusTitle}>امتیاز شما</div>
@@ -159,7 +196,13 @@ export default function ManageAccount({ user }) {
                                     <Image src={ArrowLeft} alt='' />
                                 </div>
                             </div>
-                            : null
+                            :
+                            <div className={styles.statusValue} onClick={() => setOpenPay(true)}>
+                                افزایش اعتبار کیف پول
+                                <div className={styles.iconContainer}>
+                                    <Image src={ArrowLeft} alt='' />
+                                </div>
+                            </div>
                         }
                     </div>
 
@@ -192,6 +235,21 @@ export default function ManageAccount({ user }) {
                     </div>
 
                 </Modal>
+
+                {payInfo &&
+                    <PayOptions
+                        openModal={openPay}
+                        setOpenModal={setOpenPay}
+                        balance={payInfo.balance}
+                        paymentType={payInfo.paymentType}
+                        paymentAmount={payInfo.paymentAmount}
+                        title={payInfo.title}
+                        me={user}
+                        step={'chargeWallet'}
+                        postId={payInfo.postId}
+                        username={payInfo.username}
+                    />}
+
             </div>
         </div>
     )

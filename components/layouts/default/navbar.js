@@ -45,13 +45,24 @@ export default function Navbar({pages}) {
 
     const popupItems = [
         {text: 'صفحه شما', icon: UserIcon, action: () => {}, link: '/profile'},
-        {text: 'خرید ها و عضویت', icon: CreditCardIcon, action: () => {}},
-        {text: 'تعویض حساب', icon: UsersIcon, action: () => {}},
-        {text: 'تنظیمات', icon: SettingIcon, action: () => {}},
-        {text: 'راهنما', icon: InfoIcon, action: () => {}},
-        {text: 'خروج از حساب', icon: SlashIcon, action: () => {}},
+        {text: 'خرید ها و عضویت', icon: CreditCardIcon, action: () => {} , link:'/manage-account?activeIndex=1'},
+        // {text: 'تعویض حساب', icon: UsersIcon, action: () => {}},
+        // {text: 'تنظیمات', icon: SettingIcon, action: () => {}},
+        {text: 'راهنما', icon: InfoIcon, action: () => {} , link:'/faq'},
+        {text: 'خروج از حساب', icon: SlashIcon, action: () => {handleLogout()}},
     ]
 
+    const handleLogout = ()=>{
+        var cookies = document.cookie.split(";");
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+        window.location.reload();
+    }
     return (
         <div className={`${styles.boxContainer} w-100`}>
             <div className="container h-100">

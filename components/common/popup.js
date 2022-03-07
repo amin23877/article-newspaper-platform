@@ -20,14 +20,22 @@ export default function Popup({ items = [], containerClass, popupSet, ...rest })
             {rest.children}
             {items.map((item, index) => {
                 return (
-                    // <Link href={(item.link !== undefined) ? item.link : '/'} key={index} passHref>
-                    <div className={styles.item} onClick={() => item.action()} key={index}>
-                        <div className={styles.icon}>
-                            <Image src={item.icon} alt="" />
-                        </div>
-                        <div className={styles.text}>{item.text}</div>
-                    </div>
-                    // </Link>
+                    item.link !== undefined ?
+                        <Link href={(item.link !== undefined) ? item.link : '/'} key={index} passHref>
+                            <div className={styles.item} onClick={() => item.action()} key={index}>
+                                <div className={styles.icon}>
+                                    <Image src={item.icon} alt="" />
+                                </div>
+                                <div className={styles.text}>{item.text}</div>
+                            </div>
+                        </Link>
+                        :
+                            <div className={styles.item} onClick={() => item.action()} key={index}>
+                                <div className={styles.icon}>
+                                    <Image src={item.icon} alt="" />
+                                </div>
+                                <div className={styles.text}>{item.text}</div>
+                            </div>
                 );
             })}
         </div>

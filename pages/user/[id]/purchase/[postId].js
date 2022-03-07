@@ -10,12 +10,13 @@ import cookie from 'cookie'
 import axios from 'axios'
 import { Endpoints } from "utils/endpoints";
 import { getUserProfile } from "shared/users";
-export default function Purchase({ userInfo, accessToken, id, postInfo }) {
+export default function Purchase({ userInfo, accessToken, id, me, postInfo }) {
 
     const router = useRouter()
     const { paymentType, title } = router.query
 
-    console.log('postInfo')
+    console.log('postInfo', postInfo)
+    console.log('userInfo', userInfo)
     const [membership, setMembership] = useState(paymentType)
 
     const [open, setOpen] = useState(false); // Modal to pay for membership
@@ -30,7 +31,7 @@ export default function Purchase({ userInfo, accessToken, id, postInfo }) {
         <div className={styles.purchaseContainer}>
             <div className={styles.top}>
                 <div className={styles.text}>
-                    <div className={styles.subtitle}>برای دسترسی به محتوا لطفا با خرید اشتراک از {userInfo.firstname} حمایت کنید :)</div>
+                    <div className={styles.subtitle}>برای دسترسی به محتوا لطفا با خرید اشتراک از {userInfo.userData.username} حمایت کنید :)</div>
                     {paymentType !== undefined ?
                         (paymentType.includes('subscribe')) ?
                             <div className={styles.title}>سطح عضویت را انتخاب کنید</div>
@@ -49,16 +50,15 @@ export default function Purchase({ userInfo, accessToken, id, postInfo }) {
                     </div>
 
                     <span className={styles.name}>
-                        mehdi sarmast
+                        {userInfo.userData.username}
                     </span>
                 </div>
             </div>
-            {paymentType !== undefined ?
-                paymentType.includes('اشتراک') ?
-                    <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)} />
-                    :
-                    <PurchaseCard balance={5} paymentType={paymentType} paymentAmount={parseInt(paymentType)} title={title} />
-                : null
+            {postInfo?.post?.paymentType[0] !== 'subscribe' ?
+                <MembershipPlans openModal={handleOpen} selectMembership={(type) => selectMembership(type)} />
+                :
+                <PurchaseCard me={me} postId={postInfo.post._id} title={postInfo.post.title} balance={me.balance} username={userInfo.userData.username} paymentType={'bank'} paymentAmount={postInfo.post.price} closeModal={handleClose} />
+
             }
             <Modal
                 open={open}
@@ -67,7 +67,7 @@ export default function Purchase({ userInfo, accessToken, id, postInfo }) {
                 aria-describedby="modal-modal-description2"
             >
                 <div className={styles.modalContainer}>
-                    <PurchaseCard balance={5} paymentType={membership !== undefined ? membership.title : ''} paymentAmount={membership !== undefined ? membership.cost : ''} title={title} />
+                <PurchaseCard me={me} postId={postInfo.post._id} title={postInfo.post.title} balance={me.balance} username={userInfo.userData.username} paymentType={'bank'} paymentAmount={postInfo.post.price} closeModal={handleClose} />
                 </div>
 
             </Modal>
@@ -96,15 +96,11 @@ export async function getServerSideProps(context) {
             }
         }
 
-        try {
-            const userInfo = await axios.get(Endpoints.baseUrl + '/user/profile/' + context.query.id, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-        } catch (e) {
-            const userInfo = { data: { data: null } }
-        }
+        const userInfo = await axios.get(Endpoints.baseUrl + '/user/profile/' + context.query.id, {
+            headers: {
+                authorization: accessToken
+            }
+        })
 
         const postInfo = await axios.get(Endpoints.baseUrl + '/post/single/' + context.query.postId, {
             headers: {
@@ -114,7 +110,7 @@ export async function getServerSideProps(context) {
 
 
         return {
-            props: { postInfo: postInfo, userInfo: userInfo.data.data, id: context.query.id, accessToken: accessToken },
+            props: { me: me, postInfo: postInfo.data.data, userInfo: userInfo.data.data, id: context.query.id, accessToken: accessToken },
         }
     }
     catch (e) {

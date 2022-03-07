@@ -39,13 +39,13 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                 headers: { authorization: accessToken },
             });
 
-            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=4&sortBy=_id&sortOrder=-1', {
+            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=3&sortBy=_id&sortOrder=-1', {
                 headers: {
                     authorization: accessToken
                 }
             })
 
-            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count', {
+            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count?start=0&limit=3&sortBy=_id&sortOrder=-1', {
                 headers: {
                     authorization: accessToken
                 }

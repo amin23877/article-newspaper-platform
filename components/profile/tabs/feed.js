@@ -16,6 +16,7 @@ export default function Feed({ id, ...props }) {
     // const [user, getUser, hasInitialized, memberType] = useUser()
     const memberType = Cookies.get("membership");
     const [posts, setPosts] = useState();
+    const [start, setStart] = useState(0);
 
     useEffect(async () => {
         await loadPosts()

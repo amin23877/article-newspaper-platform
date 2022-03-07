@@ -32,11 +32,13 @@ export default function Post({ postInfo }) {
     const [packages, setPackages] = useState()
     const [comments, setComments] = useState()
     const [commentText, setCommentText] = useState('')
+    const [post, setPost] = useState()
 
     useEffect(() => {
         getUser()
         getPackages()
         getComments()
+        getPost()
         return
     }, [])
 
@@ -50,6 +52,17 @@ export default function Post({ postInfo }) {
         })
         setPackages(p.data.data.packages)
     }
+    const getPost = async () => {
+        const { accessToken } = cookie.parse(document?.cookie);
+
+        let p = await axios.get(Endpoints.baseUrl + '/post/single/' + postInfo._id, {
+            headers: {
+                authorization: accessToken
+            }
+        })
+        setPost(p.data.data.post)
+    }
+
     const getComments = async () => {
         const { accessToken } = cookie.parse(document?.cookie);
 
@@ -143,6 +156,7 @@ export default function Post({ postInfo }) {
         }
 
     }
+    console.log('posttttttt', post)
 
     return (
         <div className={styles.postPageContainer}>
@@ -163,7 +177,7 @@ export default function Post({ postInfo }) {
                         <Image src={MockUser} alt='avatar' />
                     </div>
                     <div className={styles.name}>
-                        {postInfo.user.firstname} {postInfo.user.lastname}
+                        {postInfo.user.username} 
                     </div>
                     <div className={styles.status}>
                         {/* در حال ایجاد محتوا هستید */}
@@ -233,19 +247,34 @@ export default function Post({ postInfo }) {
                 </div>
             </div>
             <div className={styles.leftCol}>
-                {type === 'video' ?
-                    <iframe
-                        className={styles.banner}
-                        src="https://aspb22.cdn.asset.aparat.com/aparat-video/806851e3c1500641e2208a3400d70f7827115864-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjFkZmNlZmI1OWZjZDMwNTcwYTAzNTFlOTg0MTNjMjA3IiwiZXhwIjoxNjQzNjM5MzE3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.utCABN8MI6kcXq0scOxZ37fac1aoM4E63sexHw3xjUk" frameBorder="2" width="100%" height="340px"></iframe>
-                    :
-                    <embed
-                        src="http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0"
-                        type="application/pdf"
-                        frameBorder="0"
-                        scrolling="auto"
-                        height="610px"
-                        width="667px"
-                    ></embed>
+                {(post?.files && post?.files[0]?.fileType) &&
+                    <>
+                        {post?.files[0]?.fileType === 'image' ?
+                            <div className={styles.postImageContainer}>
+                                <img style={{ width: '100%' }} src={post?.files[0]?.url} alt="" />
+                            </div>
+                            :
+                            post?.files[0]?.fileType === 'pdf' ?
+
+                                <embed
+                                    src={post?.files[0]?.url}
+                                    type="application/pdf"
+                                    frameBorder="0"
+                                    scrolling="auto"
+                                    height="610px"
+                                    width="667px"
+                                ></embed>
+                                :
+                                post?.files[0]?.fileType === 'video' ?
+                                    <video width="320" height="240" controls>
+                                        <source src={post?.files[0]?.url} type="video/mp4" />
+                                    </video>
+                                    :
+                                    <audio controls>
+                                        <source src={post?.files[0]?.url} type="audio/mp3" />
+
+                                    </audio>}
+                    </>
                 }
                 <div className={styles.videoText}>
                     <div className={styles.postTitle}>{postInfo.title}</div>

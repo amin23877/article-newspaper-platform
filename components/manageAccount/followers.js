@@ -10,23 +10,23 @@ import emptyImage from 'assets/images/manage-account/empty-list.svg'
 function Followers() {
     const {list: followers, count, handleLoadMore} = useInteractionsList('followers');
 
-    if (!followers) return 'loading...'
-
     return (
         <Table
             headers={['دنبال کننده', 'حمایت', 'پرداختی']}
             maxRowsCount={count}
-            size={followers.length}
+            data={followers}
             onLoadMore={handleLoadMore}
             emptyComponent={<EmptyList image={emptyImage} text='شما هیچ فالووری ندارید'/>}
         >
-            {followers.map(({targetAccount}) => (
-                <TableRow key={targetAccount._id}>
-                    <TableCell icon={targetAccount.profilePicture}>{targetAccount.username}</TableCell>
-                    <TableCell>دیتا از سرور نمیاد</TableCell>
-                    <TableCell>دیتا از سرور نمیاد</TableCell>
-                </TableRow>
-            ))}
+            {(data) =>
+                data.map(({targetAccount}) => (
+                    <TableRow key={targetAccount._id}>
+                        <TableCell icon={targetAccount.profilePicture}>{targetAccount.username}</TableCell>
+                        <TableCell>دیتا از سرور نمیاد</TableCell>
+                        <TableCell>دیتا از سرور نمیاد</TableCell>
+                    </TableRow>
+                ))
+            }
         </Table>
     );
 }

@@ -10,25 +10,23 @@ import emptyImage from 'assets/images/manage-account/empty-list.svg'
 function Followings() {
     const {list: followings, count, handleLoadMore} = useInteractionsList('followings');
 
-    if (!followings) return 'loading...'
-
     return (
         <Table
             headers={['دنبال شونده', 'حمایت', 'پرداختی']}
             maxRowsCount={count}
-            size={followings.length}
+            data={followings}
             onLoadMore={handleLoadMore}
-            emptyComponent={<EmptyList image={emptyImage} text='شما کسی را دنبال نمی کنید' />}
+            emptyComponent={<EmptyList image={emptyImage} text='شما کسی را دنبال نمی کنید'/>}
         >
-            <tbody>
-                {followings.map(({targetAccount}) => (
+            {data =>
+                data.map(({targetAccount}) => (
                     <TableRow key={targetAccount._id}>
                         <TableCell icon={targetAccount.profilePicture}>{targetAccount.username}</TableCell>
                         <TableCell>دیتا از سرور نمیاد</TableCell>
                         <TableCell>دیتا از سرور نمیاد</TableCell>
                     </TableRow>
-                ))}
-            </tbody>
+                ))
+            }
         </Table>
     );
 }

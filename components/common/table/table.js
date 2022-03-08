@@ -16,10 +16,11 @@ export default function Table({children, headers, data, maxRowsCount, onLoadMore
                 </thead>
 
                 <tbody>
-                {data && children(data)}
+                {data && children(data)} {/* render table if data exist */}
                 </tbody>
             </table>
 
+            {/* show loading spinner if there is no data */}
             {!data &&
                 <div className={styles.loading}>
                     <CircularProgress color='inherit'/>

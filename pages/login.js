@@ -1,8 +1,6 @@
 
-import Link from 'next/link'
 import Image from 'next/image'
-import HeaderOnly from 'layouts/header-only.js'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import {useForm} from "react-hook-form";
 import {useRouter} from "next/router";
 import {useAsyncState} from "hooks/useAsyncState";
@@ -13,6 +11,7 @@ import Card from "components/common/card";
 import CustomInput from 'components/common/input'
 import Button from "components/common/button";
 import Wrapper from "components/login/wrapper";
+import Layout from "layouts/default";
 
 import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg'
 import success from 'assets/svg/common/success.svg'
@@ -22,7 +21,6 @@ import {useCountdown} from "hooks/useCountdown";
 
 import cookie from 'cookie'
 import Cookies from 'js-cookie'
-import {getUserProfile} from "shared/users";
 
 export default function Login () {
 
@@ -278,8 +276,8 @@ export async function getServerSideProps(context) {
 
 Login.getLayout = function getLayout (login) {
     return (
-        <HeaderOnly>
+        <Layout footer={false}>
             {login}
-        </HeaderOnly>
+        </Layout>
     )
 }

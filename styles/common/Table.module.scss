@@ -1,0 +1,29 @@
+@import "styles/vars";
+
+.table {
+  font-size: $secondary-size;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.thead {
+  background-color: $primary-color;
+  color: white;
+}
+
+.tr {
+  &:nth-child(even) {
+    background-color: $blue-gray;
+  }
+}
+
+.cell {
+  padding: 13px;
+}
+
+.cellContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}

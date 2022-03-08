@@ -17,6 +17,8 @@ import cookie from 'cookie'
 import axios from 'axios';
 import { Endpoints } from 'utils/endpoints';
 import PayOptions from 'components/payOptions/PayOptions';
+import Followers from "components/manageAccount/followers";
+import Followings from "components/manageAccount/followings";
 export default function ManageAccount({ user }) {
 
     const router = useRouter()
@@ -81,6 +83,7 @@ export default function ManageAccount({ user }) {
             'آنالیز محتوا',
             'حامی ها',
             'دنبال کننده ها',
+            'دنبال شونده ها',
             'جستجوهای ذخیره شده',
             'پیام ها',
             'خروج'
@@ -126,7 +129,11 @@ export default function ManageAccount({ user }) {
                     return <AnalyzeContent />
                 case 4:
                     return <Doners />
-                case 7:
+                case 5:
+                return <Followers/>
+            case 6:
+                return <Followings/>
+            case 7:
                     return <Messages
                         getMessages={getMessages}
                         messages={messages}
@@ -142,7 +149,7 @@ export default function ManageAccount({ user }) {
                     return <PersonalInfo user={user} />
                 case 1:
                     return <OrderList />
-            
+
                 case 2:
                     return <AnalyzeContent />
                 case 4:

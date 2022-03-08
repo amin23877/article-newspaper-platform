@@ -2,13 +2,15 @@ import React from 'react';
 import Table from "components/common/table/Table";
 import TableRow from "components/common/table/TableRow";
 import TableCell from "components/common/table/tableCell";
-import Text from "components/common/text";
+import EmptyList from "components/manageAccount/emptyList";
 import {useInteractionsList} from "hooks/manage-account/useInteractionsList";
+
+import emptyImage from 'assets/images/manage-account/empty-list.svg'
 
 function Followers() {
     const {list: followers, count, handleLoadMore} = useInteractionsList('followers');
 
-    if (!followers || followers?.length === 0) return <Text>فالووری ندارید</Text>;
+    if (!followers) return 'loading...'
 
     return (
         <Table
@@ -16,6 +18,7 @@ function Followers() {
             maxRowsCount={count}
             size={followers.length}
             onLoadMore={handleLoadMore}
+            emptyComponent={<EmptyList image={emptyImage} text='شما هیچ فالووری ندارید'/>}
         >
             {followers.map(({targetAccount}) => (
                 <TableRow key={targetAccount._id}>
@@ -23,7 +26,7 @@ function Followers() {
                     <TableCell>دیتا از سرور نمیاد</TableCell>
                     <TableCell>دیتا از سرور نمیاد</TableCell>
                 </TableRow>
-            ))}t
+            ))}
         </Table>
     );
 }

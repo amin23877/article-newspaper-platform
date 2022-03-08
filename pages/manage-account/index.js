@@ -1,7 +1,7 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useUser, updateUser } from "hooks/useUser";
+import {useState} from "react";
+import {useRouter} from "next/router";
+import {updateUser} from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
@@ -12,18 +12,19 @@ import Doners from 'components/manageAccount/doners';
 import Messages from 'components/manageAccount/messages';
 import Modal from '@mui/material/Modal';
 import Image from "next/image";
-import { getUserProfile } from 'shared/users';
+import {getUserProfile} from 'shared/users';
 import cookie from 'cookie'
 import axios from 'axios';
-import { Endpoints } from 'utils/endpoints';
+import {Endpoints} from 'utils/endpoints';
 import PayOptions from 'components/payOptions/PayOptions';
 import Followers from "components/manageAccount/followers";
 import Followings from "components/manageAccount/followings";
-export default function ManageAccount({ user }) {
+
+export default function ManageAccount({user}) {
 
     const router = useRouter()
 
-    const { activeIndex } = router.query
+    const {activeIndex} = router.query
     // const [user, getUser, hasInitialized, memberType] = useUser()
     const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0)
 
@@ -45,7 +46,7 @@ export default function ManageAccount({ user }) {
 
     const getMessages = async () => {
         try {
-            const { accessToken } = cookie.parse(document?.cookie)
+            const {accessToken} = cookie.parse(document?.cookie)
             let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000`, {
                 headers: {
                     authorization: accessToken
@@ -58,7 +59,7 @@ export default function ManageAccount({ user }) {
     }
     const sendMessage = async (title = 'support', text) => {
         try {
-            const { accessToken } = cookie.parse(document?.cookie)
+            const {accessToken} = cookie.parse(document?.cookie)
             let msgs = await axios.post(Endpoints.baseUrl + `/user/supportMessage`, {
                 title: title,
                 text: text
@@ -88,8 +89,7 @@ export default function ManageAccount({ user }) {
             'پیام ها',
             'خروج'
         ]
-    }
-    else {
+    } else {
         menuItems = [
             'اطلاعات شخصی',
             'لیست سفارش ها',
@@ -120,20 +120,20 @@ export default function ManageAccount({ user }) {
 
             switch (activeMenu) {
                 case 0:
-                    return <PersonalInfo user={user} />
+                    return <PersonalInfo user={user}/>
                 case 1:
-                    return <OrderList />
+                    return <OrderList/>
                 case 2:
-                    return <IncomeLog />
+                    return <IncomeLog/>
                 case 3:
-                    return <AnalyzeContent />
+                    return <AnalyzeContent/>
                 case 4:
-                    return <Doners />
+                    return <Doners/>
                 case 5:
-                return <Followers/>
-            case 6:
-                return <Followings/>
-            case 7:
+                    return <Followers/>
+                case 6:
+                    return <Followings/>
+                case 7:
                     return <Messages
                         getMessages={getMessages}
                         messages={messages}
@@ -141,19 +141,18 @@ export default function ManageAccount({ user }) {
                         me={user}
                     />
             }
-        }
-        else {
+        } else {
 
             switch (activeMenu) {
                 case 0:
-                    return <PersonalInfo user={user} />
+                    return <PersonalInfo user={user}/>
                 case 1:
-                    return <OrderList />
+                    return <OrderList/>
 
                 case 2:
-                    return <AnalyzeContent />
+                    return <AnalyzeContent/>
                 case 4:
-                    return <Doners />
+                    return <Doners/>
                 case 7:
                     return <Messages
                         getMessages={getMessages}
@@ -171,39 +170,33 @@ export default function ManageAccount({ user }) {
                 <div className={styles.rightCol}>
                     <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
                     {user !== undefined && user.isContentProvider ?
-                        <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
+                        <div className={styles.providerTitle}
+                             onClick={() => setContentProvider(user.isContentProvider)}>
                             شما ناشر هستید.
                         </div>
                         : <div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
-                            onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                               onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
                     }
 
                     <div className={styles.status}>
                         <div className={styles.statusTitle}>امتیاز شما</div>
                         <div className={styles.statusValue}>{`${0} امتیاز`}</div>
                     </div>
-                    <div className={styles.status}>
+
+                    <div onClick={() => setOpenPay(true)} className={styles.status}>
                         <div className={styles.statusTitle}>
                             کیف پول
                             <div className={styles.balance}>
                                 {`${user !== undefined ? user.balance : 0} هزار تومان`}
                             </div>
                         </div>
-                        {user !== undefined && user.balance === 0 ?
-                            <div className={styles.statusValue} onClick={() => handleOpen()}>
-                                فعالسازی کیف پول
-                                <div className={styles.iconContainer}>
-                                    <Image src={ArrowLeft} alt='' />
-                                </div>
+
+                        <div className={styles.statusValue} >
+                            افزایش اعتبار کیف پول
+                            <div className={styles.iconContainer}>
+                                <Image src={ArrowLeft} alt=''/>
                             </div>
-                            :
-                            <div className={styles.statusValue} onClick={() => setOpenPay(true)}>
-                                افزایش اعتبار کیف پول
-                                <div className={styles.iconContainer}>
-                                    <Image src={ArrowLeft} alt='' />
-                                </div>
-                            </div>
-                        }
+                        </div>
                     </div>
 
                     <ul className={styles.menuItems}>
@@ -230,7 +223,7 @@ export default function ManageAccount({ user }) {
                 >
                     <div className={styles.modalContainer}>
                         <WalletModal phone={user !== undefined ? user.msisdn : ''}
-                            closeModal={handleClose}
+                                     closeModal={handleClose}
                         />
                     </div>
 
@@ -254,9 +247,10 @@ export default function ManageAccount({ user }) {
         </div>
     )
 }
+
 export async function getServerSideProps(context) {
 
-    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+    const {accessToken} = cookie.parse(context.req.headers.cookie ?? '')
 
     if (!accessToken) {
         return {
@@ -268,7 +262,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const { data: { data: { me } } } = await getUserProfile(accessToken)
+        const {data: {data: {me}}} = await getUserProfile(accessToken)
 
         if (!me) {
             return {
@@ -280,13 +274,11 @@ export async function getServerSideProps(context) {
         }
 
 
-
         return {
-            props: { user: me }
+            props: {user: me}
         }
 
-    }
-    catch (e) {
+    } catch (e) {
         return {
             redirect: {
                 destination: '/',

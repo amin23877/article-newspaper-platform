@@ -85,6 +85,7 @@ export default function Details({ onDetailSubmit, onUpload, loading, data, setDa
                                         <option key={index} value={item._id}>{item.title}</option>
                                     )
                                 })
+                                
                             }
                         </select>
                     </div>

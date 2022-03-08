@@ -16,7 +16,7 @@ export default function Contacts({type = 'follower', count, data = [], ...rest})
                             <Link key={index} href={`/user/${item.targetAccount?._id || item.user._id}`}>
                                 <a>
                                     <div className={styles.item}>
-                                        <ContactItem />
+                                        <ContactItem info={item.user}/>
                                     </div>
                                 </a>
                             </Link>

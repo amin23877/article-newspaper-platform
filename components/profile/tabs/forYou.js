@@ -67,14 +67,14 @@ export default function ForYou({ me, ...props }) {
             paymentType: paymentType,
             title: title,
             postId: postId,
-            username:username
+            username: username
         })
         setOpenModal(true)
 
     }
     return (
         <div>
-            <FilterBar />
+            <FilterBar tags={props.tags} />
             {payInfo &&
                 <PayOptions
                     openModal={openModal}

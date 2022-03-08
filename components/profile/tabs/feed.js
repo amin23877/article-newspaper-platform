@@ -1,4 +1,4 @@
-import FilterBar from "components/common/filterBar";
+import FilterBar from "components/common/filterBar/filterBar";
 import FeedPost from "components/profile/posts/feed";
 import Button from "components/common/button";
 import { useUser } from "hooks/useUser";
@@ -107,7 +107,7 @@ export default function Feed({ id, ...props }) {
     }
     return (
         <div>
-            <FilterBar />
+            <FilterBar tags={props.tags}/>
             <div>
                 {posts ? (
                     posts.map((post, i) => <FeedPost

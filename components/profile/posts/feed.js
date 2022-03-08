@@ -23,7 +23,7 @@ export default function FeedPost({ paid, memberType, paymentType, postProp, hide
     const popupItems = [
         { text: 'حذف', icon: TrashIcon, action: () => { } },
         { text: 'لغو نمایش', icon: EyeOffIcon, action: () => { hidePost(postProp._id) } },
-        { text: 'ویرایش', icon: EditIcon, action: () => { } },
+        { text: 'ویرایش', icon: EditIcon, action: () => { } , link:`/post/${postProp._id}/edit` },
         { text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => {sharePost(postProp._id) } },
         { text: 'بستن نظرات', icon: CommentsIcon, action: () => { } },
         { text: 'حق نشر', icon: LockIcon, action: () => { } },

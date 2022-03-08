@@ -43,35 +43,51 @@ export default function Post({ postInfo }) {
     }, [])
 
     const getPackages = async () => {
-        const { accessToken } = cookie.parse(document?.cookie);
+        try {
 
-        let p = await axios.get(Endpoints.baseUrl + '/payment/packages', {
-            headers: {
-                authorization: accessToken
-            }
-        })
-        setPackages(p.data.data.packages)
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.get(Endpoints.baseUrl + '/payment/packages', {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setPackages(p.data.data.packages)
+        }
+        catch (e) {
+            // alert('برای مشاهده پست ابتدا لاگین کنید یا حامی شوید')
+        }
     }
     const getPost = async () => {
-        const { accessToken } = cookie.parse(document?.cookie);
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
 
-        let p = await axios.get(Endpoints.baseUrl + '/post/single/' + postInfo._id, {
-            headers: {
-                authorization: accessToken
-            }
-        })
-        setPost(p.data.data.post)
+            let p = await axios.get(Endpoints.baseUrl + '/post/single/' + postInfo._id, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setPost(p.data.data.post)
+        }
+        catch (e) {
+            alert('برای مشاهده پست ابتدا لاگین کنید یا حامی شوید')
+        }
     }
 
     const getComments = async () => {
-        const { accessToken } = cookie.parse(document?.cookie);
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
 
-        let p = await axios.get(Endpoints.baseUrl + `/post/comments/${postInfo._id}?start=0&limit=10&sortBy=createdAt&sortOrder=-1`, {
-            headers: {
-                authorization: accessToken
-            }
-        })
-        setComments(p.data.data.comments)
+            let p = await axios.get(Endpoints.baseUrl + `/post/comments/${postInfo._id}?start=0&limit=10&sortBy=createdAt&sortOrder=-1`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setComments(p.data.data.comments)
+        }
+        catch (e) {
+            alert('برای مشاهده کامنت ها ابتدا لاگین کنید یا حامی شوید')
+        }
     }
     const addComment = async () => {
         try {
@@ -177,7 +193,7 @@ export default function Post({ postInfo }) {
                         <Image src={MockUser} alt='avatar' />
                     </div>
                     <div className={styles.name}>
-                        {postInfo.user.username} 
+                        {postInfo.user.username}
                     </div>
                     <div className={styles.status}>
                         {/* در حال ایجاد محتوا هستید */}

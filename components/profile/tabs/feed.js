@@ -1,4 +1,4 @@
-import FilterBar from "components/common/filterBar";
+import FilterBar from "components/common/filterBar/filterBar";
 import FeedPost from "components/profile/posts/feed";
 import Button from "components/common/button";
 import { useUser } from "hooks/useUser";

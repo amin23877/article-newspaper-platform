@@ -3,6 +3,8 @@
 .purchaseCardContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
   .purchaseCard {
     width: 393px;
     box-shadow: 2px 2px 6px 0px #0000001f;
@@ -11,6 +13,7 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 8px;
+    background-color: white;
     .purchaseHeader {
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
       border-radius: 10px 10px 0px 0px;

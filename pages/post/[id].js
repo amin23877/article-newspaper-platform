@@ -27,26 +27,86 @@ export default function Post({ postInfo }) {
     console.log('post', postInfo)
     const router = useRouter()
     const { type, id } = router.query
-
     const [user, getUser, hasInitialized, memberType] = useUser()
     const [showAd, setShowAd] = useState(true)
     const [packages, setPackages] = useState()
+    const [comments, setComments] = useState()
+    const [commentText, setCommentText] = useState('')
+    const [post, setPost] = useState()
 
     useEffect(() => {
         getUser()
         getPackages()
+        getComments()
+        getPost()
         return
     }, [])
 
     const getPackages = async () => {
-        const { accessToken } = cookie.parse(document?.cookie);
+        try {
 
-        let p = await axios.get(Endpoints.baseUrl + '/payment/packages',{
-            headers: {
-                authorization: accessToken
-            }
-        })
-        setPackages(p.data.data.packages)
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.get(Endpoints.baseUrl + '/payment/packages', {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setPackages(p.data.data.packages)
+        }
+        catch (e) {
+            // alert('برای مشاهده پست ابتدا لاگین کنید یا حامی شوید')
+        }
+    }
+    const getPost = async () => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.get(Endpoints.baseUrl + '/post/single/' + postInfo._id, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setPost(p.data.data.post)
+        }
+        catch (e) {
+            alert('برای مشاهده پست ابتدا لاگین کنید یا حامی شوید')
+        }
+    }
+
+    const getComments = async () => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.get(Endpoints.baseUrl + `/post/comments/${postInfo._id}?start=0&limit=10&sortBy=createdAt&sortOrder=-1`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setComments(p.data.data.comments)
+        }
+        catch (e) {
+            alert('برای مشاهده کامنت ها ابتدا لاگین کنید یا حامی شوید')
+        }
+    }
+    const addComment = async () => {
+        try {
+            const { accessToken } = cookie.parse(document?.cookie);
+
+            let p = await axios.post(Endpoints.baseUrl + `/post/comment/${postInfo._id}`,
+                {
+                    "text": commentText
+                },
+                {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+            setComments(p.data.data.comments)
+        }
+        catch (e) {
+            alert('برای ثبت کامنت ابتدا حامی شوید')
+        }
     }
 
     const closeAd = () => {
@@ -96,51 +156,6 @@ export default function Post({ postInfo }) {
         }
     ]
 
-    const comments = [
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-        {
-            text: 'بسیار عالی بود',
-            time: '11 ساعت پیش',
-            user: MockAvatar,
-            username: 'Saba Ahmadi'
-        },
-        {
-            text: 'خیلی ممنون از محتوای زیباتون ممنون میشم راجب سیستم های دیگه هم ویدیو بذارید',
-            time: '2 ساعت پیش',
-            user: MockUser,
-            username: 'Nima Kazemi'
-        },
-
-    ]
     const renderTime = (post) => {
         var updated_at = Math.floor(new Date(post.updatedAt).getTime() / 1000);
         var now = Math.floor(Date.now() / 1000);
@@ -149,14 +164,15 @@ export default function Post({ postInfo }) {
             return `${diff} ثانیه پیش`
         } else if (diff < 3600) {
             return `${Math.floor(diff / 60)} دقیقه پیش`
-        } else if(diff < 86400) {
+        } else if (diff < 86400) {
             return `${Math.floor(diff / 3600)} ساعت پیش`
-        }else{
+        } else {
             return `${Math.floor(diff / 86400)} روز پیش`
 
         }
 
     }
+    console.log('posttttttt', post)
 
     return (
         <div className={styles.postPageContainer}>
@@ -177,7 +193,7 @@ export default function Post({ postInfo }) {
                         <Image src={MockUser} alt='avatar' />
                     </div>
                     <div className={styles.name}>
-                        {postInfo.user.firstname} {postInfo.user.lastname}
+                        {postInfo.user.username}
                     </div>
                     <div className={styles.status}>
                         {/* در حال ایجاد محتوا هستید */}
@@ -186,16 +202,17 @@ export default function Post({ postInfo }) {
                         null
                         :
                         <>
-                            <Button classes={styles.joinButton} variant='filled'
-                            >
-                                <Link href={{ pathname: '/user/1/purchase', query: { paymentType: 'اشتراک', title: 'عنوان' } }} passHref>
+                            <Link href={`/user/${postInfo.user._id}/purchase/${postInfo._id}`} passHref>
+
+                                <Button classes={styles.joinButton} variant='filled'
+                                >
                                     <span>حامی شوید</span>
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
 
                             <div className={styles.rightColContainer}>
                                 <div className={styles.membershipHeader}>اشتراک ها</div>
-                                {packages && packages.map((pack , i) => (
+                                {packages && packages.map((pack, i) => (
                                     <div className={styles.membership} key={i}>
                                         <div className={styles.membershipImage}>
                                             <Image src={GoldPlan} alt='gold-plan' />
@@ -246,39 +263,54 @@ export default function Post({ postInfo }) {
                 </div>
             </div>
             <div className={styles.leftCol}>
-                {type === 'video' ?
-                    <iframe
-                        className={styles.banner}
-                        src="https://aspb22.cdn.asset.aparat.com/aparat-video/806851e3c1500641e2208a3400d70f7827115864-480p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjFkZmNlZmI1OWZjZDMwNTcwYTAzNTFlOTg0MTNjMjA3IiwiZXhwIjoxNjQzNjM5MzE3LCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.utCABN8MI6kcXq0scOxZ37fac1aoM4E63sexHw3xjUk" frameBorder="2" width="100%" height="340px"></iframe>
-                    :
-                    <embed
-                        src="http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0"
-                        type="application/pdf"
-                        frameBorder="0"
-                        scrolling="auto"
-                        height="610px"
-                        width="667px"
-                    ></embed>
+                {(post?.files && post?.files[0]?.fileType) &&
+                    <>
+                        {post?.files[0]?.fileType === 'image' ?
+                            <div className={styles.postImageContainer}>
+                                <img style={{ width: '100%' }} src={post?.files[0]?.url} alt="" />
+                            </div>
+                            :
+                            post?.files[0]?.fileType === 'pdf' ?
+
+                                <embed
+                                    src={post?.files[0]?.url}
+                                    type="application/pdf"
+                                    frameBorder="0"
+                                    scrolling="auto"
+                                    height="610px"
+                                    width="667px"
+                                ></embed>
+                                :
+                                post?.files[0]?.fileType === 'video' ?
+                                    <video width="320" height="240" controls>
+                                        <source src={post?.files[0]?.url} type="video/mp4" />
+                                    </video>
+                                    :
+                                    <audio controls>
+                                        <source src={post?.files[0]?.url} type="audio/mp3" />
+
+                                    </audio>}
+                    </>
                 }
                 <div className={styles.videoText}>
                     <div className={styles.postTitle}>{postInfo.title}</div>
                     <div className={styles.postTime}>{renderTime(postInfo)}</div>
                 </div>
-                <div className={styles.members}>756 مشترک</div>
+                {/* <div className={styles.members}>756 مشترک</div> */}
                 <div className={styles.videoButtons}>
                     <div className={styles.actions}>
                         <div className={styles.like}>
                             <div className={styles.icon}>
                                 <Image src={Heart} alt="" />
                             </div>
-                            <div className={styles.count}>{latestPosts[0].likeCount}</div>
+                            <div className={styles.count}>{postInfo.likesCount}</div>
                         </div>
                         <div className={styles.comment}>
                             <div className={styles.icon}>
                                 <Image src={Comment} alt="" />
                             </div>
                             <div className={styles.count}>
-                                {latestPosts[0].commentCount}
+                                {postInfo.commentsCount}
                             </div>
                         </div>
                     </div>
@@ -299,11 +331,11 @@ export default function Post({ postInfo }) {
                         <Image src={MockAvatar} alt='' />
                     </div>
                     <div className={styles.userNewComment}>
-                        <div className={styles.sendBtn}><Image src={Send} alt='' /></div>
-                        <input type='text' placeholder='دیدگاه خود را وارد نمایید ...' />
+                        <div onClick={addComment} className={styles.sendBtn}><Image src={Send} alt='' /></div>
+                        <input onChange={(e) => setCommentText(e.target.value)} value={commentText} type='text' placeholder='دیدگاه خود را وارد نمایید ...' />
                     </div>
                 </div>
-                {comments.map((comment, index) => {
+                {comments && comments.map((comment, index) => {
                     return (
                         <div key={index} className={styles.comment}>
                             <div className={styles.commentAvatar}>

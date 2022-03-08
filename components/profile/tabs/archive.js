@@ -29,7 +29,7 @@ export default function Archive(
 
     return (
         <div>
-            <FilterBar />
+            <FilterBar tags={props.tags}/>
             <div>
                 {posts ? posts.map((post , i) => (
                     <ArchivePost

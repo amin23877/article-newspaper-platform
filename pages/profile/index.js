@@ -22,8 +22,9 @@ import Cookies from 'js-cookie';
 import { useState } from 'react';
 import transform from 'utils/transform';
 import About from 'components/profile/tabs/about';
+import { api } from 'axios/api';
 
-export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount }) {
+export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount, tags }) {
     const [activeTab, setActiveTab] = useState('feed')
     const [followings, setFollowings] = useState(followingsProp)
     const [followingsCount, setFollowingsCount] = useState(followingsCountProp)
@@ -39,13 +40,13 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                 headers: { authorization: accessToken },
             });
 
-            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=4&sortBy=_id&sortOrder=-1', {
+            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=3&sortBy=_id&sortOrder=-1', {
                 headers: {
                     authorization: accessToken
                 }
             })
 
-            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count', {
+            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count?start=0&limit=3&sortBy=_id&sortOrder=-1', {
                 headers: {
                     authorization: accessToken
                 }
@@ -186,13 +187,14 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                         />
                         <div className={styles.contents}>
                             {
-                                activeTab == 'feed' && <Feed me={me} />
+                                activeTab == 'feed' && <Feed tags={tags} me={me} />
                             }
                             {
-                                activeTab == 'forYou' && <ForYou me={me} />
+                                activeTab == 'forYou' && <ForYou tags={tags} me={me} />
                             }
                             {
                                 activeTab == 'archive' && <Archive
+                                    tags={tags}
                                     followings={followings}
                                     doFollow={doFollow}
                                     getPosts={getBookmarks}
@@ -268,15 +270,22 @@ export async function getServerSideProps(context) {
             }
         })
 
+        const tagsReq = axios.get(Endpoints.baseUrl + '/post/tags', {
+            headers: {
+                authorization: accessToken
+            }
+        })
+
         const [
             { data: { data: { followers } } },
             { data: { data: { followings } } },
             { data: { data: { count: followingsCount } } },
-            { data: { data: { count: followersCount } } }
-        ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq])
+            { data: { data: { count: followersCount } } },
+            { data: { data: { tags: tags } } }
+        ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq, tagsReq])
 
         return {
-            props: { me, followers, followingsProp: followings, followingsCountProp: followingsCount, followersCount }
+            props: { me, followers, followingsProp: followings, followingsCountProp: followingsCount, followersCount, tags }
         }
 
     }

@@ -1,10 +1,10 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import Text from "components/common/text";
 import classNames from "classnames";
 import styles from "styles/common/FilterBarPanel.module.scss";
-import {useWhenClickOutside} from "hooks/useWhenClickOutside";
+import { useWhenClickOutside } from "hooks/useWhenClickOutside";
 
-function FilterPanel({name, activePanel, filters, selected, onSelect, onClose}) {
+function FilterPanel({ name, activePanel, filters, selected, onSelect, onClose }) {
     const ref = useRef();
 
     useWhenClickOutside([ref], onClose);
@@ -17,7 +17,7 @@ function FilterPanel({name, activePanel, filters, selected, onSelect, onClose}) 
     return name === activePanel ? (
         <div ref={ref} className={styles.container}>
             {filters.map((filter, index) => {
-                const isSelected = detectIsSelected(filter.value);
+                const isSelected = detectIsSelected(filter.value?filter.value:filter._id);
 
                 return (
                     <Text
@@ -28,9 +28,9 @@ function FilterPanel({name, activePanel, filters, selected, onSelect, onClose}) 
                         className={classNames(styles.filter, {
                             [styles.selected]: isSelected,
                         })}
-                        onClick={() => handleClick(filter.value, isSelected)}
+                        onClick={() => handleClick(filter.value ? filter.value : filter._id, isSelected)}
                     >
-                        {filter.name}
+                        {filter.name || filter.title}
                     </Text>
                 );
             })}

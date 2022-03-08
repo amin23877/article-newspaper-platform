@@ -10,8 +10,6 @@ function MyApp({ Component, pageProps, pagesInfo }) {
 
     return getLayout(<Component {...pageProps} />)
 }
-
-
 export default MyApp
 
 MyApp.getInitialProps = async ({ ctx }) => {
@@ -24,6 +22,10 @@ MyApp.getInitialProps = async ({ ctx }) => {
             };
         } catch (err) {
             console.warn('error',err)
+
+            return {
+                pagesInfo: null
+            };
         }
     }
 

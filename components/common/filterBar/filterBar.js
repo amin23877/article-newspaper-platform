@@ -3,23 +3,23 @@ import Magnifier from "assets/svg/common/magnifier-grey.svg";
 import ChevronDown from "assets/svg/common/chevron-down.svg";
 import Image from "next/image";
 import FilterPanel from "components/common/filterBar/filterPanel";
-import {useReducer, useState} from "react";
+import { useReducer, useState } from "react";
 
 const filters = {
     access: [
-        {name: "همه", value: "all"},
-        {name: "رایگان", value: "free"},
-        {name: "اشتراک VIP", value: "vip"},
+        { name: "همه", value: "all" },
+        { name: "رایگان", value: "free" },
+        { name: "اشتراک VIP", value: "vip" },
     ],
     type: [
-        {name: "مقاله", value: "article"},
-        {name: "ویدیو", value: "video"},
-        {name: "پادکست", value: "podcast"},
+        { name: "مقاله", value: "article" },
+        { name: "ویدیو", value: "video" },
+        { name: "پادکست", value: "podcast" },
     ],
     label: [
-        {name: "آموزشی", value: "educational"},
-        {name: "هنری", value: "art"},
-        {name: "سلامت", value: "health"},
+        { name: "آموزشی", value: "educational" },
+        { name: "هنری", value: "art" },
+        { name: "سلامت", value: "health" },
     ],
 };
 
@@ -48,15 +48,23 @@ const reducer = (state, action) => {
     }
 };
 
-export default function FilterBar() {
+export default function FilterBar({ tags = [] , handleClick}) {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, dispatch] = useReducer(reducer, initialState);
 
-    const closePanel = () => setActivePanel(null);
+    const closePanel = () => {
+        setActivePanel(null);
+    }
 
     // this function get name and value of filter and action type (selected or unselected) and update state
     const handleSelect = (name, value, type) => {
-        dispatch({type, name, payload: value});
+        console.log('name',name)
+        console.log('value',value)
+        console.log('type',type)
+        dispatch({ type, name, payload: value });
+        if(type=='unselect'){
+            handleClick() 
+        }
     };
 
     return (
@@ -68,7 +76,7 @@ export default function FilterBar() {
                     <div className={styles.text}>زمان</div>
 
                     <div className={styles.icon}>
-                        <Image src={ChevronDown} alt=""/>
+                        <Image src={ChevronDown} alt="" />
                     </div>
                 </div>
 
@@ -76,7 +84,7 @@ export default function FilterBar() {
                     <div className={styles.text}>دسترسی</div>
 
                     <div className={styles.icon}>
-                        <Image src={ChevronDown} alt=""/>
+                        <Image src={ChevronDown} alt="" />
                     </div>
 
                     <FilterPanel
@@ -93,7 +101,7 @@ export default function FilterBar() {
                     <div className={styles.text}>نوع محتوا</div>
 
                     <div className={styles.icon}>
-                        <Image src={ChevronDown} alt=""/>
+                        <Image src={ChevronDown} alt="" />
                     </div>
 
                     <FilterPanel
@@ -110,13 +118,13 @@ export default function FilterBar() {
                     <div className={styles.text}>برچسب</div>
 
                     <div className={styles.icon}>
-                        <Image src={ChevronDown} alt=""/>
+                        <Image src={ChevronDown} alt="" />
                     </div>
 
                     <FilterPanel
                         name="label"
                         activePanel={activePanel}
-                        filters={filters.label}
+                        filters={tags}
                         onClose={closePanel}
                         selected={selectedFilters.label}
                         onSelect={handleSelect}
@@ -125,10 +133,10 @@ export default function FilterBar() {
             </div>
 
             <div className={styles.searchContainer}>
-                <input type="text" placeholder="جستجو"/>
+                <input type="text" placeholder="جستجو" />
 
                 <span className={styles.iconContainer}>
-                    <Image src={Magnifier} alt=""/>
+                    <Image src={Magnifier} alt="" />
                 </span>
             </div>
         </div>

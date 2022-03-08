@@ -19,7 +19,7 @@ export default function Home({ pageInfo }) {
                     title: post.title,
                     subTitle: post.description,
                     image: post.coverImage?.url,
-                    route: '/',
+                    route: '/post/' + post._id,
                     bestSeller: post.bestSeller ? true : false,
                     contentType: post.contentType
                 })
@@ -29,7 +29,7 @@ export default function Home({ pageInfo }) {
                 options: optTemp,
                 slidesPerView: (sec.contentType == 'magazine' || sec.contentType == 'article') ? 6 : 4,
                 radius: true,
-                page: '/',
+                page: '/post/' + sec._id,
                 type: sec.contentType || 'best',
             }
             sectionsTmp.push(tmp);
@@ -48,7 +48,7 @@ export default function Home({ pageInfo }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className='container'>
-             
+
                 {sections?.map((carousel) => (
                     <CarouselContainer
                         key={carousel.title}
@@ -65,7 +65,7 @@ export default function Home({ pageInfo }) {
                         }
                     />
                 ))}
-         
+
                 <div className={styles.accordionContainer}>
                     <Accordion />
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from "components/common/table/Table";
 import TableRow from "components/common/table/TableRow";
-import TableCell from "components/common/table/tableCell";
+import TableCell from "components/common/table/TableCell";
 import {useInteractionsList} from "hooks/manage-account/useInteractionsList";
 import EmptyList from "components/manageAccount/emptyList";
 

@@ -1,9 +1,9 @@
 
 import Image from 'next/image'
-import {useState} from 'react'
-import {useForm} from "react-hook-form";
-import {useRouter} from "next/router";
-import {useAsyncState} from "hooks/useAsyncState";
+import { useState } from 'react'
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useAsyncState } from "hooks/useAsyncState";
 import axios from "axios";
 
 import styles from 'styles/pages/Login.module.scss'
@@ -15,37 +15,37 @@ import Layout from "layouts/default";
 
 import ChevronRightLight from 'assets/svg/common/chevron-right-light.svg'
 import success from 'assets/svg/common/success.svg'
-import {phoneNumberRegex} from "utils/validations";
-import {Endpoints} from "utils/endpoints";
-import {useCountdown} from "hooks/useCountdown";
+import { phoneNumberRegex } from "utils/validations";
+import { Endpoints } from "utils/endpoints";
+import { useCountdown } from "hooks/useCountdown";
 
 import cookie from 'cookie'
 import Cookies from 'js-cookie'
 
-export default function Login () {
+export default function Login() {
 
-    const { register: phoneFormRegister, handleSubmit: handlePhoneSubmit, formState: {isValid: isPhoneValid}  } = useForm();
-    const { register: otpFormRegister, handleSubmit: handleOtpSubmit, formState: {isValid: isOtpValid}  } = useForm();
-    const { register: infoFormRegister, handleSubmit: handleInfoSubmit , formState: {isValid: isInfoValid}, setValue: infoSetValue } = useForm();
+    const { register: phoneFormRegister, handleSubmit: handlePhoneSubmit, formState: { isValid: isPhoneValid } } = useForm();
+    const { register: otpFormRegister, handleSubmit: handleOtpSubmit, formState: { isValid: isOtpValid } } = useForm();
+    const { register: infoFormRegister, handleSubmit: handleInfoSubmit, formState: { isValid: isInfoValid }, setValue: infoSetValue } = useForm();
 
     const router = useRouter()
 
     const [userData, setUserData] = useAsyncState(
         {
-                phone: '',
-                otp: '',
-                username: '',
-                publisher: undefined
-            }
-        )
+            phone: '',
+            otp: '',
+            username: '',
+            publisher: undefined
+        }
+    )
 
     const [step, setStep] = useState('phone')
 
-    const [seconds, formattedTime, setIsActive, reset] = useCountdown({initSeconds: 120})
+    const [seconds, formattedTime, setIsActive, reset] = useCountdown({ initSeconds: 120 })
 
     const onPhoneSubmit = async data => {
 
-        setUserData({...userData, phone: data.phone}, async (ud) => {
+        setUserData({ ...userData, phone: data.phone }, async (ud) => {
             try {
                 await axios.post(Endpoints.baseUrl + '/auth/login', {
                     msisdn: ud.phone
@@ -62,16 +62,16 @@ export default function Login () {
 
     const onOtpSubmit = data => {
 
-        setUserData({...userData, otp: data.otp}, async (ud) => {
+        setUserData({ ...userData, otp: data.otp }, async (ud) => {
             try {
-                const { data: { data: {refreshToken, isNewUser} } } = await axios.post(Endpoints.baseUrl + '/auth/verify', {
+                const { data: { data: { refreshToken, isNewUser } } } = await axios.post(Endpoints.baseUrl + '/auth/verify', {
                     msisdn: ud.phone,
                     code: ud.otp
                 })
 
                 Cookies.set('refreshToken', `${refreshToken}`)
 
-                const { data: { data: {accessToken} } } = await axios.post(Endpoints.baseUrl + '/auth/generateAccessToken', {
+                const { data: { data: { accessToken } } } = await axios.post(Endpoints.baseUrl + '/auth/generateAccessToken', {
                     refreshToken
                 })
 
@@ -79,7 +79,7 @@ export default function Login () {
 
                 infoSetValue('username', '')
 
-                setUserData({...userData, phone: '', otp: ''})
+                setUserData({ ...userData, phone: '', otp: '' })
 
                 if (isNewUser) {
                     setStep('info')
@@ -89,14 +89,14 @@ export default function Login () {
 
             } catch (e) {
                 console.log(e)
-               
-                
+
+
             }
         })
     }
 
-    const onInfoSubmit = ({username, publisher}) => {
-        setUserData({...userData, username, publisher}, async (ud) => {
+    const onInfoSubmit = ({ username, publisher }) => {
+        setUserData({ ...userData, username, publisher }, async (ud) => {
             try {
                 const res = await axios.put(Endpoints.baseUrl + '/user', {
                     isContentProvider: Boolean(ud.publisher),
@@ -153,7 +153,8 @@ export default function Login () {
                                             ورود/ثبت نام
                                         </div>
                                         <form onSubmit={handlePhoneSubmit(onPhoneSubmit)}>
-                                            <CustomInput register={phoneFormRegister} name="phone" validation={{required: true, pattern: phoneNumberRegex}} label='شماره موبایل خود را وارد کنید' classes={styles.phoneInput} />
+                                            <CustomInput register={phoneFormRegister} name="phone" validation={{ required: true, pattern: phoneNumberRegex }} label='شماره موبایل خود را وارد کنید' classes={styles.phoneInput} />
+                                            {!isPhoneValid && <p>شماره وارد شده صحیح نیست</p>}
                                             <div className={styles.inputContainer}>
                                                 <Button name='submit' type='submit' value='submit' classes={styles.button}>
                                                     ورود به دیجی نشر
@@ -171,24 +172,26 @@ export default function Login () {
                         return (
                             <div className={`${styles.content} ${styles.otpContainer}`}>
                                 <Card>
-                                    <div className={styles.stepBack} onClick={() => {setStep('phone')}}>
-                                    <span className={styles.iconContainer}>
-                                        <Image src={ChevronRightLight} alt=''/>
-                                    </span>
+                                    <div className={styles.stepBack} onClick={() => { setStep('phone') }}>
+                                        <span className={styles.iconContainer}>
+                                            <Image src={ChevronRightLight} alt='' />
+                                        </span>
                                         <span>
-                                        بازگشت به مرحله قبل
-                                    </span>
+                                            بازگشت به مرحله قبل
+                                        </span>
                                     </div>
                                     <div className={styles.inputsContainer}>
                                         <div className={styles.titleContainer}>
                                             کد تایید را وارد نمایید
                                         </div>
                                         <form onSubmit={handleOtpSubmit(onOtpSubmit)}>
-                                            <CustomInput register={otpFormRegister} validation={{required: true, maxLength: 5, minLength: 5}} name="otp" label={`کد ارسال شده به ${userData.phone} را وارد کنید`} classes={styles.phoneInput} />
+                                            <CustomInput register={otpFormRegister} validation={{ required: true, maxLength: 5, minLength: 5 }} name="otp" label={`کد ارسال شده به ${userData.phone} را وارد کنید`} classes={styles.phoneInput} />
+                                            {!isOtpValid && <p>کد وارد شده صحیح نیست</p>}
+
                                             <div className={styles.timeout}>
                                                 {formattedTime}
                                             </div>
-                                            <div className={styles.sendAgain} onClick={() => {onResendOtp()}}>
+                                            <div className={styles.sendAgain} onClick={() => { onResendOtp() }}>
                                                 ارسال مجدد کد تایید
                                             </div>
                                             <div className={styles.inputContainer}>
@@ -205,20 +208,20 @@ export default function Login () {
                         return (
                             <div className={`${styles.content} ${styles.otpContainer}`}>
                                 <Card>
-                                    <div className={styles.stepBack} onClick={() => {setStep('phone')}}>
-                                    <span className={styles.iconContainer}>
-                                        <Image src={ChevronRightLight}/>
-                                    </span>
+                                    <div className={styles.stepBack} onClick={() => { setStep('phone') }}>
+                                        <span className={styles.iconContainer}>
+                                            <Image src={ChevronRightLight} />
+                                        </span>
                                         <span>
-                                        بازگشت به مرحله قبل
-                                    </span>
+                                            بازگشت به مرحله قبل
+                                        </span>
                                     </div>
                                     <div className={styles.inputsContainer}>
                                         <div className={styles.titleContainer}>
                                             اطلاعات خود را کامل کنید
                                         </div>
                                         <form onSubmit={handleInfoSubmit(onInfoSubmit)}>
-                                            <CustomInput register={infoFormRegister} name="username" validation={{required: true}} label='نام و نام خانوادگی :' />
+                                            <CustomInput register={infoFormRegister} name="username" validation={{ required: true }} label='نام و نام خانوادگی :' />
                                             <div className={styles.radioLabel}> تولید کننده محتوا هستم</div>
                                             <div className={styles.radioContainer}>
                                                 <CustomInput register={infoFormRegister} id='publisherTrue' value='true' type='radio' name="publisher" classes={styles.radioInput} />
@@ -226,7 +229,7 @@ export default function Login () {
                                                 <CustomInput register={infoFormRegister} id='publisherFalse' value='false' type='radio' name="publisher" classes={styles.radioInput} />
                                                 <label htmlFor='publisherFalse' className={styles.radioInputLabel}>خیر</label>
                                             </div>
-                                            <div style={{'marginTop': '20px'}} className={styles.inputContainer}>
+                                            <div style={{ 'marginTop': '20px' }} className={styles.inputContainer}>
                                                 <Button type='submit' classes={`${styles.button} ${styles.otpButton}`}>
                                                     تایید
                                                 </Button>
@@ -243,7 +246,7 @@ export default function Login () {
                                     Digi Nashr Logo
                                 </div>
                                 <div className={styles.successIconContainer}>
-                                    <Image src={success}/>
+                                    <Image src={success} />
                                 </div>
                                 <div className={styles.successTextContainer}>
                                     اطلاعات شما با موفقیت ثبت شد.
@@ -274,7 +277,7 @@ export async function getServerSideProps(context) {
     }
 }
 
-Login.getLayout = function getLayout (login) {
+Login.getLayout = function getLayout(login) {
     return (
         <Layout footer={false}>
             {login}

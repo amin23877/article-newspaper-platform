@@ -18,14 +18,14 @@ import CommentsIcon from "../../../assets/svg/popup/comments.svg";
 import LockIcon from "../../../assets/svg/popup/lock.svg";
 import PaidLockIcon from "../../../assets/images/contact/lock.svg"
 
-export default function FeedPost({ paid, memberType, paymentType, postProp, hidePost,sharePost, ...rest }) {
+export default function FeedPost({ paid, memberType, paymentType, postProp, hidePost, sharePost, deletePost, banComments, ...rest }) {
 
     const popupItems = [
-        { text: 'حذف', icon: TrashIcon, action: () => { } },
-        { text: 'لغو نمایش', icon: EyeOffIcon, action: () => { hidePost(postProp._id) } },
-        { text: 'ویرایش', icon: EditIcon, action: () => { } , link:`/post/${postProp._id}/edit` },
-        { text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => {sharePost(postProp._id) } },
-        { text: 'بستن نظرات', icon: CommentsIcon, action: () => { } },
+        { text: 'حذف', icon: TrashIcon, action: () => { deletePost(postProp._id); setShowPopup(false) } },
+        { text: 'لغو نمایش', icon: EyeOffIcon, action: () => { hidePost(postProp._id); setShowPopup(false) } },
+        { text: 'ویرایش', icon: EditIcon, action: () => { }, link: `/post/${postProp._id}/edit` },
+        { text: 'به اشتراک گذاشتن', icon: ShareIcon, action: () => { sharePost(postProp._id); setShowPopup(false) } },
+        { text: `${postProp.postPermissions.indexOf('comment') === -1 ? 'باز کردن' : 'بستن'} نظرات`, icon: CommentsIcon, action: () => { banComments(postProp); setShowPopup(false) } },
         { text: 'حق نشر', icon: LockIcon, action: () => { } },
     ]
 
@@ -135,7 +135,7 @@ export default function FeedPost({ paid, memberType, paymentType, postProp, hide
                     </div>
                     {!paid || paymentType == memberType ?
                         <div className={styles.readMore}>
-                            <Link href={{ pathname: '/post/'+postProp._id, query: { type: rest.type } }}>
+                            <Link href={{ pathname: '/post/' + postProp._id, query: { type: rest.type } }}>
                                 مطالعه بیشتر
                             </Link>
                         </div>

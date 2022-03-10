@@ -190,6 +190,12 @@ export default function PersonalInfo({ user }) {
                 msisdn: data.msisdn,
                 email: data.email
             })
+            const changedInfo = changedValues(initialInfo, generalInfo)
+            const status = await updateUser(changedInfo)
+            if (status === 'ok') {
+                alert('اطاعات با موفقیت ویرایش شد.')
+                //router.reload()
+            }
         }
         else {
             await setGeneralInfo({
@@ -200,6 +206,12 @@ export default function PersonalInfo({ user }) {
                 email: data.email,
                 isContentProvider: false,
             })
+            const changedInfo = changedValues(initialInfo, generalInfo)
+            const status = await updateUser(changedInfo)
+            if (status === 'ok') {
+                alert('اطاعات با موفقیت ویرایش شد.')
+                //router.reload()
+            }
         }
 
 
@@ -238,6 +250,16 @@ export default function PersonalInfo({ user }) {
             ...generalInfo,
             user: info
         })
+        const changedInfo = changedValues(initialInfo, generalInfo)
+        console.log(changedInfo)
+        console.log('initial', initialInfo)
+        console.log('final', generalInfo)
+        const status = await updateUser(changedInfo)
+        if (status === 'ok') {
+            alert('اطاعات با موفقیت ویرایش شد.')
+            //router.reload()
+        }
+
         console.log(generalInfo)
     }
 
@@ -246,6 +268,12 @@ export default function PersonalInfo({ user }) {
             ...generalInfo,
             aboutMe: data.about
         })
+        const changedInfo = changedValues(initialInfo, generalInfo)
+        const status = await updateUser(changedInfo)
+        if (status === 'ok') {
+            alert('اطاعات با موفقیت ویرایش شد.')
+            //router.reload()
+        }
     }
 
     const onSocialSubmit = async data => {

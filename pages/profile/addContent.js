@@ -137,6 +137,7 @@ export default function AddContent({ me, accessToken, tags, ...props }) {
 
     const handleAddPost = async () => {
         try {
+
             const result = await axios.post(Endpoints.baseUrl + '/post',
                 {
                     "contentType": data.contentType.name,
@@ -149,7 +150,8 @@ export default function AddContent({ me, accessToken, tags, ...props }) {
                         data.sharePolicy
                     ],
                     "price": data.price,
-                    "bankAccount": null
+                    "bankAccount": null,
+                    "publishTime":data.publishTime
                 }, {
                 headers: {
                     authorization: accessToken

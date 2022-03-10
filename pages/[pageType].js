@@ -25,7 +25,7 @@ export default function MainPages({ pageInfo, tags=[] }) {
                     title: post.title,
                     subTitle: post.description,
                     image: post.coverImage?.url,
-                    route: '/',
+                    route: '/post/'+post._id,
                     bestSeller: post.bestSeller ? true : false,
                     contentType: post.contentType
                 })
@@ -35,7 +35,7 @@ export default function MainPages({ pageInfo, tags=[] }) {
                 options: optTemp,
                 slidesPerView: (sec.contentType == 'magazine' || sec.contentType == 'article') ? 6 : 4,
                 radius: true,
-                page: '/',
+                page: '/post/'+sec._id,
                 type: sec.contentType || 'best',
             }
             sectionsTmp.push(tmp);

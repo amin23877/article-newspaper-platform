@@ -1,91 +1,54 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useUser, updateUser } from "hooks/useUser";
+import {Fragment, useCallback, useMemo, useState} from "react";
+import {useRouter} from "next/router";
+import {updateUser} from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
 import IncomeLog from 'components/manageAccount/incomeLog';
-import WalletModal from 'components/manageAccount/walletModal';
 import AnalyzeContent from 'components/manageAccount/analyzeContent';
 import Doners from 'components/manageAccount/doners';
 import Messages from 'components/manageAccount/messages';
-import Modal from '@mui/material/Modal';
 import Image from "next/image";
-import { getUserProfile } from 'shared/users';
+import {getUserProfile} from 'shared/users';
 import cookie from 'cookie'
 import axios from 'axios';
-import { Endpoints } from 'utils/endpoints';
-export default function ManageAccount({ user }) {
+import {Endpoints} from 'utils/endpoints';
+import PayOptions from 'components/payOptions/PayOptions';
+import Followers from "components/manageAccount/followers";
+import Followings from "components/manageAccount/followings";
 
+const payInfo = {
+    paymentAmount: 5,
+    paymentType: 'increasePay',
+    title: 'افزایش اعتبار',
+    postId: 0,
+    username: 0,
+    step: 'chargeWallet',
+}
+
+const menuItems = [
+    {name : 'اطلاعات شخصی' , isPublic: true},
+    {name : 'لیست سفارش ها' , isPublic: true},
+    {name : 'گزارش مالی' , isPublic: false},
+    {name : 'آنالیز محتوا' , isPublic: true},
+    {name : 'حامی ها' , isPublic: false},
+    {name : 'دنبال کننده ها' , isPublic: true},
+    {name : 'دنبال شونده ها' , isPublic: true},
+    {name : 'جستجوهای ذخیره شده' , isPublic: true},
+    {name : 'پیام ها' , isPublic: true},
+]
+
+export default function ManageAccount({user}) {
     const router = useRouter()
 
-    const { activeIndex } = router.query
-    // const [user, getUser, hasInitialized, memberType] = useUser()
+    const {activeIndex} = router.query
+
+    const [messages, setMessages] = useState();
+
     const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0)
 
-    const [open, setOpen] = useState(false); // Modal to activate wallet
-    const [messages, setMessages] = useState(); // Modal to activate wallet
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-
-    const getMessages = async () => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-            let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000`, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            setMessages(msgs.data.data.messages)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    const sendMessage = async (title = 'support', text) => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-            let msgs = await axios.post(Endpoints.baseUrl + `/user/supportMessage`, {
-                title: title,
-                text: text
-            }, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            getMessages()
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    let menuItems = []
-
-    if (user !== undefined && user.isContentProvider) {
-        menuItems = [
-            'اطلاعات شخصی',
-            'لیست سفارش ها',
-            'گزارش مالی',
-            'آنالیز محتوا',
-            'حامی ها',
-            'دنبال کننده ها',
-            'جستجوهای ذخیره شده',
-            'پیام ها',
-            'خروج'
-        ]
-    }
-    else {
-        menuItems = [
-            'اطلاعات شخصی',
-            'لیست سفارش ها',
-            'آنالیز محتوا',
-            'دنبال کننده ها',
-            'جستجوهای ذخیره شده',
-            'پیام ها',
-            'خروج'
-        ]
-    }
+    const [openPay, setOpenPay] = useState(false);
 
     const onChangeMenu = (menuIndex) => {
         setActiveMenu(menuIndex)
@@ -101,27 +64,51 @@ export default function ManageAccount({ user }) {
         }
     }
 
-    const loadMenuPage = () => {
-        switch (activeMenu) {
-            case 0:
-                return <PersonalInfo user={user} />
-            case 1:
-                return <OrderList />
-            case 2:
-                return <IncomeLog />
-            case 3:
-                return <AnalyzeContent />
-            case 4:
-                return <Doners />
-            case 7:
-                return <Messages
-                    getMessages={getMessages}
-                    messages={messages}
-                    sendMessage={sendMessage}
-                    me={user}
-                />
+    const getMessages = async () => {
+        try {
+            const {accessToken} = cookie.parse(document?.cookie)
+            let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000`, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            setMessages(msgs.data.data.messages)
+        } catch (e) {
+            console.log(e)
         }
     }
+
+    const sendMessage = useCallback(async (title = 'support', text) => {
+        try {
+            const {accessToken} = cookie.parse(document?.cookie)
+            let msgs = await axios.post(Endpoints.baseUrl + `/user/supportMessage`, {
+                title: title,
+                text: text
+            }, {
+                headers: {
+                    authorization: accessToken
+                }
+            })
+            getMessages()
+        } catch (e) {
+            console.log(e)
+        }
+    }, [])
+
+    const menuPages = useMemo(() => ([
+        {key: 0, element: <PersonalInfo user={user}/>},
+        {key: 1, element: <OrderList/>},
+        {key: 2, element: <IncomeLog/>},
+        {key: 3, element: <AnalyzeContent/>},
+        {key: 4, element: <Doners/>},
+        {key: 5, element: <Followers/>},
+        {key: 6, element: <Followings/>},
+        {key: 7, element: null},
+        {
+            key: 8,
+            element: <Messages getMessages={getMessages} messages={messages} sendMessage={sendMessage} me={user}/>
+        },
+    ]), [messages, sendMessage, user])
 
     return (
         <div className={styles.manageAccountPage}>
@@ -129,71 +116,78 @@ export default function ManageAccount({ user }) {
                 <div className={styles.rightCol}>
                     <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
                     {user !== undefined && user.isContentProvider ?
-                        <div className={styles.providerTitle} onClick={() => setContentProvider(user.isContentProvider)}>
+                        <div className={styles.providerTitle}
+                             onClick={() => setContentProvider(user.isContentProvider)}>
                             شما ناشر هستید.
                         </div>
                         : <div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
-                            onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                               onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
                     }
 
                     <div className={styles.status}>
                         <div className={styles.statusTitle}>امتیاز شما</div>
                         <div className={styles.statusValue}>{`${0} امتیاز`}</div>
                     </div>
-                    <div className={styles.status}>
+
+                    <div onClick={() => setOpenPay(true)} className={styles.status}>
                         <div className={styles.statusTitle}>
                             کیف پول
                             <div className={styles.balance}>
                                 {`${user !== undefined ? user.balance : 0} هزار تومان`}
                             </div>
                         </div>
-                        {user !== undefined && user.balance === 0 ?
-                            <div className={styles.statusValue} onClick={() => handleOpen()}>
-                                فعالسازی کیف پول
-                                <div className={styles.iconContainer}>
-                                    <Image src={ArrowLeft} alt='' />
-                                </div>
+
+                        <div className={styles.statusValue}>
+                            افزایش اعتبار کیف پول
+                            <div className={styles.iconContainer}>
+                                <Image src={ArrowLeft} alt=''/>
                             </div>
-                            : null
-                        }
+                        </div>
                     </div>
 
                     <ul className={styles.menuItems}>
-                        {menuItems.map((menu, index) => {
+                        {menuItems.map((item, index) => {
+                            if (!item.isPublic && !user.isContentProvider) return null;
+
                             return (
-                                <li key={menu}
+                                <li key={index}
                                     onClick={() => onChangeMenu(index)}
                                     className={activeMenu === index ? styles.activeMenu : styles.menu}>
-                                    {menu}
+                                    {item.name}
                                 </li>
                             )
                         })}
                     </ul>
-
                 </div>
+
                 <div className={styles.leftCol}>
-                    {loadMenuPage()}
+                    {menuPages.map((page, index) => (
+                        <Fragment key={index}>{activeMenu === page.key && page.element}</Fragment>
+                    ))}
                 </div>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title2"
-                    aria-describedby="modal-modal-description2"
-                >
-                    <div className={styles.modalContainer}>
-                        <WalletModal phone={user !== undefined ? user.msisdn : ''}
-                            closeModal={handleClose}
-                        />
-                    </div>
 
-                </Modal>
+                {payInfo &&
+                    <PayOptions
+                        openModal={openPay}
+                        setOpenModal={setOpenPay}
+                        balance={user.balance}
+                        paymentType={payInfo.paymentType}
+                        paymentAmount={payInfo.paymentAmount}
+                        title={payInfo.title}
+                        me={user}
+                        step={payInfo.step}
+                        postId={payInfo.postId}
+                        username={payInfo.username}
+                    />}
+
             </div>
         </div>
     )
 }
+
 export async function getServerSideProps(context) {
 
-    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+    const {accessToken} = cookie.parse(context.req.headers.cookie ?? '')
 
     if (!accessToken) {
         return {
@@ -205,7 +199,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const { data: { data: { me } } } = await getUserProfile(accessToken)
+        const {data: {data: {me}}} = await getUserProfile(accessToken)
 
         if (!me) {
             return {
@@ -217,13 +211,11 @@ export async function getServerSideProps(context) {
         }
 
 
-
         return {
-            props: { user: me }
+            props: {user: me}
         }
 
-    }
-    catch (e) {
+    } catch (e) {
         return {
             redirect: {
                 destination: '/',

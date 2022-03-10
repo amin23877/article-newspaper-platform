@@ -1,4 +1,4 @@
-import FilterBar from "components/common/filterBar";
+import FilterBar from "components/common/filterBar/filterBar";
 import PersonalPost from "components/profile/posts/personal";
 import Button from "components/common/button";
 
@@ -8,10 +8,13 @@ import axios from 'axios';
 import { Endpoints } from "../../../utils/endpoints";
 import cookie from 'cookie'
 import jMoment from "moment-jalaali";
+import PayOptions from "components/payOptions/PayOptions";
 
 export default function ForYou({ me, ...props }) {
     jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: false });
     const [posts, setPosts] = useState()
+    const [openModal, setOpenModal] = useState(false)
+    const [payInfo, setPayInfo] = useState()
 
     useEffect(async () => {
         await loadPost()
@@ -52,13 +55,42 @@ export default function ForYou({ me, ...props }) {
             console.log(e)
         }
     }
+    const _handlePay = ({ balance,
+        paymentType,
+        paymentAmount,
+        postId,
+        username,
+        title }) => {
+        setPayInfo({
+            balance: balance,
+            paymentAmount: paymentAmount,
+            paymentType: paymentType,
+            title: title,
+            postId: postId,
+            username: username
+        })
+        setOpenModal(true)
+
+    }
     return (
         <div>
-            <FilterBar />
+            <FilterBar tags={props.tags} />
+            {payInfo &&
+                <PayOptions
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                    balance={payInfo.balance}
+                    paymentType={payInfo.paymentType}
+                    paymentAmount={payInfo.paymentAmount}
+                    title={payInfo.title}
+                    me={me}
+                    postId={payInfo.postId}
+                    username={payInfo.username}
+                />}
             <div>
                 {
                     posts ? posts.map((post, i) => (
-                        <PersonalPost post={post} me={me} key={i} handleLikePost={handleLikePost} />
+                        <PersonalPost _handlePay={_handlePay} post={post} me={me} key={i} handleLikePost={handleLikePost} />
 
                     ))
                         : <p>loading...</p>

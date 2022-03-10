@@ -5,10 +5,12 @@
   padding-bottom: 40px;
   background-color: $background-color;
   color: $black;
+
   .container {
     margin-inline: auto;
     display: flex;
     max-width: 1200px;
+
     .rightCol {
       background-color: white;
       width: 25%;
@@ -18,11 +20,13 @@
       box-sizing: border-box;
       border-radius: 20px 20px 20px 0px;
       padding: 12px;
+
       .welcomeText {
         color: $primary-color;
         font-weight: 700;
         font-size: $header-size;
       }
+
       .providerTitle {
         color: $gray;
         font-weight: 500;
@@ -30,51 +34,59 @@
         margin-top: 16px;
         margin-bottom: 24px;
       }
+
       .notProviderTitle {
         color: $primary-color;
         cursor: pointer;
       }
+
       .status {
         margin-bottom: 16px;
         display: flex;
         justify-content: space-between;
         padding-inline: 12px;
         align-items: center;
+
         .statusTitle {
           color: $gray;
           font-size: $primary-size;
+
           .balance {
             font-size: $tertiary-size;
           }
         }
+
         .statusValue {
           display: flex;
           font-size: $tertiary-size;
           color: $primary-color;
           margin-top: 5px;
+
           .iconContainer {
             cursor: pointer;
           }
         }
       }
+
       .status ~ .status {
         margin-bottom: 0;
         border-bottom: 1px solid $lightgray;
         padding-bottom: 12px;
         align-items: flex-start;
-        .statusValue {
-          cursor: pointer;
-        }
+        cursor: pointer;
       }
+
       .menuItems {
         list-style-type: none;
         padding-inline-start: 0;
         margin-top: 24px;
+
         li {
           margin-bottom: 10px;
           cursor: pointer;
           font-size: $primary-size;
         }
+
         .activeMenu {
           background: rgba(21, 90, 97, 0.15);
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -84,16 +96,19 @@
           display: flex;
           align-items: center;
         }
+
         .menu {
           padding-right: 16px;
         }
       }
     }
+
     .leftCol {
       width: 75%;
     }
   }
 }
+
 .modalContainer {
   position: absolute;
   top: 50%;

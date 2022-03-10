@@ -26,12 +26,22 @@
   font-display: swap;
 }
 
+html {
+  height: 100%;
+  overflow: auto;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: IRANSans;
   direction: rtl;
+  height: 100%;
+}
+
+#__next{
+  height: 100%;
 }
 
 *,

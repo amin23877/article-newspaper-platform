@@ -20,7 +20,7 @@ export default function ContactItem({ info, ...props }) {
     return (
         <div className={styles.contactItemContainer}>
             <div className={styles.avatar}>
-                <Image src={MockAvatar} />
+                <Image src={info?.profilePicture || MockAvatar} />
             </div>
             <div className={styles.desc}>
                 <div className={styles.name}>{info?.username ?? 'کاربر میهمان'}</div>

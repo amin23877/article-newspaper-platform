@@ -1,0 +1,48 @@
+@import "styles/vars";
+
+// font-weight
+.thin {
+  font-weight: 300;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+// font-size
+.xs {
+  font-size: 12px;
+}
+
+.sm {
+  font-size: 14px;
+}
+
+.m {
+  font-size: 16px;
+}
+
+.l {
+  font-size: 18px;
+}
+
+.xl {
+  font-size: 24px;
+}
+
+// color
+.gray {
+  color: $gray;
+}
+
+.primary {
+  color: $primary-color;
+}
+
+.black {
+  color: $black;
+}

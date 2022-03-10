@@ -1,4 +1,3 @@
-import FilterBar from "components/common/filterBar";
 import FeedPost from "components/profile/posts/feed";
 import styles from 'styles/components/profile/TabsCommon.module.scss'
 

@@ -1,171 +1,108 @@
 @import "styles/vars";
 
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formContainerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.formContainerBody {
+    margin-top: 16px;
+    display: flex;
+    flex-flow: wrap row;
+    gap: 16px;
+}
+
+.formControl {
+    flex: 1 0 45%;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formControlFullwidth {
+    composes: formControl;
+    flex-basis: 100%;
+}
+
+.formControlHorizontal {
+    composes: formControlFullwidth;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+}
+
+.select {
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    border: none;
+    padding: 5px;
+    min-width: 135px;
+}
+
+.selectProfilePicture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.selectCover {
+    --padding: 15px;
+    background-color: $lightergray;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: var(--padding);
+    border-radius: 10px;
+    cursor: pointer;
+
+    &::after {
+        content: '';
+        position: absolute;
+        border: 1px dashed $gray;
+        border-radius: 5px;
+        inset: var(--padding);
+    }
+}
+
+.socialLink {
+    direction: ltr;
+    flex-grow: 1;
+}
+
 .radioButtons {
-  width: 580px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  .realLabel {
+    width: 580px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.realLabel {
     font-weight: 500;
     font-size: $header-size;
-  }
-  input[type="radio"] {
-    display: none;
-    /*removes original button*/
-  }
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-  .fileInput {
-    border: none !important;
-  }
-
-  label:before {
-    /*styles outer circle*/
-    content: " ";
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    margin: 0 8px 0 0;
-    width: 11px;
-    height: 11px;
-    border-radius: 19px;
-    border: 4px solid $lightgray;
-    background-color: transparent;
-  }
-  label {
-    position: relative;
-  }
-
-  label input[type="radio"]:checked + span {
-    /*styles inside circle*/
-    border-radius: 11px;
-    width: 9px;
-    height: 9px;
-    position: absolute;
-    top: 10.9px;
-    right: 13px;
-    display: block;
-    background-color: $primary-color;
-    //border: 4px solid $lightgray;
-  }
-}
-.editButton {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  width: 160px;
-  height: 48px;
-  border-radius: 20px 20px 20px 0px;
-}
-.fileInput {
-  border: none;
-}
-.profileContainer {
-  .pictures {
-    .profilePic {
-      width: 80px;
-      height: 80px;
-      margin-inline: auto;
-      margin-bottom: 35px;
-      img {
-        border-radius: 40px;
-      }
-    }
-  }
-  .profileInfo {
-    .grid {
-      display: grid;
-      grid-template-columns: 2fr 3fr;
-    }
-    .field {
-      margin-top: 16px;
-      .label {
-        font-weight: 500;
-        color: $dimgray;
-        margin-bottom: 8px;
-      }
-      .value {
-        font-size: $secondary-size;
-        color: $simplegray;
-        font-weight: 500;
-      }
-      .hint {
-        font-size: $secondary-size;
-        color: $simplegray;
-      }
-    }
-  }
-}
-.aboutYouForm {
-  margin-top: 32px;
-  .socialLinks {
-    margin-top: 20px;
-    margin-left: 5px;
-    direction: ltr;
-    .link {
-      display: flex;
-      align-items: center;
-      margin-bottom: 14px;
-      :nth-child(1) {
+    input[type="radio"] {
+        appearance: none;
         cursor: pointer;
-      }
-      :nth-child(2) {
-        margin-left: 9px;
-        border-bottom: 1px solid;
-        border-color: inherit;
-        height: 24px;
-      }
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border: 5px solid $lightgray;
+        border-radius: 50%;
+
+        &:checked {
+            background-color: $primary-color;
+        }
     }
-  }
-  .selectInput:first-child {
-    margin-bottom: 43px;
-    width: 134px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    font-weight: 500;
-    color: $gray;
-  }
-}
-.addAdminText {
-  color: $simplegray;
-  font-size: $secondary-size;
-  margin-block: 16px;
-}
-.admin {
-  display: flex;
-  margin-bottom: 8px;
-  border-bottom: 1px solid $lightgray;
-  padding-bottom: 16px;
-  .user {
-    width: 45%;
-    margin-left: 8px;
-  }
-  .phone {
-    width: 35%;
-    margin-left: 8px;
-  }
-  .access {
-    width: 20%;
-  }
-  .field {
-    position: relative;
-    .label {
-      font-weight: 500;
-      color: $dimgray;
-      margin-bottom: 8px;
-    }
-  }
-}
-.adminButton {
-  margin-top: 33px;
-  width: 160px;
-  height: 48px;
-  border: 1px solid #c4c4c4;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  color: $gray;
-}
-.adminButton.add {
-  margin-top: 8px;
 }

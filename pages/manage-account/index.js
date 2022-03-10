@@ -36,7 +36,7 @@ export default function ManageAccount({ user }) {
 
     const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0);
 
-    const [menu, setMenu] = useState();
+    const [menu, setMenu] = useState([]);
 
     const [openPay, setOpenPay] = useState(false);
 

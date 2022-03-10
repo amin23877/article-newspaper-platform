@@ -1,7 +1,7 @@
 import styles from 'styles/pages/ManageAccount.module.scss';
-import {Fragment, useCallback, useMemo, useState} from "react";
-import {useRouter} from "next/router";
-import {updateUser} from "hooks/useUser";
+import { Fragment, useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { updateUser } from "hooks/useUser";
 import ArrowLeft from 'assets/svg/common/arrow-left.svg';
 import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from 'components/manageAccount/orderList';
@@ -10,10 +10,10 @@ import AnalyzeContent from 'components/manageAccount/analyzeContent';
 import Doners from 'components/manageAccount/doners';
 import Messages from 'components/manageAccount/messages';
 import Image from "next/image";
-import {getUserProfile} from 'shared/users';
+import { getUserProfile } from 'shared/users';
 import cookie from 'cookie'
 import axios from 'axios';
-import {Endpoints} from 'utils/endpoints';
+import { Endpoints } from 'utils/endpoints';
 import PayOptions from 'components/payOptions/PayOptions';
 import Followers from "components/manageAccount/followers";
 import Followings from "components/manageAccount/followings";
@@ -28,21 +28,21 @@ const payInfo = {
 }
 
 const menuItems = [
-    {name : 'اطلاعات شخصی' , isPublic: true},
-    {name : 'لیست سفارش ها' , isPublic: true},
-    {name : 'گزارش مالی' , isPublic: false},
-    {name : 'آنالیز محتوا' , isPublic: true},
-    {name : 'حامی ها' , isPublic: false},
-    {name : 'دنبال کننده ها' , isPublic: true},
-    {name : 'دنبال شونده ها' , isPublic: true},
-    {name : 'جستجوهای ذخیره شده' , isPublic: true},
-    {name : 'پیام ها' , isPublic: true},
+    { name: 'اطلاعات شخصی', isPublic: true },
+    { name: 'لیست سفارش ها', isPublic: true },
+    { name: 'گزارش مالی', isPublic: false },
+    { name: 'آنالیز محتوا', isPublic: true },
+    { name: 'حامی ها', isPublic: false },
+    { name: 'دنبال کننده ها', isPublic: true },
+    { name: 'دنبال شونده ها', isPublic: true },
+    { name: 'جستجوهای ذخیره شده', isPublic: true },
+    { name: 'پیام ها', isPublic: true },
 ]
 
-export default function ManageAccount({user}) {
+export default function ManageAccount({ user }) {
     const router = useRouter()
 
-    const {activeIndex} = router.query
+    const { activeIndex } = router.query
 
     const [messages, setMessages] = useState();
 
@@ -66,7 +66,7 @@ export default function ManageAccount({user}) {
 
     const getMessages = async () => {
         try {
-            const {accessToken} = cookie.parse(document?.cookie)
+            const { accessToken } = cookie.parse(document?.cookie)
             let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000`, {
                 headers: {
                     authorization: accessToken
@@ -78,9 +78,27 @@ export default function ManageAccount({user}) {
         }
     }
 
+    const handleSearchMessage = async (e) => {
+        console.log(e.which)
+        if (e.which == 13) {
+            try {
+                const { accessToken } = cookie.parse(document?.cookie)
+                let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000&searchText=${e.target.value}`, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setMessages(msgs.data.data.messages)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+    }
+
     const sendMessage = useCallback(async (title = 'support', text) => {
         try {
-            const {accessToken} = cookie.parse(document?.cookie)
+            const { accessToken } = cookie.parse(document?.cookie)
             let msgs = await axios.post(Endpoints.baseUrl + `/user/supportMessage`, {
                 title: title,
                 text: text
@@ -96,17 +114,17 @@ export default function ManageAccount({user}) {
     }, [])
 
     const menuPages = useMemo(() => ([
-        {key: 0, element: <PersonalInfo user={user}/>},
-        {key: 1, element: <OrderList/>},
-        {key: 2, element: <IncomeLog/>},
-        {key: 3, element: <AnalyzeContent/>},
-        {key: 4, element: <Doners/>},
-        {key: 5, element: <Followers/>},
-        {key: 6, element: <Followings/>},
-        {key: 7, element: null},
+        { key: 0, element: <PersonalInfo user={user} /> },
+        { key: 1, element: <OrderList /> },
+        { key: 2, element: <IncomeLog /> },
+        { key: 3, element: <AnalyzeContent /> },
+        { key: 4, element: <Doners /> },
+        { key: 5, element: <Followers /> },
+        { key: 6, element: <Followings /> },
+        { key: 7, element: null },
         {
             key: 8,
-            element: <Messages getMessages={getMessages} messages={messages} sendMessage={sendMessage} me={user}/>
+            element: <Messages handleSearch={handleSearchMessage} getMessages={getMessages} messages={messages} sendMessage={sendMessage} me={user} />
         },
     ]), [messages, sendMessage, user])
 
@@ -117,11 +135,11 @@ export default function ManageAccount({user}) {
                     <div className={styles.welcomeText}>{`${user !== undefined ? user.username : ''} خوش آمدید .`}</div>
                     {user !== undefined && user.isContentProvider ?
                         <div className={styles.providerTitle}
-                             onClick={() => setContentProvider(user.isContentProvider)}>
+                            onClick={() => setContentProvider(user.isContentProvider)}>
                             شما ناشر هستید.
                         </div>
                         : <div className={`${styles.providerTitle} ${styles.notProviderTitle}`}
-                               onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
+                            onClick={() => setContentProvider(user.isContentProvider)}>میخواهم ناشر باشم.</div>
                     }
 
                     <div className={styles.status}>
@@ -140,7 +158,7 @@ export default function ManageAccount({user}) {
                         <div className={styles.statusValue}>
                             افزایش اعتبار کیف پول
                             <div className={styles.iconContainer}>
-                                <Image src={ArrowLeft} alt=''/>
+                                <Image src={ArrowLeft} alt='' />
                             </div>
                         </div>
                     </div>
@@ -187,7 +205,7 @@ export default function ManageAccount({user}) {
 
 export async function getServerSideProps(context) {
 
-    const {accessToken} = cookie.parse(context.req.headers.cookie ?? '')
+    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
 
     if (!accessToken) {
         return {
@@ -199,7 +217,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const {data: {data: {me}}} = await getUserProfile(accessToken)
+        const { data: { data: { me } } } = await getUserProfile(accessToken)
 
         if (!me) {
             return {
@@ -212,7 +230,7 @@ export async function getServerSideProps(context) {
 
 
         return {
-            props: {user: me}
+            props: { user: me }
         }
 
     } catch (e) {

@@ -12,7 +12,7 @@ import Modal from '@mui/material/Modal';
 import { EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
-export default function Messages({ getMessages, sendMessage, messages, me }) {
+export default function Messages({ getMessages, sendMessage, messages, me,handleSearch }) {
 
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
@@ -83,7 +83,8 @@ export default function Messages({ getMessages, sendMessage, messages, me }) {
     }
 
     const onSendMessage = (e) => {
-        sendMessage('support', e.message)
+        console.log('eeeee',e)
+        sendMessage(e.title, e.message)
     }
 
     console.log(messageErrors)
@@ -92,7 +93,7 @@ export default function Messages({ getMessages, sendMessage, messages, me }) {
         <>
             <Button classes={styles.newMsgBtn} onClick={() => {
                 handleOpen()
-                handleClose();
+                // handleClose();
             }}
             >
                 پیام جدید
@@ -102,7 +103,7 @@ export default function Messages({ getMessages, sendMessage, messages, me }) {
                     <div className={styles.searchIcon}>
                         <Image src={SearchIcon} alt="" />
                     </div>
-                    <input className={styles.searchInput} placeholder='جستجوی پیام ها' />
+                    <input onKeyDown={handleSearch} className={styles.searchInput} placeholder='جستجوی پیام ها' />
                 </div>
                 <div className={styles.filter}>
                     زمان
@@ -133,15 +134,15 @@ export default function Messages({ getMessages, sendMessage, messages, me }) {
             <div className={styles.tabs}>
                 <div className={`${styles.tab} ${activeIndex === 1 ? styles.active : styles.normal}`} onClick={() => changeTab(1)}>
                     <div>پیام های ورودی</div>
-                    <span>12</span>
+                    <span>{messages?.length}</span>
                 </div>
                 <div className={`${styles.tab} ${activeIndex === 2 ? styles.active : styles.normal}`} onClick={() => changeTab(2)}>
                     <div>پیام های خروجی</div>
-                    <span>782</span>
+                    <span>0</span>
                 </div>
                 <div className={`${styles.tab} ${activeIndex === 3 ? styles.active : styles.normal}`} onClick={() => changeTab(3)}>
                     <div>بایگانی</div>
-                    <span>251</span>
+                    <span>0</span>
                 </div>
             </div>
 
@@ -202,7 +203,9 @@ export default function Messages({ getMessages, sendMessage, messages, me }) {
                         <Image src={CloseCircle} alt='x' />
                     </div>
                     <div className={styles.title}>پیام جدید</div>
-
+                    <input   {...newMessageRegister("title", {
+                            required: 'پر کردن این فیلد الزامی است'
+                        })} className={styles.titleInput} placeholder="عنوان" name="title" error={messageErrors.title}/>
                     <textarea
                         {...newMessageRegister("message", {
                             required: 'پر کردن این فیلد الزامی است'

@@ -203,6 +203,15 @@
     position: relative;
     padding: 13px 15px;
   }
+  .titleInput {
+    margin-top: 24px;
+    width: 711px;
+    height: 54;
+    background-color: $background-color;
+    border-radius: 7px;
+    position: relative;
+    padding: 13px 15px;
+  }
   .error {
     color: $error;
     font-size: $tertiary-size;

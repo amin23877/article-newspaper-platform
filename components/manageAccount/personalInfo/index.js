@@ -55,11 +55,11 @@ export default function PersonalInfo({ user }) {
 
             <GeneralInfo publisherType={providerType} user={user} />
 
-            <EditProfile user={user}/>
+            <EditProfile user={user} />
 
-            <AboutYou user={user}/>
+            <AboutYou user={user} />
 
-            <SocialMedia />
+            <SocialMedia user={user} />
         </div>
     );
 }

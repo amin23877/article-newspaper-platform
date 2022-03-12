@@ -20,8 +20,8 @@ import Followings from "components/manageAccount/followings";
 
 const payInfo = {
     paymentAmount: 5,
-    paymentType: 'increasePay',
-    title: 'افزایش اعتبار',
+    paymentType: "increasePay",
+    title: "افزایش اعتبار",
     postId: 0,
     username: 0,
     step: 'chargeWallet',
@@ -46,23 +46,25 @@ export default function ManageAccount({ user }) {
 
     const [messages, setMessages] = useState();
 
-    const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0)
+    const [activeMenu, setActiveMenu] = useState(parseInt(activeIndex) || 0);
+
+    const [menu, setMenu] = useState([]);
 
     const [openPay, setOpenPay] = useState(false);
 
     const onChangeMenu = (menuIndex) => {
-        setActiveMenu(menuIndex)
-    }
+        setActiveMenu(menuIndex);
+    };
 
     const setContentProvider = async (state) => {
         const status = await updateUser({
-            "isContentProvider": !(state)
-        })
-        if (status === 'ok') {
-            alert('اطاعات با موفقیت ویرایش شد.')
-            router.reload()
+            isContentProvider: !state,
+        });
+        if (status === "ok") {
+            alert("اطاعات با موفقیت ویرایش شد.");
+            router.reload();
         }
-    }
+    };
 
     const getMessages = async () => {
         try {
@@ -71,12 +73,13 @@ export default function ManageAccount({ user }) {
                 headers: {
                     authorization: accessToken
                 }
-            })
-            setMessages(msgs.data.data.messages)
+
+            });
+            setMessages(msgs.data.data.messages);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
-    }
+    };
 
     const handleSearchMessage = async (e) => {
         console.log(e.which)
@@ -106,10 +109,10 @@ export default function ManageAccount({ user }) {
                 headers: {
                     authorization: accessToken
                 }
-            })
-            getMessages()
+            });
+            getMessages();
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }, [])
 
@@ -164,27 +167,31 @@ export default function ManageAccount({ user }) {
                     </div>
 
                     <ul className={styles.menuItems}>
-                        {menuItems.map((item, index) => {
+                        {menu.map((item, index) => {
                             if (!item.isPublic && !user.isContentProvider) return null;
 
                             return (
-                                <li key={index}
+                                <li
+                                    key={index}
                                     onClick={() => onChangeMenu(index)}
-                                    className={activeMenu === index ? styles.activeMenu : styles.menu}>
+                                    className={
+                                        activeMenu === index ? styles.activeMenu : styles.menu
+                                    }
+                                >
                                     {item.name}
                                 </li>
-                            )
+                            );
                         })}
                     </ul>
                 </div>
 
                 <div className={styles.leftCol}>
-                    {menuPages.map((page, index) => (
-                        <Fragment key={index}>{activeMenu === page.key && page.element}</Fragment>
+                    {menu.map((item, index) => (
+                        <Fragment key={index}>{activeMenu === index && item.element}</Fragment>
                     ))}
                 </div>
 
-                {payInfo &&
+                {payInfo && (
                     <PayOptions
                         openModal={openPay}
                         setOpenModal={setOpenPay}
@@ -196,11 +203,11 @@ export default function ManageAccount({ user }) {
                         step={payInfo.step}
                         postId={payInfo.postId}
                         username={payInfo.username}
-                    />}
-
+                    />
+                )}
             </div>
         </div>
-    )
+    );
 }
 
 export async function getServerSideProps(context) {
@@ -210,10 +217,10 @@ export async function getServerSideProps(context) {
     if (!accessToken) {
         return {
             redirect: {
-                destination: '/',
+                destination: "/",
                 permanent: false,
             },
-        }
+        };
     }
 
     try {
@@ -222,12 +229,11 @@ export async function getServerSideProps(context) {
         if (!me) {
             return {
                 redirect: {
-                    destination: '/',
+                    destination: "/",
                     permanent: false,
                 },
-            }
+            };
         }
-
 
         return {
             props: { user: me }
@@ -236,9 +242,9 @@ export async function getServerSideProps(context) {
     } catch (e) {
         return {
             redirect: {
-                destination: '/',
+                destination: "/",
                 permanent: false,
             },
-        }
+        };
     }
 }

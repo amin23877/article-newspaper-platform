@@ -57,7 +57,7 @@ export default function PersonalInfo({ user }) {
 
             <EditProfile user={user}/>
 
-            <AboutYou />
+            <AboutYou user={user}/>
 
             <SocialMedia />
         </div>

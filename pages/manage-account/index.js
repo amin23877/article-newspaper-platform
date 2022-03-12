@@ -17,6 +17,7 @@ import { Endpoints } from "utils/endpoints";
 import PayOptions from "components/payOptions/PayOptions";
 import Followers from "components/manageAccount/followers";
 import Followings from "components/manageAccount/followings";
+import SavedPosts from "components/manageAccount/savedPosts";
 
 const payInfo = {
     paymentAmount: 5,
@@ -151,7 +152,7 @@ export default function ManageAccount({ user }) {
             {
                 name: "جستجوهای ذخیره شده",
                 isPublic: true,
-                element: null,
+                element: <SavedPosts />,
             },
             {
                 name: "پیام ها",

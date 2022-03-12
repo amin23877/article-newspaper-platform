@@ -3,7 +3,7 @@ import { useEffect, Fragment, useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { updateUser } from "hooks/useUser";
 import ArrowLeft from "assets/svg/common/arrow-left.svg";
-import PersonalInfo from "components/manageAccount/personalInfo";
+import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from "components/manageAccount/orderList";
 import IncomeLog from "components/manageAccount/incomeLog";
 import AnalyzeContent from "components/manageAccount/analyzeContent";

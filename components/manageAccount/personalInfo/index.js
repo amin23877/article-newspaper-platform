@@ -55,7 +55,7 @@ export default function PersonalInfo({ user }) {
 
             <GeneralInfo publisherType={providerType} user={user} />
 
-            <EditProfile />
+            <EditProfile user={user}/>
 
             <AboutYou />
 

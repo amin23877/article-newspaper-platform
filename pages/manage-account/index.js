@@ -1,5 +1,5 @@
 import styles from "styles/pages/ManageAccount.module.scss";
-import { useEffect, Fragment, useCallback, useMemo, useState } from "react";
+import { useEffect, Fragment, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { updateUser } from "hooks/useUser";
 import ArrowLeft from "assets/svg/common/arrow-left.svg";

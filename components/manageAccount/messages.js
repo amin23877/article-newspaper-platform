@@ -12,7 +12,7 @@ import Modal from '@mui/material/Modal';
 import { EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
-export default function Messages({ getMessages, sendMessage, messages, me,handleSearch }) {
+export default function Messages({ getMessages, sendMessage, messages, me, handleSearch }) {
 
     const [activeIndex, setActiveIndex] = useState(1)
     const [activeMessage, setActiveMessage] = useState(0)
@@ -39,7 +39,6 @@ export default function Messages({ getMessages, sendMessage, messages, me,handle
             return `${Math.floor(diff / 60)} دقیقه پیش`
         } else {
             return `${Math.floor(diff / 3600)} ساعت پیش`
-
         }
 
     }
@@ -76,6 +75,12 @@ export default function Messages({ getMessages, sendMessage, messages, me,handle
 
     const changeTab = (index) => {
         setActiveIndex(index)
+        if (index === 3) {
+            getMessages(true)
+        } else {
+            getMessages(false)
+
+        }
     }
 
     const onReplySubmit = () => {
@@ -83,7 +88,7 @@ export default function Messages({ getMessages, sendMessage, messages, me,handle
     }
 
     const onSendMessage = (e) => {
-        console.log('eeeee',e)
+        console.log('eeeee', e)
         sendMessage(e.title, e.message)
     }
 
@@ -103,7 +108,7 @@ export default function Messages({ getMessages, sendMessage, messages, me,handle
                     <div className={styles.searchIcon}>
                         <Image src={SearchIcon} alt="" />
                     </div>
-                    <input onKeyDown={handleSearch} className={styles.searchInput} placeholder='جستجوی پیام ها' />
+                    <input onKeyPress={handleSearch} className={styles.searchInput} placeholder='جستجوی پیام ها' />
                 </div>
                 <div className={styles.filter}>
                     زمان
@@ -204,8 +209,8 @@ export default function Messages({ getMessages, sendMessage, messages, me,handle
                     </div>
                     <div className={styles.title}>پیام جدید</div>
                     <input   {...newMessageRegister("title", {
-                            required: 'پر کردن این فیلد الزامی است'
-                        })} className={styles.titleInput} placeholder="عنوان" name="title" error={messageErrors.title}/>
+                        required: 'پر کردن این فیلد الزامی است'
+                    })} className={styles.titleInput} placeholder="عنوان" name="title" error={messageErrors.title} />
                     <textarea
                         {...newMessageRegister("message", {
                             required: 'پر کردن این فیلد الزامی است'

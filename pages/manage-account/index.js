@@ -17,6 +17,7 @@ import { Endpoints } from "utils/endpoints";
 import PayOptions from "components/payOptions/PayOptions";
 import Followers from "components/manageAccount/followers";
 import Followings from "components/manageAccount/followings";
+import SavedPosts from "components/manageAccount/savedPosts";
 
 const payInfo = {
     paymentAmount: 5,
@@ -54,11 +55,11 @@ export default function ManageAccount({ user }) {
         }
     };
 
-    const getMessages = async () => {
+    const getMessages = async (deleted = false) => {
         try {
             const { accessToken } = cookie.parse(document?.cookie);
             let msgs = await axios.get(
-                Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000`,
+                Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000&checked=${deleted}`,
                 {
                     headers: {
                         authorization: accessToken,
@@ -91,6 +92,25 @@ export default function ManageAccount({ user }) {
             console.log(e);
         }
     }, []);
+
+    const handleSearchMessage = async (e) => {
+        console.log(e.which)
+        if (e.which == 13) {
+            try {
+                const { accessToken } = cookie.parse(document?.cookie)
+                let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000&searchText=${e.target.value}`, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setMessages(msgs.data.data.messages)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+
+    }
 
     useEffect(() => {
         setMenu([
@@ -132,7 +152,7 @@ export default function ManageAccount({ user }) {
             {
                 name: "جستجوهای ذخیره شده",
                 isPublic: true,
-                element: null,
+                element: <SavedPosts />,
             },
             {
                 name: "پیام ها",
@@ -142,6 +162,7 @@ export default function ManageAccount({ user }) {
                         getMessages={getMessages}
                         messages={messages}
                         sendMessage={sendMessage}
+                        handleSearch={handleSearchMessage}
                         me={user}
                     />
                 ),
@@ -153,9 +174,8 @@ export default function ManageAccount({ user }) {
         <div className={styles.manageAccountPage}>
             <div className={styles.container}>
                 <div className={styles.rightCol}>
-                    <div className={styles.welcomeText}>{`${
-                        user ? user.username : ""
-                    } خوش آمدید .`}</div>
+                    <div className={styles.welcomeText}>{`${user ? user.username : ""
+                        } خوش آمدید .`}</div>
                     {user && user.isContentProvider ? (
                         <div
                             className={styles.providerTitle}

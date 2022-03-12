@@ -74,21 +74,28 @@ function SocialMedia({ user }) {
             </div>
 
             <div className={styles.socialLink}>
-                {Object.entries(socials).map(([type, url], index) => {
-                    if (type !== "_id") {
-                        return (
-                            <Text
-                                key={index}
-                                onClick={() => handleDelete(type)}
-                                className={styles.link}
-                                color="black"
-                            >
-                                <Image className={styles.trash} alt="trash" src={trash} width={16} height={20} />
-                                {url}
-                            </Text>
-                        );
-                    }
-                })}
+                {socials &&
+                    Object.entries(socials).map(([type, url], index) => {
+                        if (type !== "_id") {
+                            return (
+                                <Text
+                                    key={index}
+                                    onClick={() => handleDelete(type)}
+                                    className={styles.link}
+                                    color="black"
+                                >
+                                    <Image
+                                        className={styles.trash}
+                                        alt="trash"
+                                        src={trash}
+                                        width={16}
+                                        height={20}
+                                    />
+                                    {url}
+                                </Text>
+                            );
+                        }
+                    })}
             </div>
         </FormContainer>
     );

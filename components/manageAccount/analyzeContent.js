@@ -92,9 +92,9 @@ export default function AnalyzeContent() {
             return `${diff} ثانیه پیش`
         } else if (diff < 3600) {
             return `${Math.floor(diff / 60)} دقیقه پیش`
-        } else if(diff < 86400) {
+        } else if (diff < 86400) {
             return `${Math.floor(diff / 3600)} ساعت پیش`
-        }else{
+        } else {
             return `${Math.floor(diff / 86400)} روز پیش`
 
         }
@@ -136,7 +136,7 @@ export default function AnalyzeContent() {
                         </div>
                         <div className={styles.info}>
                             <div>{renderTime(content)}</div>
-                            <div>{'show'}</div>
+                            <div>{content.visitCount || 0} بازدید</div>
                             <div>{`${content.likesCount} پسند`}</div>
                             <div>{`${content.commentsCount} نظر`}</div>
                             <div className={styles.income}>

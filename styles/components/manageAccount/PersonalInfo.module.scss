@@ -69,6 +69,7 @@
     height: 100%;
     padding: var(--padding);
     border-radius: 10px;
+    overflow: hidden;
     cursor: pointer;
 
     &::after {
@@ -78,6 +79,10 @@
         border-radius: 5px;
         inset: var(--padding);
     }
+}
+
+.cover {
+    z-index: 10;
 }
 
 .socialLink {

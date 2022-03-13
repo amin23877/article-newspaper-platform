@@ -7,7 +7,7 @@ import PersonalInfo from 'components/manageAccount/personalInfo';
 import OrderList from "components/manageAccount/orderList";
 import IncomeLog from "components/manageAccount/incomeLog";
 import AnalyzeContent from "components/manageAccount/analyzeContent";
-import Doners from "components/manageAccount/doners";
+import Sponsors from "components/manageAccount/sponsors";
 import Messages from "components/manageAccount/messages";
 import Image from "next/image";
 import { getUserProfile } from "shared/users";
@@ -137,7 +137,7 @@ export default function ManageAccount({ user }) {
             {
                 name: "حامی ها",
                 isPublic: false,
-                element: <Doners />,
+                element: <Sponsors />,
             },
             {
                 name: "دنبال کننده ها",

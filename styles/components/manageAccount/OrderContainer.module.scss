@@ -1,76 +1,89 @@
 @import "styles/vars";
 
 .container {
-  margin-top: 16px;
-  padding: 20px 16px;
-  background: #ffffff;
-  border: 1px solid #c4c4c4;
-  box-sizing: border-box;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  .right {
+    margin-top: 16px;
+    padding: 20px 16px;
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    box-sizing: border-box;
+    border-radius: 10px;
     display: flex;
-    .rightSide {
-      margin-left: 16px;
-      .postImage {
-        width: 142px;
-        height: 138px;
-        span {
-          border-radius: 10px;
-        }
-      }
-      .avatar {
-        width: 60px;
-        height: 60px;
-      }
-      .username {
-        color: $gray;
-        font-size: $secondary-size;
-        margin-top: 5px;
-      }
-    }
-    .leftSide {
-      flex-direction: column;
-      .title {
-        font-weight: 500;
-        font-size: $header-size;
-      }
-      .postUser {
-        display: flex;
-        align-items: center;
-        .smallUser {
-          width: 32px;
-          height: 32px;
-        }
-        .username {
-          color: $gray;
-          font-size: $secondary-size;
-          margin-right: 5px;
-        }
-      }
-      .payment {
-        margin-top: 8px;
-        font-size: $secondary-size;
-      }
-    }
-    .leftSide.postLeftSide {
-      display: flex;
-      justify-content: space-between;
-      padding-bottom: 12px;
-    }
-  }
-  .left {
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    .time {
-      font-size: $tertiary-size;
-      color: $gray;
+
+    .right {
+        display: flex;
+
+        .rightSide {
+            margin-left: 16px;
+
+            .postImage {
+                width: 142px;
+                height: 138px;
+                background-color: $lightergray;
+                span {
+                    border-radius: 10px;
+                }
+            }
+
+            .avatar {
+                width: 60px;
+                height: 60px;
+            }
+
+            .username {
+                color: $gray;
+                font-size: $secondary-size;
+                margin-top: 5px;
+            }
+        }
+
+        .leftSide {
+            flex-direction: column;
+
+            .title {
+                font-weight: 500;
+                font-size: $header-size;
+            }
+
+            .postUser {
+                display: flex;
+                align-items: center;
+
+                .smallUser {
+                    width: 32px;
+                    height: 32px;
+                    background-color: $lightergray;
+                    border-radius: 50%;
+                }
+
+                .username {
+                    color: $gray;
+                    font-size: $secondary-size;
+                    margin-right: 5px;
+                }
+            }
+            .payment {
+                margin-top: 8px;
+                font-size: $secondary-size;
+            }
+        }
+        .leftSide.postLeftSide {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 12px;
+        }
     }
-    .expiration {
-      font-size: $secondary-size;
-      color: $primary-color;
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .time {
+            font-size: $tertiary-size;
+            color: $gray;
+        }
+        .expiration {
+            font-size: $secondary-size;
+            color: $primary-color;
+        }
     }
-  }
 }

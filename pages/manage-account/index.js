@@ -3,7 +3,7 @@ import { useEffect, Fragment, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { updateUser } from "hooks/useUser";
 import ArrowLeft from "assets/svg/common/arrow-left.svg";
-import PersonalInfo from 'components/manageAccount/personalInfo';
+import PersonalInfo from "components/manageAccount/personalInfo";
 import OrderList from "components/manageAccount/orderList/orderList";
 import IncomeLog from "components/manageAccount/incomeLog";
 import AnalyzeContent from "components/manageAccount/analyzeContent";
@@ -94,23 +94,25 @@ export default function ManageAccount({ user }) {
     }, []);
 
     const handleSearchMessage = async (e) => {
-        console.log(e.which)
+        console.log(e.which);
         if (e.which == 13) {
             try {
-                const { accessToken } = cookie.parse(document?.cookie)
-                let msgs = await axios.get(Endpoints.baseUrl + `/user/supportMessages?start=0&limit=1000&searchText=${e.target.value}`, {
-                    headers: {
-                        authorization: accessToken
+                const { accessToken } = cookie.parse(document?.cookie);
+                let msgs = await axios.get(
+                    Endpoints.baseUrl +
+                        `/user/supportMessages?start=0&limit=1000&searchText=${e.target.value}`,
+                    {
+                        headers: {
+                            authorization: accessToken,
+                        },
                     }
-                })
-                setMessages(msgs.data.data.messages)
+                );
+                setMessages(msgs.data.data.messages);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
         }
-
-
-    }
+    };
 
     useEffect(() => {
         setMenu([
@@ -127,7 +129,7 @@ export default function ManageAccount({ user }) {
             {
                 name: "گزارش مالی",
                 isPublic: false,
-                element: <IncomeLog />,
+                element: <IncomeLog banksData={user.bankAccounts} />,
             },
             {
                 name: "آنالیز محتوا",
@@ -174,8 +176,9 @@ export default function ManageAccount({ user }) {
         <div className={styles.manageAccountPage}>
             <div className={styles.container}>
                 <div className={styles.rightCol}>
-                    <div className={styles.welcomeText}>{`${user ? user.username : ""
-                        } خوش آمدید .`}</div>
+                    <div className={styles.welcomeText}>{`${
+                        user ? user.username : ""
+                    } خوش آمدید .`}</div>
                     {user && user.isContentProvider ? (
                         <div
                             className={styles.providerTitle}

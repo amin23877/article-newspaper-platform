@@ -6,5 +6,6 @@ export const Endpoints = {
     getFollowings: '/user/followings',
     getFollowingsCount: '/user/followings/count',
     updateUser: '/user',
-    getPayments: '/payment'
+    getPayments: '/payment',
+    getUserPosts: '/post/me/posts'
 }

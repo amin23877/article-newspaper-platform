@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { updateUser } from "hooks/useUser";
 import ArrowLeft from "assets/svg/common/arrow-left.svg";
 import PersonalInfo from 'components/manageAccount/personalInfo';
-import OrderList from "components/manageAccount/orderList";
+import OrderList from "components/manageAccount/orderList/orderList";
 import IncomeLog from "components/manageAccount/incomeLog";
 import AnalyzeContent from "components/manageAccount/analyzeContent";
 import Sponsors from "components/manageAccount/sponsors";

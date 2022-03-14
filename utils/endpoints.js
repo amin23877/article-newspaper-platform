@@ -7,5 +7,6 @@ export const Endpoints = {
     getFollowingsCount: '/user/followings/count',
     updateUser: '/user',
     getPayments: '/payment',
-    getUserPosts: '/post/me/posts'
+    getUserPosts: '/post/me/posts',
+    getHomePageData: '/pages/home'
 }

@@ -16,4 +16,4 @@ build:
         - ssh root@$server "cd /home/alious/digi-nashr; git pull;"
         - ssh root@$server "cd /home/alious/digi-nashr; npm ci;"
         - ssh root@$server "cd /home/alious/digi-nashr; npm run build;"
-        - ssh root@$server "cd /home/alious/digi-nashr; pm2 restart diginashr.frontend"
+        - ssh root@$server "cd /home/alious/digi-nashr; pm2 restart diginashr.front"

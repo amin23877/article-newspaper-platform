@@ -1,6 +1,6 @@
 import Table from "components/common/table";
-import TableCell from "components/common/table/tableCell";
-import TableRow from "components/common/table/tableRow";
+import TableCell from "components/common/table/TableCell";
+import TableRow from "components/common/table/TableRow";
 import EmptyList from "./emptyList";
 import { useSponsors } from "hooks/manage-account/useSponsors";
 
@@ -19,9 +19,7 @@ export default function Sponsors() {
             {(data) =>
                 data.map((item) => (
                     <TableRow key={item._id}>
-                        <TableCell icon={item.profilePicture}>
-                            {item.user}
-                        </TableCell>
+                        <TableCell icon={item.profilePicture}>{item.user}</TableCell>
                         <TableCell>دیتا از سرور نمیاد</TableCell>
                         <TableCell>{item.amount} تومان</TableCell>
                     </TableRow>

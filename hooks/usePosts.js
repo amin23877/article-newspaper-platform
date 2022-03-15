@@ -1,16 +1,16 @@
 import { api } from "axios/api";
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { Endpoints } from "utils/endpoints";
 
-export function useUpdateUser() {
+export function usePosts(params = {}) {
+    const [posts, setPosts] = useState(null);
     const [status, setStatus] = useState("idle");
-    const [res, setRes] = useState(null);
 
-    const fetcher = useCallback((data) => {
+    useEffect(() => {
         setStatus("loading");
-        api.put(Endpoints.updateUser, data)
+        api.get(Endpoints.getUserPosts, { params })
             .then((res) => {
-                setRes(res.data.data);
+                setPosts(res.data.data.posts);
                 setStatus("success");
             })
             .catch(() => {
@@ -18,5 +18,5 @@ export function useUpdateUser() {
             });
     }, []);
 
-    return { res, status, fetcher };
+    return { posts, status };
 }

@@ -1,7 +1,7 @@
 import styles from "styles/common/Table.module.scss";
 import Button from "components/common/button";
 import React from "react";
-import { CircularProgress } from "@mui/material";
+import { Spinner } from "../spinner";
 
 export default function Table({
     children,
@@ -30,11 +30,7 @@ export default function Table({
             </table>
 
             {/* show loading spinner if there is no data */}
-            {!data && (
-                <div className={styles.loading}>
-                    <CircularProgress color="inherit" />
-                </div>
-            )}
+            {!data && <Spinner />}
 
             {data?.length === 0 && emptyComponent}
 

@@ -1,7 +1,7 @@
-import styles from 'styles/common/Textarea.module.scss';
+import styles from "styles/common/Textarea.module.scss";
 
-function Textarea(props) {
-    return ( <textarea className={styles.root} {...props}/> );
+function Textarea({ register, name, validation, ...rest }) {
+    return <textarea {...register(name, validation)} className={styles.root} {...rest} />;
 }
 
 export default Textarea;

@@ -1,9 +1,8 @@
 import styles from 'styles/common/Table.module.scss'
 import Button from "components/common/button";
 import React from "react";
-import {CircularProgress} from "@mui/material";
 
-export default function Table({children, headers, data, maxRowsCount, onLoadMore, emptyComponent}) {
+export default function Table({children, headers, maxRowsCount, size = 10, onLoadMore}) {
     return (
         <>
             <table className={styles.table}>
@@ -15,21 +14,10 @@ export default function Table({children, headers, data, maxRowsCount, onLoadMore
                 </tr>
                 </thead>
 
-                <tbody>
-                {data && children(data)} {/* render table if data exist */}
-                </tbody>
+                {children}
             </table>
 
-            {/* show loading spinner if there is no data */}
-            {!data &&
-                <div className={styles.loading}>
-                    <CircularProgress color='inherit'/>
-                </div>
-            }
-
-            {data?.length === 0 && emptyComponent}
-
-            {maxRowsCount && maxRowsCount > data?.length && (
+            {maxRowsCount && maxRowsCount > size && (
                 <div style={{marginTop: 16, display: 'grid', placeItems: 'center'}}>
                     <Button onClick={onLoadMore}>
                         موارد بیشتر

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styles from 'styles/components/manageAccount/AnalyzeContent.module.scss'
 import FilterIcon from 'assets/svg/common/filter.svg'
 import NoImage from 'assets/images/manage-account/image.svg'
@@ -8,60 +9,19 @@ import { useEffect, useState } from 'react';
 import axios from 'axios'
 import cookie from 'cookie'
 import { Endpoints } from 'utils/endpoints';
-export default function AnalyzeContent() {
+export default function SavedPosts() {
 
-    const contents = [
-        {
-            image: null,
-            date: '1400/06/25',
-            show: true,
-            views: 789,
-            likes: 125,
-            comments: 18,
-            income: 'رایگان'
-        },
-        {
-            image: null,
-            date: '1400/05/25',
-            show: true,
-            views: 354,
-            likes: 320,
-            comments: 0,
-            income: 'خرید اشتراک',
-            value: 3060000
-        },
-        {
-            image: null,
-            date: '1400/05/15',
-            show: false,
-            views: 384,
-            likes: 62,
-            comments: 3,
-            income: 'پرداخت',
-            value: 1350000
-        },
-        {
-            image: null,
-            date: '1400/04/29',
-            show: true,
-            views: 124,
-            likes: 96,
-            comments: 17,
-            income: 'خرید اشتراک',
-            value: 8050000
-        },
-    ]
 
     const [posts, setPosts] = useState()
     useEffect(async () => {
         const { accessToken } = cookie.parse(document?.cookie);
 
-        let tPosts = await axios.get(Endpoints.baseUrl + '/post/me/posts', {
+        let tPosts = await axios.get(Endpoints.baseUrl + '/post/searchlist', {
             headers: {
                 authorization: accessToken
             }
         })
-        setPosts(tPosts.data.data.posts);
+        setPosts(tPosts.data.data.bookmarks);
     }, [])
     const putSlash = (number) => {
         const str = number.toString()

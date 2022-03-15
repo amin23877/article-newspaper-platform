@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from "components/common/table/Table";
+import Table from "components/common/table";
 import TableRow from "components/common/table/TableRow";
 import TableCell from "components/common/table/TableCell";
 import EmptyList from "components/manageAccount/emptyList";

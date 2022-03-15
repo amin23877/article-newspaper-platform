@@ -4,5 +4,6 @@ export const Endpoints = {
     getFollowers: '/user/followers',
     getFollowersCount: '/user/followers/count',
     getFollowings: '/user/followings',
-    getFollowingsCount: '/user/followings/count'
+    getFollowingsCount: '/user/followings/count',
+    updateUser: '/user',
 }

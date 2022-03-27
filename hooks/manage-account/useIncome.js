@@ -4,6 +4,7 @@ import { Endpoints } from "utils/endpoints";
 
 const initialIncomes = { all: 0, buyPost: 0, subscribe: 0 };
 
+// this hooks get user payments and calculate amount of user income
 export function useIncome() {
     const [incomes, setIncomes] = useState(initialIncomes);
 

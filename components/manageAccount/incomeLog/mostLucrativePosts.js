@@ -15,7 +15,12 @@ export default function MostLucrativePosts() {
                         <div key={index} className={styles.post}>
                             <div className={styles.right}>
                                 <div className={styles.image}>
-                                    {/* <Image src={post.files[0].url} alt="post-img" /> */}
+                                    <Image
+                                        objectFit="cover"
+                                        layout="fill"
+                                        src={post.files[0].url}
+                                        alt="post-img"
+                                    />
                                 </div>
 
                                 <div className={styles.title}>{post.title}</div>

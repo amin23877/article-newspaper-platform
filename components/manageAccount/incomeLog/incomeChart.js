@@ -88,22 +88,16 @@ export const data = {
     labels,
     datasets: [
         {
-            label: "رایگان",
+            label: "درآمد",
             data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
             borderColor: "rgba(21, 90, 97, 1)",
             backgroundColor: "rgba(21, 90, 97, 1)",
         },
         {
-            label: "اشتراک دوره",
+            label: "پرداخت",
             data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
             borderColor: "red",
             backgroundColor: "red",
-        },
-        {
-            label: "پرداخت",
-            data: labels.map(() => faker.datatype.number({ min: 150, max: 750 })),
-            borderColor: "yellow",
-            backgroundColor: "yellow",
         },
     ],
 };

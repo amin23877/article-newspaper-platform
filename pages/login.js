@@ -21,12 +21,15 @@ import { useCountdown } from "hooks/useCountdown";
 
 import cookie from 'cookie'
 import Cookies from 'js-cookie'
+import { useUser } from 'hooks/useUser';
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
 
-    const { register: phoneFormRegister, handleSubmit: handlePhoneSubmit, formState: { isValid: isPhoneValid } } = useForm();
-    const { register: otpFormRegister, handleSubmit: handleOtpSubmit, formState: { isValid: isOtpValid } } = useForm();
-    const { register: infoFormRegister, handleSubmit: handleInfoSubmit, formState: { isValid: isInfoValid }, setValue: infoSetValue } = useForm();
+    const { register: phoneFormRegister, handleSubmit: handlePhoneSubmit, formState: { errors: isPhoneValid } } = useForm({ mode: 'onChange' });
+    const { register: otpFormRegister, handleSubmit: handleOtpSubmit, formState: { errors: isOtpValid } } = useForm({ mode: 'onChange' });
+    const { register: infoFormRegister, handleSubmit: handleInfoSubmit, formState: { errors: isInfoValid }, setValue: infoSetValue } = useForm();
+    const [user, getUser, hasInitialized] = useUser()
 
     const router = useRouter()
 
@@ -40,11 +43,9 @@ export default function Login() {
     )
 
     const [step, setStep] = useState('phone')
-
     const [seconds, formattedTime, setIsActive, reset] = useCountdown({ initSeconds: 120 })
 
     const onPhoneSubmit = async data => {
-
         setUserData({ ...userData, phone: data.phone }, async (ud) => {
             try {
                 await axios.post(Endpoints.baseUrl + '/auth/login', {
@@ -54,7 +55,12 @@ export default function Login() {
                 reset()
                 setStep('otp')
             } catch (e) {
-                console.log(e)
+                if (e.response.data.status == 'codeAlreadySent') {
+                    setIsActive(true)
+                    // reset()
+                    setStep('otp')
+                }
+                console.log(e.response)
             }
         })
 
@@ -84,6 +90,7 @@ export default function Login() {
                 if (isNewUser) {
                     setStep('info')
                 } else {
+                    await getUser()
                     router.push('/profile')
                 }
 
@@ -136,7 +143,7 @@ export default function Login() {
         }
     }
 
-
+    console.log('isOtpValid', isOtpValid)
     return (
         <Wrapper>
             {(() => {
@@ -153,8 +160,8 @@ export default function Login() {
                                             ورود/ثبت نام
                                         </div>
                                         <form onSubmit={handlePhoneSubmit(onPhoneSubmit)}>
-                                            <CustomInput register={phoneFormRegister} name="phone" validation={{ required: true, pattern: phoneNumberRegex }} label='شماره موبایل خود را وارد کنید' classes={styles.phoneInput} />
-                                            {!isPhoneValid && <p>شماره وارد شده صحیح نیست</p>}
+                                            <CustomInput error={isPhoneValid.phone} register={phoneFormRegister} name="phone" validation={{ required: true, pattern: phoneNumberRegex }} label='شماره موبایل خود را وارد کنید' classes={styles.phoneInput} />
+                                            {isPhoneValid.phone && <p className={styles.errorText}>شماره وارد شده صحیح نیست</p>}
                                             <div className={styles.inputContainer}>
                                                 <Button name='submit' type='submit' value='submit' classes={styles.button}>
                                                     ورود به دیجی نشر
@@ -185,15 +192,15 @@ export default function Login() {
                                             کد تایید را وارد نمایید
                                         </div>
                                         <form onSubmit={handleOtpSubmit(onOtpSubmit)}>
-                                            <CustomInput register={otpFormRegister} validation={{ required: true, maxLength: 5, minLength: 5 }} name="otp" label={`کد ارسال شده به ${userData.phone} را وارد کنید`} classes={styles.phoneInput} />
-                                            {!isOtpValid && <p>کد وارد شده صحیح نیست</p>}
+                                            <CustomInput error={isOtpValid.otp} register={otpFormRegister} validation={{ required: true, maxLength: 5, minLength: 5 }} name="otp" label={`کد ارسال شده به ${userData.phone} را وارد کنید`} classes={styles.phoneInput} />
+                                            {isOtpValid.otp && <p className={styles.errorText}>کد وارد شده صحیح نیست</p>}
 
                                             <div className={styles.timeout}>
                                                 {formattedTime}
                                             </div>
-                                            <div className={styles.sendAgain} onClick={() => { onResendOtp() }}>
+                                          {seconds==0&&  <div className={styles.sendAgain} onClick={() => { onResendOtp() }}>
                                                 ارسال مجدد کد تایید
-                                            </div>
+                                            </div>}
                                             <div className={styles.inputContainer}>
                                                 <Button type='submit' classes={`${styles.button} ${styles.otpButton}`}>
                                                     ادامه
@@ -273,14 +280,14 @@ export async function getServerSideProps(context) {
     }
 
     return {
-        props: {}
+        props: { footer: false }
     }
 }
 
-Login.getLayout = function getLayout(login) {
-    return (
-        <Layout footer={false}>
-            {login}
-        </Layout>
-    )
-}
+// Login.getLayout = function getLayout(login) {
+//     return (
+//         <Layout footer={false}>
+//             {login}
+//         </Layout>
+//     )
+// }

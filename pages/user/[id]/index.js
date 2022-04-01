@@ -201,7 +201,6 @@ export default function Index({ userInfo, id, accessToken }) {
 
 export async function getServerSideProps(context) {
     const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
-    console.log('context.reqcontext.query.idcontext.query.idcontext.query.idcontext.query.idcontext.query.id', context.query.id)
     if (!accessToken) {
         return {
             redirect: {

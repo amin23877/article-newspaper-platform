@@ -11,9 +11,9 @@ export default function UniversalSearch() {
                 <Image src={SearchIcon} alt=""/>
             </div>
             <input placeholder='جستجو' type='text' className={styles.searchInput}/>
-            <div className={styles.configIcon}>
+            {/* <div className={styles.configIcon}>
                 <Image src={SearchConfigIcon} alt=""/>
-            </div>
+            </div> */}
         </div>
     )
 }

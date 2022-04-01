@@ -13,10 +13,10 @@ export default function Footer() {
     const links = [
         {route: '/faq', text: 'سوال های متداول'},
         {route: '/terms-policies', text: 'قوانین و مقررات'},
-        {route: '/publishers-login', text: 'ورود ناشران'},
+        {route: '/login', text: 'ورود ناشران'},
         {route: '/contact-us', text: 'تماس با ما'},
         {route: '/about-us', text: 'درباره ما'},
-        {route: '/download', text: 'دانلود اپلیکیشن'},
+        // {route: '/download', text: 'دانلود اپلیکیشن'},
     ]
 
     return (
@@ -31,11 +31,11 @@ export default function Footer() {
                         )
                     })}
                 </div>
-                <div className={styles.downloadsContainer}>
+                {/* <div className={styles.downloadsContainer}>
                     <Download classes={styles.downloadItem}/>
                     <Download classes={styles.downloadItem}/>
                     <Download classes={styles.downloadItem}/>
-                </div>
+                </div> */}
                 <div className={styles.footerDescription}>
                     دیجی نشر سایت و اپلیکیشن جهت مطالعه و دانلود و خرید نشریات و مجلات ،مقاله و صوتی به صورت قانونی است.
                 </div>

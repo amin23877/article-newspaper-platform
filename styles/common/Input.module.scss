@@ -23,6 +23,15 @@
     border: none !important;
   }
 
+  .errorIcon{
+    width:100%;
+    position: relative;
+    &>span{
+      left: 10px;
+      top: -33px;
+      position: absolute !important;
+    }
+  }
   .label {
     height: 31px;
     font-style: normal;
@@ -37,6 +46,8 @@
   .error {
     color: $error;
     font-size: $tertiary-size;
+    border-color:$error;
+    padding-left:40px;
     // position: absolute;
     // top: 45px;
     // right: 10px;

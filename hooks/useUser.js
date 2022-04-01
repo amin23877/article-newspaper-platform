@@ -5,11 +5,14 @@ import { Endpoints } from "utils/endpoints";
 
 import cookie from "cookie";
 import { getUserProfile } from "../shared/users";
+import { setUserInfo } from "redux/users";
+import { useDispatch } from "react-redux";
 
 export function useUser() {
     const [user, setUser] = useState(undefined);
     const [hasInitialized, setHasInitialized] = useState(false);
     const [memberType, setMemberType] = useState("");
+    const Dispatch = useDispatch();
 
     const accessToken = Cookies.get("accessToken");
     // useEffect(() => {
@@ -43,6 +46,7 @@ export function useUser() {
                 },
             } = await getUserProfile(accessToken);
             setUser(me);
+            Dispatch(setUserInfo(me))
         } catch (e) {
             console.log(e);
         }

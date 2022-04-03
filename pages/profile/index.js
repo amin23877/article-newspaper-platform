@@ -107,7 +107,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
                 <div className={`${styles.buttonContainer} container`}>
-                    <Button classes={styles.addContentButton}>
+                    {me.isContentProvider && <Button classes={styles.addContentButton}>
                         <Link href='/profile/addContent'>
                             <a>
                                 <span>افزودن محتوا</span>
@@ -116,7 +116,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                                 </span>
                             </a>
                         </Link>
-                    </Button>
+                    </Button>}
                 </div>
             </div>
             <div className={styles.contentContainer}>
@@ -129,7 +129,11 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                             {me.username ?? 'کاربر میهمان'}
                         </div>
                         <div className={styles.status}>
-                            در حال ایجاد محتوا هستید
+
+                            {me.isContentProvider &&
+                                ' در حال ایجاد محتوا هستید'
+                            }
+
                         </div>
                     </div>
                     <div className={styles.contactsContainer}>
@@ -140,18 +144,18 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                     </div>
                     <div className={styles.socialContainer}>
                         <div className={styles.social}>
-                            <a href={me?.socials?.instagram}>
+                            {me?.socials?.instagram && <a href={me?.socials?.instagram}>
                                 <Image src={Instagram} alt="" />
-                            </a>
-                            <a href={me?.socials?.twitter}>
+                            </a>}
+                            {me?.socials?.twitter && <a href={me?.socials?.twitter}>
                                 <Image src={Twitter} alt="" />
-                            </a>
-                            <a href={me?.socials?.facebook}>
+                            </a>}
+                            {me?.socials?.facebook && <a href={me?.socials?.facebook}>
                                 <Image src={Facebook} alt="" />
-                            </a>
-                            <a href={me?.socials?.linkedin}>
+                            </a>}
+                            {me?.socials?.linkedin && <a href={me?.socials?.linkedin}>
                                 <Image src={Linkedin} alt="" />
-                            </a>
+                            </a>}
                         </div>
                     </div>
                 </div>

@@ -189,15 +189,17 @@ export default function Post({ postInfo }) {
                     }
                 </div>
                 <div className={styles.profileContainer}>
-                    <div className={styles.avatarContainer}>
-                        <Image src={MockUser} alt='avatar' />
-                    </div>
-                    <div className={styles.name}>
-                        {postInfo.user.username}
-                    </div>
-                    <div className={styles.status}>
-                        {/* در حال ایجاد محتوا هستید */}
-                    </div>
+                    <Link  href={`/user/${postInfo.user._id}`} passHref>
+                       <a>
+                        <div className={styles.avatarContainer}>
+                            <Image src={MockUser} alt='avatar' />
+                        </div>
+                        <div className={styles.name}>
+                            {postInfo.user.username}
+                        </div>
+                        </a>
+                    </Link>
+
                     {memberType !== '' ?
                         null
                         :

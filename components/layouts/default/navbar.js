@@ -15,7 +15,8 @@ import UsersIcon from "../../../assets/svg/popup/users.svg";
 import SettingIcon from "../../../assets/svg/popup/settings.svg";
 import InfoIcon from "../../../assets/svg/popup/info.svg";
 import SlashIcon from "../../../assets/svg/popup/slash.svg";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfo } from 'redux/users';
 
 export default function Navbar({ pages }) {
     const { pathname, route } = useRouter()
@@ -23,7 +24,8 @@ export default function Navbar({ pages }) {
     const [getUser, hasInitialized] = useUser()
     const [showPopup, setShowPopup] = useState(false)
     const user = useSelector(state => state.users.userInfo)
-    console.log('userrrr',user)
+    const Dispatch = useDispatch();
+    console.log('userrrr', user)
     useEffect(() => {
         if (!hasInitialized)
             getUser()
@@ -54,16 +56,17 @@ export default function Navbar({ pages }) {
         { text: 'خروج از حساب', icon: SlashIcon, action: () => { handleLogout() } },
     ]
 
-    const handleLogout = () => {
+    const handleLogout = async() => {
         var cookies = document.cookie.split(";");
-
-        for (var i = 0; i < cookies.length; i++) {
+        console.log(cookies);
+         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i];
             var eqPos = cookie.indexOf("=");
             var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
-        window.location.reload();
+        Dispatch(setUserInfo(null))
+        // window.location.reload();
     }
     return (
         <div className={`${styles.boxContainer} w-100`}>

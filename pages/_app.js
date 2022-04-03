@@ -13,8 +13,6 @@ function MyApp({ Component, pageProps, pagesInfo, userInfo }) {
     const store = useStore()
     store.dispatch(setUserInfo(userInfo));
 
-    console.log('hellofucker', store);
-
     const getLayout = Component.getLayout || ((page) => <Layout footer={pageProps.footer} pages={pagesInfo}>{page}</Layout>)
 
     return getLayout(<Component {...pageProps} />)

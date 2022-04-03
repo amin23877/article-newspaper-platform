@@ -104,9 +104,11 @@ export default function Login() {
 
     const onInfoSubmit = ({ username, publisher }) => {
         setUserData({ ...userData, username, publisher }, async (ud) => {
+            console.log('ud',ud)
             try {
                 const res = await axios.put(Endpoints.baseUrl + '/user', {
-                    isContentProvider: Boolean(ud.publisher),
+                    // isContentProvider: Boolean(ud.publisher),
+                    isContentProvider: ud.publisher,
                     username: ud.username
                 },
                     {

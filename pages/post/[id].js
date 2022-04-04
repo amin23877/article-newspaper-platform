@@ -10,6 +10,7 @@ import SilverPlan from 'assets/images/contact/silver-plan.svg'
 import GoldPlan from 'assets/images/contact/gold-plan.svg'
 import Close from 'assets/images/post/close.svg';
 import Heart from "assets/svg/common/heart.svg";
+import HeartFilled from "assets/svg/common/heart-filled.svg";
 import Comment from "assets/svg/common/comment-outline.svg";
 import ThumbUp from 'assets/images/post/thumb-up.svg';
 import ThumbDown from 'assets/images/post/thumb-down.svg';
@@ -32,13 +33,17 @@ export default function Post({ postInfo }) {
     const [packages, setPackages] = useState()
     const [comments, setComments] = useState()
     const [commentText, setCommentText] = useState('')
+    const [likesCount, setLikesCount] = useState(postInfo.likesCount)
+    const [liked, setLiked] = useState(false)
     const [post, setPost] = useState()
+    const [posts, setPosts] = useState()
 
     useEffect(() => {
         getUser()
         getPackages()
         getComments()
         getPost()
+        getFeed()
         return
     }, [])
 
@@ -72,6 +77,17 @@ export default function Post({ postInfo }) {
         catch (e) {
             alert('برای مشاهده پست ابتدا لاگین کنید یا حامی شوید')
         }
+    }
+
+    const getFeed = async () => {
+        const { accessToken } = cookie.parse(document?.cookie);
+
+        const tPosts = await axios.get(Endpoints.baseUrl + '/post/me/posts', {
+            headers: {
+                authorization: accessToken
+            }
+        })
+        setPosts(tPosts.data.data.posts);
     }
 
     const getComments = async () => {
@@ -174,6 +190,40 @@ export default function Post({ postInfo }) {
     }
     console.log('posttttttt', post)
 
+    const handleLikePost = async (pid, like = true) => {
+
+        try {
+            const { accessToken } = cookie.parse(document?.cookie)
+
+            if (like) {
+                await axios.post(Endpoints.baseUrl + '/post/like/' + pid, {}, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setLiked(true)
+                setLikesCount(likesCount + 1)
+            } else {
+                await axios.delete(Endpoints.baseUrl + '/post/like/' + pid, {
+                    headers: {
+                        authorization: accessToken
+                    }
+                })
+                setLiked(false)
+                setLikesCount(likesCount - 1)
+            }
+            loadPost();
+        } catch (e) {
+            console.log(e)
+            if (like) {
+                setLiked(true)
+            } else {
+                setLiked(false)
+            }
+            // handleLikePost(!like)
+        }
+    }
+
     return (
         <div className={styles.postPageContainer}>
             <div className={styles.rightCol}>
@@ -189,14 +239,14 @@ export default function Post({ postInfo }) {
                     }
                 </div>
                 <div className={styles.profileContainer}>
-                    <Link  href={`/user/${postInfo.user._id}`} passHref>
-                       <a>
-                        <div className={styles.avatarContainer}>
-                            <Image src={MockUser} alt='avatar' />
-                        </div>
-                        <div className={styles.name}>
-                            {postInfo.user.username}
-                        </div>
+                    <Link href={`/user/${postInfo.user._id}`} passHref>
+                        <a>
+                            <div className={styles.avatarContainer}>
+                                <Image src={MockUser} alt='avatar' />
+                            </div>
+                            <div className={styles.name}>
+                                {postInfo.user.username}
+                            </div>
                         </a>
                     </Link>
 
@@ -215,15 +265,19 @@ export default function Post({ postInfo }) {
                             <div className={styles.rightColContainer}>
                                 <div className={styles.membershipHeader}>اشتراک ها</div>
                                 {packages && packages.map((pack, i) => (
-                                    <div className={styles.membership} key={i}>
-                                        <div className={styles.membershipImage}>
-                                            <Image src={GoldPlan} alt='gold-plan' />
-                                        </div>
-                                        <div className={styles.membershipText}>
-                                            <div>{pack.title}</div>
-                                            <div className={styles.membershipSubtitle}>{pack.defaultPrice}  تومان ماهیانه</div>
-                                        </div>
-                                    </div>
+                                    <Link key={i} href={`/user/${postInfo.user._id}/purchase/${postInfo._id}`} passHref>
+                                        <a>
+                                            <div className={styles.membership} >
+                                                <div className={styles.membershipImage}>
+                                                    <Image src={GoldPlan} alt='gold-plan' />
+                                                </div>
+                                                <div className={styles.membershipText}>
+                                                    <div>{pack.title}</div>
+                                                    <div className={styles.membershipSubtitle}>{pack.defaultPrice}  تومان ماهیانه</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </Link>
                                 ))}
                                 {/* <div className={styles.membership}>
                             <div className={styles.membershipImage}>
@@ -246,17 +300,21 @@ export default function Post({ postInfo }) {
                             </div>
                             <div className={styles.rightColContainer}>
                                 <div className={styles.membershipHeader}>آخرین محتواها</div>
-                                {latestPosts.map((post, index) => {
+                                {posts?.map((post, index) => {
                                     return (
-                                        <div key={index} className={styles.sidePost}>
-                                            <div className={styles.postImage}>
-                                                <Image src={post.image} width='47px' height='40px' alt='' />
-                                            </div>
-                                            <div className={styles.postText}>
-                                                <div className={styles.postTitle}>{post.title}</div>
-                                                <div className={styles.postTime}>{post.time}</div>
-                                            </div>
-                                        </div>
+                                        <Link key={index} href={`/post/${post._id}`} passHref>
+                                            <a>
+                                                <div key={index} className={styles.sidePost}>
+                                                    <div className={styles.postImage}>
+                                                        <Image src={post.coverImage?.url} width='47px' height='40px' alt='' />
+                                                    </div>
+                                                    <div className={styles.postText}>
+                                                        <div className={styles.postTitle}>{post.title}</div>
+                                                        <div className={styles.postTime}>{renderTime(post)}</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </Link>
                                     )
                                 })}
                             </div>
@@ -301,13 +359,13 @@ export default function Post({ postInfo }) {
                 {/* <div className={styles.members}>756 مشترک</div> */}
                 <div className={styles.videoButtons}>
                     <div className={styles.actions}>
-                        <div className={styles.like}>
+                        <div className={styles.like} onClick={() => handleLikePost(postInfo._id, !liked)}>
                             <div className={styles.icon}>
-                                <Image src={Heart} alt="" />
+                                <Image src={liked ? HeartFilled : Heart} alt="" />
                             </div>
-                            <div className={styles.count}>{postInfo.likesCount}</div>
+                            <div className={styles.count}>{likesCount}</div>
                         </div>
-                        <div className={styles.comment}>
+                        <div className={styles.comment} >
                             <div className={styles.icon}>
                                 <Image src={Comment} alt="" />
                             </div>
@@ -381,7 +439,6 @@ export async function getStaticProps(context) {
     try {
 
         const pageInfo = await axios.get(`${Endpoints.baseUrl}/post/single/${context.params.id}`)
-
         return {
             props: {
                 postInfo: pageInfo.data.data.post,

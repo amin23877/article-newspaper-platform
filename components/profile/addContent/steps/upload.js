@@ -18,6 +18,7 @@ export default function UploadType({ onUpload, data, onStepForward, loading }) {
     }
 
     const [dropZone, setDropZone] = useState(false)
+    const [fileSelected, setFileSelected] = useState(false)
 
     function handleDragOver(event) {
         event.preventDefault();
@@ -42,7 +43,9 @@ export default function UploadType({ onUpload, data, onStepForward, loading }) {
         const preview = document.getElementById("image-placeholder");
         preview.srcset = '';
         preview.src = src;
+        setFileSelected(true)
         onUpload(file)
+
     }
 
     function upload(event) {
@@ -51,17 +54,20 @@ export default function UploadType({ onUpload, data, onStepForward, loading }) {
             const preview = document.getElementById("image-placeholder");
             preview.srcset = '';
             preview.src = src;
+            setFileSelected(true)
         }
+
 
         onUpload(event.target.files[0])
     }
 
     useEffect(() => {
-        if (data.file && data.contentType.type=='image') {
+        if (data.file && data.contentType.type == 'image') {
             const src = URL.createObjectURL(data.file);
             const preview = document.getElementById("image-placeholder");
             preview.srcset = '';
             preview.src = src;
+            setFileSelected(true)
         }
     }, [data])
     return (
@@ -86,7 +92,11 @@ export default function UploadType({ onUpload, data, onStepForward, loading }) {
                     >
                         <div className={styles.placeholderContainer}>
                             <div className={styles.image}>
-                                <Image id="image-placeholder" src={ImagePlaceholder} alt='' />
+                                {!fileSelected && <Image src={ImagePlaceholder} alt='' />}
+
+
+                                <iframe className={styles.iframe} id="image-placeholder"></iframe>
+
                             </div>
                             <div className={styles.text}>
                                 پیش نمایش محتوا

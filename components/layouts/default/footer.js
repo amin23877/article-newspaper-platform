@@ -2,7 +2,6 @@ import Link from 'next/link'
 import Image from "next/image";
 
 import styles from 'styles/components/layouts/default/Footer.module.scss'
-import Download from "./download";
 import Facebook from "assets/svg/social-media/facebook.svg";
 import Instagram from "assets/svg/social-media/instagram.svg";
 import Linkedin from "assets/svg/social-media/linkedin.svg";
@@ -11,7 +10,7 @@ import YouTube from "assets/svg/social-media/youtube.svg";
 
 export default function Footer() {
     const links = [
-        {route: '/faq', text: 'سوال های متداول'},
+        {route: '/FAQ', text: 'سوال های متداول'},
         {route: '/terms-policies', text: 'قوانین و مقررات'},
         {route: '/login', text: 'ورود ناشران'},
         {route: '/contact-us', text: 'تماس با ما'},

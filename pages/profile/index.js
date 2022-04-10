@@ -13,96 +13,16 @@ import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
 import Tab from "components/common/tab";
 import Feed from "components/profile/tabs/feed";
 import ForYou from "components/profile/tabs/forYou";
-import Archive from "components/profile/tabs/archive";
 import cookie from "cookie";
-import { getUserProfile } from "shared/users";
+import {getUserProfile} from "shared/users";
 import axios from "axios";
-import { Endpoints } from "../../utils/endpoints";
-import Cookies from 'js-cookie';
-import { useState } from 'react';
-import transform from 'utils/transform';
+import {Endpoints} from "../../utils/endpoints";
+import {useState} from 'react';
 import About from 'components/profile/tabs/about';
-import { api } from 'axios/api';
 
-export default function Index({ me, followers, followingsProp, followingsCountProp, followersCount, tags }) {
+export default function Index({me, followers, followings, followingsCount, followersCount, tags}) {
     const [activeTab, setActiveTab] = useState('feed')
-    const [followings, setFollowings] = useState(followingsProp)
-    const [followingsCount, setFollowingsCount] = useState(followingsCountProp)
-    const [bookmarks, setBookmarks] = useState()
-    console.log('followingsProp', followingsProp)
-    const doFollow = async (state, id) => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
 
-            let follow = await axios({
-                method: state ? 'POST' : 'DELETE',
-                url: Endpoints.baseUrl + `/user/follow/${id}`,
-                headers: { authorization: accessToken },
-            });
-
-            const followingsReq = await axios.get(Endpoints.baseUrl + '/user/followings?start=0&limit=3&sortBy=_id&sortOrder=-1', {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-
-            const followingsCountReq = await axios.get(Endpoints.baseUrl + '/user/followings/count?start=0&limit=3&sortBy=_id&sortOrder=-1', {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            setFollowings(followingsReq.data.data.followings)
-            setFollowingsCount(followingsCountReq.data.data.count)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    const getBookmarks = async (start = 0) => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-            let tPosts = await axios.get(Endpoints.baseUrl + `/post/bookmarks?start=${start}&limit=10`, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            setBookmarks(tPosts.data.data.bookmarks)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    const handleDeleteBookamrk = async (id) => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-            let tPosts = await axios.delete(Endpoints.baseUrl + `/post/bookmark/${id}`, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            getBookmarks()
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    const handleAddToSearch = async (id) => {
-        try {
-            const { accessToken } = cookie.parse(document?.cookie)
-            let tPosts = await axios.delete(Endpoints.baseUrl + `/post/searchlist/${id}`, {
-                headers: {
-                    authorization: accessToken
-                }
-            })
-            alert('پست به لیست جستجو های شما افزوده شد')
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    const handleSharePost = (id) => {
-        transform.copyToClipboard(`https://diginashr.ir/post/${id}?type=text`)
-        alert('لینک پست در کلیپ بورد ذخیره شد')
-
-    }
     return (
         <div className={styles.profileContainer}>
             <div className={styles.headerContainer}>
@@ -112,7 +32,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                             <a>
                                 <span>افزودن محتوا</span>
                                 <span>
-                                    <Image src={FolderPlus} />
+                                    <Image alt='add-content' src={FolderPlus}/>
                                 </span>
                             </a>
                         </Link>
@@ -123,7 +43,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                 <div className={styles.rightCol}>
                     <div className={styles.profileContentBox}>
                         <div className={styles.avatarContainer}>
-                            <Image src={MockAvatar} />
+                            <Image alt='user-avatar' src={MockAvatar}/>
                         </div>
                         <div className={styles.name}>
                             {me.username ?? 'کاربر میهمان'}
@@ -137,24 +57,24 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                         </div>
                     </div>
                     <div className={styles.contactsContainer}>
-                        <Contacts count={followersCount} data={followers} />
+                        <Contacts count={followersCount} data={followers}/>
                     </div>
                     <div className={styles.contactsContainer}>
-                        <Contacts type='following' count={followingsCount} data={followings} />
+                        <Contacts type='following' count={followingsCount} data={followings}/>
                     </div>
                     <div className={styles.socialContainer}>
                         <div className={styles.social}>
                             {me?.socials?.instagram && <a href={me?.socials?.instagram}>
-                                <Image src={Instagram} alt="" />
+                                <Image src={Instagram} alt=""/>
                             </a>}
                             {me?.socials?.twitter && <a href={me?.socials?.twitter}>
-                                <Image src={Twitter} alt="" />
+                                <Image src={Twitter} alt=""/>
                             </a>}
                             {me?.socials?.facebook && <a href={me?.socials?.facebook}>
-                                <Image src={Facebook} alt="" />
+                                <Image src={Facebook} alt=""/>
                             </a>}
                             {me?.socials?.linkedin && <a href={me?.socials?.linkedin}>
-                                <Image src={Linkedin} alt="" />
+                                <Image src={Linkedin} alt=""/>
                             </a>}
                         </div>
                     </div>
@@ -175,11 +95,6 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                                         // content: ForYou,
                                     },
                                     {
-                                        name: 'archive',
-                                        text: 'آرشیو',
-                                        // content: Archive,
-                                    },
-                                    {
                                         name: 'about',
                                         text: 'درباره',
                                         // content: Archive,
@@ -191,23 +106,10 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
                         />
                         <div className={styles.contents}>
                             {
-                                activeTab == 'feed' && <Feed tags={tags} me={me} />
+                                activeTab == 'feed' && <Feed tags={tags} me={me}/>
                             }
                             {
-                                activeTab == 'forYou' && <ForYou tags={tags} me={me} />
-                            }
-                            {
-                                activeTab == 'archive' && <Archive
-                                    tags={tags}
-                                    followings={followings}
-                                    doFollow={doFollow}
-                                    getPosts={getBookmarks}
-                                    posts={bookmarks}
-                                    setPosts={setBookmarks}
-                                    handleDeleteBookamrk={handleDeleteBookamrk}
-                                    handleAddToSearch={handleAddToSearch}
-                                    handleSharePost={handleSharePost}
-                                />
+                                activeTab == 'forYou' && <ForYou tags={tags} me={me}/>
                             }
                             {
                                 activeTab == 'about' && <About
@@ -226,7 +128,7 @@ export default function Index({ me, followers, followingsProp, followingsCountPr
 
 export async function getServerSideProps(context) {
 
-    const { accessToken } = cookie.parse(context.req.headers.cookie ?? '')
+    const {accessToken} = cookie.parse(context.req.headers.cookie ?? '')
 
     if (!accessToken) {
         return {
@@ -238,7 +140,7 @@ export async function getServerSideProps(context) {
     }
 
     try {
-        const { data: { data: { me } } } = await getUserProfile(accessToken)
+        const {data: {data: {me}}} = await getUserProfile(accessToken)
 
         if (!me) {
             return {
@@ -281,19 +183,18 @@ export async function getServerSideProps(context) {
         })
 
         const [
-            { data: { data: { followers } } },
-            { data: { data: { followings } } },
-            { data: { data: { count: followingsCount } } },
-            { data: { data: { count: followersCount } } },
-            { data: { data: { tags: tags } } }
+            {data: {data: {followers}}},
+            {data: {data: {followings}}},
+            {data: {data: {count: followingsCount}}},
+            {data: {data: {count: followersCount}}},
+            {data: {data: {tags: tags}}}
         ] = await Promise.all([followersReq, followingsReq, followingsCountReq, followersCountReq, tagsReq])
 
         return {
-            props: { me, followers, followingsProp: followings, followingsCountProp: followingsCount, followersCount, tags }
+            props: {me, followers, followings, followingsCount, followersCount, tags}
         }
 
-    }
-    catch (e) {
+    } catch (e) {
         return {
             redirect: {
                 destination: '/',

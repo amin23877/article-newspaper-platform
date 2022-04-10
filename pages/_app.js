@@ -13,22 +13,20 @@ function MyApp({ Component, pageProps, pagesInfo, userInfo }) {
     const store = useStore()
     store.dispatch(setUserInfo(userInfo));
 
-    const getLayout = Component.getLayout || ((page) => <Layout footer={pageProps.footer} pages={pagesInfo}>{page}</Layout>)
+    const getLayout = Component.getLayout || ((page) => <Layout footer={pageProps?.footer} pages={pagesInfo}>{page}</Layout>)
 
     return getLayout(<Component {...pageProps} />)
 }
+
 MyApp.propTypes = {
     Component: PropTypes.elementType.isRequired,
     pageProps: PropTypes.object.isRequired,
 };
 
 MyApp.getInitialProps = async ({ ctx }) => {
-
     if (ctx.req) {
         try {
             const accessToken = ctx?.req?.headers?.cookie ? cookie.parse(ctx.req.headers.cookie) : null;
-            console.log('accessTokenaccessTokenaccessToken', accessToken)
-
 
             const pagesInfo = await axios.get(`${Endpoints.baseUrl}/pages`)
 
@@ -47,7 +45,6 @@ MyApp.getInitialProps = async ({ ctx }) => {
                 userInfo: userInfo.data.data.me
             };
         } catch (err) {
-            console.log('errerrerrerrerrerr', err)
             return {
                 pagesInfo: '',
                 userInfo: null
@@ -55,5 +52,8 @@ MyApp.getInitialProps = async ({ ctx }) => {
         }
     }
 
+    /* return empty object instead undefined for prevent error */
+    return {};
 };
+
 export default wrapper.withRedux(MyApp);

@@ -1,6 +1,12 @@
 
 @import "styles/vars";
 
+.datePicker {
+  position: absolute;
+  top: 100%;
+  z-index: 999;
+}
+
 .filterBarContainer {
   display: flex;
   margin-bottom: 32px;

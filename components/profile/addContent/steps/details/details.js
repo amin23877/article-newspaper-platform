@@ -91,7 +91,6 @@ export default function Details({
               onChange={(e) => {
                 setData({ ...data, description: e.target.value });
               }}
-              type="text"
               placeholder="درباره ی محتوایتان به بینندگان توضیح دهید."
             />
           </div>
@@ -141,7 +140,11 @@ export default function Details({
               className={styles.placeholderContainer}
             >
               <div className={styles.image}>
-                <Image id="image-placeholder" src={ImagePlaceholder} />
+                <Image
+                  alt="upload"
+                  id="image-placeholder"
+                  src={ImagePlaceholder}
+                />
               </div>
 
               <div className={styles.text}>افزودن تصویر</div>
@@ -150,6 +153,7 @@ export default function Details({
             <input
               id="image-uploader"
               type="file"
+              accept="image/*"
               style={{ display: "none" }}
               onChange={(e) => upload(e)}
             />

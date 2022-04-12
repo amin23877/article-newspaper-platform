@@ -1,0 +1,47 @@
+@import 'styles/vars';
+
+$radius: .5rem;
+
+.container {
+  position: relative;
+  width: max-content;
+}
+
+.inputContainer {
+  position: relative;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.input {
+  border: none;
+  padding: 5px 1rem;
+  &:focus {
+    outline: none;
+  }
+}
+
+.arrow {
+  position: absolute;
+  left: .5rem;
+}
+
+.list {
+  position: absolute;
+  top: 115%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-radius: $radius;
+  border: 1px solid $primary-light-color;
+  background-color: white;
+}
+
+.listItem {
+  padding: 5px 1rem;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $lightergray;
+  }
+}

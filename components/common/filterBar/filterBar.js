@@ -7,24 +7,24 @@ import { useReducer, useState } from "react";
 import FilterTimePanel from "./filterTimePanel";
 
 const filters = {
-  access: [
-    { name: "همه", value: "all" },
+  paymentType: [
+    { name: "همه", value: "" },
     { name: "رایگان", value: "free" },
-    { name: "اشتراک VIP", value: "vip" },
+    { name: "اشتراک", value: "subscribe" },
+    { name: "پرداخت", value: "payment" },
   ],
-  type: [
+  contentType: [
     { name: "مقاله", value: "article" },
     { name: "ویدیو", value: "video" },
     { name: "مجله", value: "magazine" },
     { name: "پادکست", value: "podcast" },
-    { name: "روزنامه", value: "newspaper" },
+    { name: "روزنامه", value: "newsletter" },
   ],
 };
 
 const initialState = {
-  access: [],
-  label: [],
-  type: [],
+  paymentType: "",
+  contentType: "",
 };
 
 const reducer = (state, action) => {
@@ -32,15 +32,13 @@ const reducer = (state, action) => {
     case "select":
       return {
         ...state,
-        [action.name]: [...state[action.name], action.payload],
+        [action.name]: action.payload,
       };
 
     case "unselect":
       return {
         ...state,
-        [action.name]: state[action.name].filter(
-          (item) => item !== action.payload
-        ),
+        [action.name]: "",
       };
 
     default:
@@ -48,16 +46,26 @@ const reducer = (state, action) => {
   }
 };
 
-export default function FilterBar({ handleClick }) {
+export default function FilterBar({ handleClick, onFilter, onSearch }) {
   const [activePanel, setActivePanel] = useState(null);
+  const [timespan, setTimespan] = useState({ fromDate: "", toDate: "" });
   const [selectedFilters, dispatch] = useReducer(reducer, initialState);
 
   const closePanel = () => {
     setActivePanel(null);
+
+    onFilter({ ...selectedFilters, ...timespan }); // pass selected filters to parent component with this event
+  };
+
+  const handleSelectTime = (time) => {
+    setTimespan({
+      fromDate: time.start._d,
+      toDate: time.end._d,
+    });
   };
 
   // this function get name and value of filter and action type (selected or unselected) and update state
-  const handleSelect = (name, value, type) => {
+  const handleSelectFilter = (name, value, type) => {
     dispatch({ type, name, payload: value });
 
     if (type === "unselect" && typeof handleClick === "function") handleClick();
@@ -68,6 +76,7 @@ export default function FilterBar({ handleClick }) {
       <div className={styles.title}>فیلتر</div>
 
       <div className={styles.optionsContainer}>
+        {/* filter time */}
         <div
           onClick={() => setActivePanel("time")}
           className={styles.optionItem}
@@ -78,11 +87,16 @@ export default function FilterBar({ handleClick }) {
             <Image src={ChevronDown} alt="" />
           </div>
 
-          <FilterTimePanel activePanel={activePanel} onClose={closePanel} />
+          <FilterTimePanel
+            onSelect={handleSelectTime}
+            activePanel={activePanel}
+            onClose={closePanel}
+          />
         </div>
 
+        {/* filter access */}
         <div
-          onClick={() => setActivePanel("access")}
+          onClick={() => setActivePanel("paymentType")}
           className={styles.optionItem}
         >
           <div className={styles.text}>دسترسی</div>
@@ -92,17 +106,18 @@ export default function FilterBar({ handleClick }) {
           </div>
 
           <FilterPanel
-            name="access"
+            name="paymentType"
             activePanel={activePanel}
-            filters={filters.access}
+            filters={filters.paymentType}
             onClose={closePanel}
-            selected={selectedFilters.access}
-            onSelect={handleSelect}
+            selected={selectedFilters.paymentType}
+            onSelect={handleSelectFilter}
           />
         </div>
 
+        {/* filter content type */}
         <div
-          onClick={() => setActivePanel("type")}
+          onClick={() => setActivePanel("contentType")}
           className={styles.optionItem}
         >
           <div className={styles.text}>نوع محتوا</div>
@@ -112,18 +127,19 @@ export default function FilterBar({ handleClick }) {
           </div>
 
           <FilterPanel
-            name="type"
+            name="contentType"
             activePanel={activePanel}
-            filters={filters.type}
+            filters={filters.contentType}
             onClose={closePanel}
-            selected={selectedFilters.type}
-            onSelect={handleSelect}
+            selected={selectedFilters.contentType}
+            onSelect={handleSelectFilter}
           />
         </div>
       </div>
 
+      {/* filter by text */}
       <div className={styles.searchContainer}>
-        <input type="text" placeholder="جستجو" />
+        <input onChange={onSearch} type="text" placeholder="جستجو" />
 
         <span className={styles.iconContainer}>
           <Image src={Magnifier} alt="" />

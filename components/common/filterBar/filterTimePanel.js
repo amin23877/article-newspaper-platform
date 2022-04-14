@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styles from "../../../styles/common/FilterBar.module.scss";
 import { RangeDatePicker } from "jalali-react-datepicker";
-import { useWhenClickOutside } from "../../../hooks/useWhenClickOutside";
+import { useWhenClickOutside } from "hooks/useWhenClickOutside";
 
 const datePickerTheme = {
   backColor: "#fff",
@@ -44,7 +44,7 @@ const datePickerTheme = {
   cancelHoverColor: "#000",
 };
 
-function FilterTimePanel({ activePanel, onClose }) {
+function FilterTimePanel({ onSelect, activePanel, onClose }) {
   const ref = useRef();
 
   useWhenClickOutside([ref], () => {
@@ -52,16 +52,14 @@ function FilterTimePanel({ activePanel, onClose }) {
   });
 
   return (
-    <div
-      ref={ref}
-      className={styles.datePicker}
-      hidden={activePanel !== "time"}
-    >
-      <RangeDatePicker
-        onClickSubmitButton={(value) => console.log(value)}
-        theme={datePickerTheme}
-      />
-    </div>
+    activePanel === "time" && (
+      <div ref={ref} className={styles.datePicker}>
+        <RangeDatePicker
+          onClickSubmitButton={(value) => onSelect(value)}
+          theme={datePickerTheme}
+        />
+      </div>
+    )
   );
 }
 

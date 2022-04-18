@@ -3,43 +3,28 @@
 .accordionContainer {
   width: 1006px;
   background: rgba($cream, 0.49);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px 30px 30px 0px;
-  .title {
-    height: 38px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: $title-size;
-    line-height: 38px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    color: #505050;
-    margin: 25px 0 32px 0;
-  }
-  .description {
-    font-style: normal;
-    font-weight: 500;
-    font-size: $header-size;
-    line-height: 28px;
-    text-align: right;
-    color: $dimgray;
-    margin: 36px 36px 9px;
-  }
-  .triggerContainer {
-    margin-bottom: 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 30px 30px 30px 0;
+}
 
-    .trigger {
-      transform: rotate(90deg);
-      cursor: pointer;
-      &.open {
-        transform: rotate(270deg);
-      }
-    }
+.description {
+  margin: 36px
+}
+
+.triggerContainer {
+  margin-bottom: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.trigger {
+  transform: rotate(90deg);
+  cursor: pointer;
+
+  &.open {
+    transform: rotate(270deg);
   }
 }
 

@@ -1,36 +1,37 @@
-@import "styles/vars";
+@import "styles/main";
 
 .carouselContainer {
   margin: 50px 0;
+}
 
-  .carouselHeader {
-    display: flex;
-    justify-content: space-between;
-    .title {
-      height: 38px;
-      font-style: normal;
-      font-weight: 500;
-      font-size: $title-size;
-      line-height: 38px;
-      display: flex;
-      align-items: center;
-      text-align: right;
-      color: $primary-color;
-    }
-    .showAllContainer {
-      font-style: normal;
-      font-weight: 500;
-      font-size: $header-size;
-      line-height: 28px;
-      display: flex;
-      align-items: center;
-      text-align: right;
-      color: rgba($dimgray, 0.84);
-    }
-  }
-  .sliderContainer {
-    margin-top: 24px;
-  }
+.carouselHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+
+}
+
+.title {
+  height: 38px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $title-size;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: $primary-color;
+}
+
+.showAllContainer {
+  font-style: normal;
+  font-weight: 500;
+  font-size: $header-size;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: rgba($dimgray, 0.84);
 }
 
 .carouselContainer:first-child {

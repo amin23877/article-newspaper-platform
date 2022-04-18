@@ -1,4 +1,4 @@
-@import "styles/vars";
+@import "styles/main";
 
 .accordionContainer {
   display: flex;
@@ -11,19 +11,19 @@
   width: 100%;
   display: flex;
   justify-content: center;
+}
 
-  .showMoreBtn {
-    width: 200px;
-    height: 60px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: $title-size;
-    line-height: 41px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: #FFFFFF;
-    justify-content: center;
-    border-radius: 20px 20px 20px 0px;
-  }
+.showMoreBtn {
+  width: 200px;
+  height: 60px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $title-size;
+  line-height: 41px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+  justify-content: center;
+  border-radius: 20px 20px 20px 0;
 }

@@ -1,129 +1,180 @@
-@import "styles/vars";
+@import "styles/main";
 
 .boxContainer {
   height: 64px;
   background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   position: fixed;
   top: 0;
   z-index: 100;
+}
 
-  .contentContainer {
+.contentContainer {
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.rightCol {
+  display: flex;
+  align-items: center;
+}
+
+.activeLink {
+  color: $primary-color;
+
+  &::after {
+    height: 5px;
+    width: 47px;
+    content: "";
+    display: block;
+    top: 100%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    border-radius: 3px;
+    background-color: $primary-color;
+    position: absolute;
+  }
+}
+
+.logo {
+  cursor: pointer;
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.linksContainer {
+  display: none;
+  margin-right: 22px;
+  align-items: center;
+  height: 100%;
+
+  @include breakpoint(desktop) {
+    display: flex
+  }
+}
+
+.linkItem {
+  width: max-content;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $secondary-size;
+  line-height: 22px;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin-left: 24px;
+  height: 100%;
+  display: flex;
+}
+
+.leftCol {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .loginButton {
+    margin-left: 16px;
+  }
+
+  .profileInfo {
     display: flex;
-    height: 100%;
-    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
 
-    .rightCol {
-      display: flex;
-      align-items: center;
-      .logo {
-        width: 121px;
-        height: 54px;
-        font-style: normal;
-        font-weight: 900;
-        font-size: 24px;
-        line-height: 38px;
+    .popup {
+      position: absolute;
+      left: 24px;
+      top: 48px;
+      padding-left: 26px;
+      width: max-content;
+
+      .popupHeader {
         display: flex;
         align-items: center;
-        text-align: center;
-        color: $primary-color;
-      }
-      .linksContainer {
-        display: flex;
-        margin-right: 22px;
-        align-items: center;
-        height: 100%;
-        .linkItem {
-          width:max-content;
-          font-style: normal;
-          font-weight: 500;
-          font-size: $secondary-size;
-          line-height: 22px;
-          align-items: center;
-          text-align: center;
-          position: relative;
-          margin-left: 24px;
-          height: 100%;
-          display: flex;
+        border-bottom: 3px solid $lightgray;
+        padding-bottom: 20px;
+
+        .popupAvatar {
+          height: 70px;
+          width: 70px;
+          margin-left: 4px;
         }
-        .activeLink {
-          color: $primary-color;
-          &::after {
-            height: 5px;
-            width: 47px;
-            content: "";
-            display: block;
-            top: 100%;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            border-radius: 3px;
-            background-color: $primary-color;
-            position: absolute;
+
+        .headerTexts {
+          font-size: $header-size;
+
+          .headerUsername {
+            color: $dimgray;
+            font-weight: 700;
+          }
+
+          .headerLink {
+            font-weight: 500;
+            color: $primary-color;
           }
         }
       }
     }
 
-    .leftCol {
+    .name {
+      width: 90px;
+      margin-left: 16px;
       display: flex;
-      width: 100%;
-      justify-content: flex-end;
       align-items: center;
-      .loginButton {
-        margin-left: 16px;
-      }
+      justify-content: flex-end;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: $secondary-size;
+      color: $primary-color;
+    }
 
-      .profileInfo {
-        display: flex;
-        cursor: pointer;
-        position: relative;
-        .popup {
-          position: absolute;
-          left: 24px;
-          top: 48px;
-          padding-left: 26px;
-          width: max-content;
-          .popupHeader {
-            display: flex;
-            align-items: center;
-            border-bottom: 3px solid $lightgray;
-            padding-bottom: 20px;
-            .popupAvatar {
-              height: 70px;
-              width: 70px;
-              margin-left: 4px;
-            }
-            .headerTexts {
-              font-size: $header-size;
-              .headerUsername {
-                color: $dimgray;
-                font-weight: 700;
-              }
-              .headerLink {
-                font-weight: 500;
-                color: $primary-color;
-              }
-            }
-          }
-        }
-        .name {
-          width: 90px;
-          margin-left: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          font-size: $secondary-size;
-          color: $primary-color;
-        }
-        .profilePic {
-          width: 46px;
-          height: 46px;
-          border-radius: 50%;
-        }
-      }
+    .profilePic {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
     }
   }
+}
+
+.drawerContainer {
+  display: flex;
+  align-items: center;
+  @include breakpoint(desktop) {
+    display: none;
+  }
+}
+
+.drawerTrigger {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.drawer {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: white;
+  padding: 14px;
+  transform: translate3d(100%,0,0);
+  transition: transform .2s ease-in;
+}
+
+.drawerOpen {
+  transform: translate3d(0,0,0);
+}
+
+.drawerLink {
+  border-top: 1px solid $lightergray;
+  padding: 12px 0;
+  margin: 0;
 }

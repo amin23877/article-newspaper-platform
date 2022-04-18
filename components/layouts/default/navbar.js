@@ -15,15 +15,9 @@ import InfoIcon from "../../../assets/svg/popup/info.svg";
 import SlashIcon from "../../../assets/svg/popup/slash.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "redux/users";
-
-const links = [
-  { route: "/", text: "خانه" },
-  { route: "/newspaper", text: "روزنامه" },
-  { route: "/journal", text: "مجله" },
-  { route: "/video", text: "ویدئو" },
-  { route: "/podcast", text: "پادکست" },
-  { route: "/article", text: "مقاله" },
-];
+import Text from "components/common/typography/text";
+import NavMenu from "components/layouts/default/navMenu";
+import DrawerNavMenu from "components/layouts/default/drawerNavMenu";
 
 export default function Navbar({ pages }) {
   const { pathname, route } = useRouter();
@@ -85,27 +79,22 @@ export default function Navbar({ pages }) {
     <div className={`${styles.boxContainer} w-100`}>
       <div className="container h-100">
         <div className={styles.contentContainer}>
+          <DrawerNavMenu pages={pages} />
+
           <div className={styles.rightCol}>
-            <div className={styles.logo}>
-              <Link href="/">دیجی نشر</Link>
-            </div>
-            <div className={styles.linksContainer}>
-              {pages?.map((link, index) => {
-                return (
-                  <ActiveLink
-                    key={index}
-                    activeClassName={styles.activeLink}
-                    href={link.pageType == "home" ? "/" : `/${link.pageType}`}
-                  >
-                    <a className={styles.linkItem}>{link.title}</a>
-                  </ActiveLink>
-                );
-              })}
-            </div>
+            <Link href="/">
+              <Text color="primary" size="xxl" className={styles.logo}>
+                دیجی نشر
+              </Text>
+            </Link>
+
+            <NavMenu pages={pages} />
+
             <div>
               <UniversalSearch />
             </div>
           </div>
+
           {pathname !== "/login" && pathname !== "/signup" && !user && (
             <div className={styles.leftCol}>
               <Link href="/login">
@@ -115,6 +104,7 @@ export default function Navbar({ pages }) {
               </Link>
             </div>
           )}
+
           {user ? (
             <div className={styles.leftCol}>
               <a>

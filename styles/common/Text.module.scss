@@ -1,5 +1,37 @@
 @import "styles/vars";
 
+// font sizes
+$l: 1.1rem;
+$m: 1rem;
+$sm: .8rem;
+$xl: 1.3rem;
+$xxl: 1.5rem;
+$huge: 2rem;
+
+.sm {
+  font-size: $sm;
+}
+
+.m {
+  font-size: $m;
+}
+
+.l {
+  font-size: $l;
+}
+
+.xl {
+  font-size: $xl;
+}
+
+.xxl {
+  font-size: $xxl;
+}
+
+.huge {
+  font-size: $huge;
+}
+
 // font-weight
 .thin {
   font-weight: 300;
@@ -11,27 +43,6 @@
 
 .bold {
   font-weight: 500;
-}
-
-// font-size
-.xs {
-  font-size: 12px;
-}
-
-.sm {
-  font-size: 14px;
-}
-
-.m {
-  font-size: 16px;
-}
-
-.l {
-  font-size: 18px;
-}
-
-.xl {
-  font-size: 24px;
 }
 
 // color
@@ -49,4 +60,21 @@
 
 .red {
   color: $error;
+}
+
+.white {
+  color: #fff;
+}
+
+// align
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
 }

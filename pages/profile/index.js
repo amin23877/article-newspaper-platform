@@ -52,47 +52,52 @@ export default function Index({
 
       <div className={styles.contentContainer}>
         <div className={styles.rightCol}>
-          <div className={styles.profileContentBox}>
-            <div className={styles.avatarContainer}>
-              <Image alt="user-avatar" src={MockAvatar} />
+          <div className={styles.userInfoContainer}>
+            <div className={styles.profileContentBox}>
+              <div className={styles.avatarContainer}>
+                <Image layout="fill" alt="user-avatar" src={MockAvatar} />
+              </div>
+
+              <Text color="black" weight="bold" className={styles.name}>
+                {me.username ?? "کاربر میهمان"}
+              </Text>
+
+              <div className={styles.status}>
+                {me.isContentProvider && " در حال ایجاد محتوا هستید"}
+              </div>
             </div>
-            <div className={styles.name}>{me.username ?? "کاربر میهمان"}</div>
-            <div className={styles.status}>
-              {me.isContentProvider && " در حال ایجاد محتوا هستید"}
-            </div>
-          </div>
-          <div className={styles.contactsContainer}>
+
             <Contacts count={followersCount} data={followers} />
-          </div>
-          <div className={styles.contactsContainer}>
+
             <Contacts
               type="following"
               count={followingsCount}
               data={followings}
             />
-          </div>
-          <div className={styles.socialContainer}>
-            <div className={styles.social}>
-              {me?.socials?.instagram && (
-                <a href={me?.socials?.instagram}>
-                  <Image src={Instagram} alt="" />
-                </a>
-              )}
-              {me?.socials?.twitter && (
-                <a href={me?.socials?.twitter}>
-                  <Image src={Twitter} alt="" />
-                </a>
-              )}
-              {me?.socials?.facebook && (
-                <a href={me?.socials?.facebook}>
-                  <Image src={Facebook} alt="" />
-                </a>
-              )}
-              {me?.socials?.linkedin && (
-                <a href={me?.socials?.linkedin}>
-                  <Image src={Linkedin} alt="" />
-                </a>
-              )}
+
+            <div className={styles.socialContainer}>
+              <div className={styles.social}>
+                {me?.socials?.instagram && (
+                  <a href={me?.socials?.instagram}>
+                    <Image src={Instagram} alt="" />
+                  </a>
+                )}
+                {me?.socials?.twitter && (
+                  <a href={me?.socials?.twitter}>
+                    <Image src={Twitter} alt="" />
+                  </a>
+                )}
+                {me?.socials?.facebook && (
+                  <a href={me?.socials?.facebook}>
+                    <Image src={Facebook} alt="" />
+                  </a>
+                )}
+                {me?.socials?.linkedin && (
+                  <a href={me?.socials?.linkedin}>
+                    <Image src={Linkedin} alt="" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>

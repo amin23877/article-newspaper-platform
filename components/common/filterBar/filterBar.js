@@ -5,6 +5,7 @@ import Image from "next/image";
 import FilterPanel from "components/common/filterBar/filterPanel";
 import { useReducer, useState } from "react";
 import FilterTimePanel from "./filterTimePanel";
+import Text from "components/common/typography/text";
 
 const filters = {
   paymentType: [
@@ -73,7 +74,9 @@ export default function FilterBar({ handleClick, onFilter, onSearch }) {
 
   return (
     <div className={styles.filterBarContainer}>
-      <div className={styles.title}>فیلتر</div>
+      <Text weight="bold" size="xxl">
+        فیلتر
+      </Text>
 
       <div className={styles.optionsContainer}>
         {/* filter time */}
@@ -81,7 +84,7 @@ export default function FilterBar({ handleClick, onFilter, onSearch }) {
           onClick={() => setActivePanel("time")}
           className={styles.optionItem}
         >
-          <div className={styles.text}>زمان</div>
+          <Text>زمان</Text>
 
           <div className={styles.icon}>
             <Image src={ChevronDown} alt="" />
@@ -99,7 +102,7 @@ export default function FilterBar({ handleClick, onFilter, onSearch }) {
           onClick={() => setActivePanel("paymentType")}
           className={styles.optionItem}
         >
-          <div className={styles.text}>دسترسی</div>
+          <Text>دسترسی</Text>
 
           <div className={styles.icon}>
             <Image src={ChevronDown} alt="" />
@@ -120,7 +123,7 @@ export default function FilterBar({ handleClick, onFilter, onSearch }) {
           onClick={() => setActivePanel("contentType")}
           className={styles.optionItem}
         >
-          <div className={styles.text}>نوع محتوا</div>
+          <Text>محتوا</Text>
 
           <div className={styles.icon}>
             <Image src={ChevronDown} alt="" />

@@ -9,17 +9,11 @@
 
 .filterBarContainer {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   margin-bottom: 32px;
 
-  .title {
-    font-style: normal;
-    font-weight: 500;
-    font-size: $title-size;
-    line-height: 38px;
-    text-align: center;
-    color: #706C64;
-    width: 83px;
-  }
   .optionsContainer {
     height: 42px;
     background: #FFFFFF;
@@ -43,9 +37,6 @@
         border-left: 1px solid #C4C4C4;
       }
 
-      .text {
-        font-size: $secondary-size;
-      }
       .icon {
         margin-right: 8px;
       }
@@ -53,7 +44,6 @@
   }
   .searchContainer {
     width: 190px;
-    margin-right: 16px;
     position: relative;
 
     input {

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Text from "components/common/text";
+import Text from "components/common/typography/text";
 import classNames from "classnames";
 import styles from "styles/common/FilterBarPanel.module.scss";
 import { useWhenClickOutside } from "hooks/useWhenClickOutside";

@@ -2,75 +2,70 @@
 
 .profileContainer {
   background-color: #f7fcfc;
+}
 
-  .contentContainer {
-    display: flex;
-    margin: 0 auto;
-    max-width: 1000px;
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1000px;
+
+  @include breakpoint(desktop) {
+    flex-direction: row;
     padding: 32px 16px 0;
+  }
+}
 
-    .rightCol {
-      width: 290px;
+.rightCol {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 
-      .profileContentBox {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 16px;
+  @include breakpoint(desktop) {
+    flex-basis: 290px;
+    background-color: transparent;
+    box-shadow: none;
+  }
 
-        .avatarContainer {
-          width: 85px;
-          height: 85px;
-          margin-bottom: 8px;
-        }
+  .status {
+    display: none;
+    height: 38px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $header-size;
+    line-height: 28px;
+    text-align: center;
+    color: #706c64;
+    margin-top: 1rem;
 
-        .name {
-          height: 38px;
-          font-style: normal;
-          font-weight: 500;
-          font-size: $header-size;
-          line-height: 28px;
-          text-align: center;
-          margin-bottom: 8px;
-          color: #241e12;
-        }
-
-        .status {
-          height: 38px;
-          font-style: normal;
-          font-weight: normal;
-          font-size: $header-size;
-          line-height: 28px;
-          text-align: center;
-          color: #706c64;
-        }
-      }
-
-      .contactsContainer {
-        margin-bottom: 16px;
-      }
-
-      .socialContainer {
-        display: flex;
-        margin: 32px 0;
-        justify-content: center;
-
-        .social {
-          a {
-            margin-left: 16px;
-          }
-        }
-      }
+    @include breakpoint(desktop) {
+      display: block;
     }
+  }
+}
 
-    .leftCol {
-      width: calc(100% - 290px);
+.leftCol {
+  margin-top: 3rem;
+  flex-grow: 1;
+  .tabsContainer {
+    padding: 0 16px;
+  }
+}
 
-      .tabsContainer {
-        padding: 0 16px;
-      }
-    }
+.profileContentBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  @include breakpoint(desktop) {
+    width: 85px;
+    height: 85px;
   }
 }
 
@@ -133,4 +128,38 @@
 
 .contents {
   margin-top: 32px;
+}
+
+.socialContainer {
+  display: none;
+  margin: 32px 0;
+  justify-content: center;
+
+  @include breakpoint(desktop) {
+    display: block;
+  }
+
+  .social {
+    a {
+      margin-left: 16px;
+    }
+  }
+}
+
+.name {
+  margin: 0;
+}
+
+.userInfoContainer {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+
+  @include breakpoint(desktop) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

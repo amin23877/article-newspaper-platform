@@ -130,13 +130,14 @@ export default function FeedPost({
             }`}
           >
             <Image
+              className={styles.cover}
               loader={() => postProp.coverImage?.url || MockNews}
               layout="fill"
               objectFit="cover"
               src={postProp.coverImage?.url || MockNews}
               alt=""
             />
-            {paid && !(paymentType == memberType) ? (
+            {paid && !(paymentType === memberType) ? (
               <div className={styles.paidImageContent}>
                 <div className={styles.paidLock}>
                   <Image src={PaidLockIcon} alt="" />

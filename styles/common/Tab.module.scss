@@ -1,29 +1,16 @@
+.tabs {
+  border-bottom: 1px solid #706C64;
+  display: flex;
 
+  .tabItem {
+    margin: 0 0 0 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
 
-.tabsContainer {
-
-  .tabs {
-    border-bottom: 1px solid #706C64;
-    display: flex;
-
-    .tabItem {
-      padding: 8px 16px;
-      margin-left: 16px;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 31px;
-      text-align: center;
-      color: #706C64;
-      cursor: pointer;
-
-      &.active {
-        color: #241E12;
-        border-bottom: 1px solid black;
-      }
+    &.active {
+      border-bottom: 3px solid black;
     }
   }
-  .contents {
-    margin-top: 32px;
-  }
 }
+

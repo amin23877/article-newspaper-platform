@@ -1,4 +1,4 @@
-@import "styles/vars";
+@import "styles/main";
 
 .container {
   background-color: #fff;
@@ -9,11 +9,16 @@
   display: flex;
   flex-flow: row wrap;
   gap: 8px;
-  min-width: 380px;
   position: absolute;
   z-index: 999;
   top: 110%;
-  right: 0;
+  left: 0;
+  min-width: 200px;
+
+  @include breakpoint(desktop) {
+    min-width: 380px;
+    right: 0;
+  }
 }
 
 .filter {

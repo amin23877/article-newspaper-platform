@@ -1,3 +1,5 @@
+@import 'styles/main';
+
 @font-face {
   font-family: "IRANSans";
   src: url("/fonts/IRANSans_Bold.ttf");
@@ -39,6 +41,12 @@ body {
   font-family: IRANSans, serif;
   direction: rtl;
   height: 100%;
+}
+
+body {
+  @include breakpoint(mobileonly) {
+    overflow-x: hidden;
+  }
 }
 
 #__next{

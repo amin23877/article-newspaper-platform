@@ -1,40 +1,8 @@
-@import "styles/vars";
+@import "styles/main";
 
 .profileContainer {
   background-color: #f7fcfc;
 
-  .headerContainer {
-    padding-top: 43px;
-    height: 373px;
-    background-image: url("../../assets/images/profile/default-profile-bg.png");
-    background-size: cover;
-
-    .buttonContainer {
-      width: 100%;
-      margin-top: 43px;
-
-      .addContentButton {
-        width: 165px;
-        height: 50px;
-        border-radius: 20px 20px 20px 0px;
-        font-size: $header-size;
-
-        a {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-
-          span:nth-child(2) {
-            margin-right: 8px;
-            display: flex;
-            align-items: center;
-          }
-        }
-      }
-    }
-  }
   .contentContainer {
     display: flex;
     margin: 0 auto;
@@ -56,6 +24,7 @@
           height: 85px;
           margin-bottom: 8px;
         }
+
         .name {
           height: 38px;
           font-style: normal;
@@ -66,6 +35,7 @@
           margin-bottom: 8px;
           color: #241e12;
         }
+
         .status {
           height: 38px;
           font-style: normal;
@@ -76,9 +46,11 @@
           color: #706c64;
         }
       }
+
       .contactsContainer {
         margin-bottom: 16px;
       }
+
       .socialContainer {
         display: flex;
         margin: 32px 0;
@@ -91,6 +63,7 @@
         }
       }
     }
+
     .leftCol {
       width: calc(100% - 290px);
 
@@ -98,6 +71,63 @@
         padding: 0 16px;
       }
     }
+  }
+}
+
+.headerContainer {
+  height: 170px;
+  padding-top: 20px;
+  background-image: url("../../assets/images/profile/default-profile-bg.png");
+  background-size: cover;
+
+  @include breakpoint(desktop) {
+    height: 373px;
+    padding-top: 43px;
+  }
+}
+
+.buttonContainer {
+  width: 100%;
+
+  @include breakpoint(desktop) {
+    margin-top: 43px;
+  }
+}
+
+.addContentButton {
+  width: 126px;
+  height: 40px;
+  border-radius: 20px 20px 20px 0;
+  font-size: $header-size;
+
+  @include breakpoint(desktop) {
+    width: 165px;
+    height: 50px;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    span:nth-child(2) {
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.addContentIcon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+
+  @include breakpoint(desktop) {
+    width: 20px;
+    height: 20px;
   }
 }
 

@@ -1,19 +1,22 @@
 @import "styles/vars";
 
 .detailsContainer {
-  margin-top: 32px;
+  margin-top: 5rem;
 
   .wrapper {
     margin-bottom: 24px;
   }
 
   .content {
-
     .inputContainer {
       margin-top: 8px;
 
+      textarea, input {
+        font-size: inherit;
+      }
+
       input {
-        font-size: 18px;
+        font-size: inherit;
         outline: none;
         border: none;
         width: 100%;
@@ -25,7 +28,6 @@
       }
 
       textarea {
-        font-size: 18px;
         outline: none;
         border: none;
         width: 100%;
@@ -45,7 +47,7 @@
         width: 134px;
         height: 32px;
         background: #FFFFFF;
-        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
         border-radius: 7px;
         outline: none;
         border: none;
@@ -65,13 +67,14 @@
     }
 
     .counter {
-      font-size: $tertiary-size;
-      line-height: 14px;
+      font-size: 12px;
       color: #000000;
       opacity: 0.9;
-      width: 100%;
+      line-height: 24px;
       text-align: left;
-      margin-top: 36px;
+      position: absolute;
+      top: 86%;
+      left: 9px;
     }
 
     .uploadContent {
@@ -114,11 +117,9 @@
     margin-bottom: 100px;
 
     .button {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 20px 20px 20px 0px;
+      border-radius: 20px 20px 20px 0;
       width: 160px;
       height: 42px;
-      font-size: $header-size;
     }
   }
 }

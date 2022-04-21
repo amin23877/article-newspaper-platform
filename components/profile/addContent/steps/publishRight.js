@@ -21,12 +21,14 @@ export default function PublishRight({ onSumbit, data, setData }) {
         <div className={styles.content}>
           <div className={styles.buttonsContainer}>
             <Button
+              classes={styles.button}
               onClick={() => setData({ ...data, sharePolicy: "free" })}
               variant={data.sharePolicy === "free" ? "filled" : "outline"}
             >
               رایگان
             </Button>
             <Button
+              classes={styles.button}
               onClick={() => setData({ ...data, sharePolicy: "subscription" })}
               variant={
                 data.sharePolicy === "subscription" ? "filled" : "outline"
@@ -35,6 +37,7 @@ export default function PublishRight({ onSumbit, data, setData }) {
               خرید اشتراک
             </Button>
             <Button
+              classes={styles.button}
               onClick={() => setData({ ...data, sharePolicy: "payment" })}
               variant={data.sharePolicy === "payment" ? "filled" : "outline"}
             >

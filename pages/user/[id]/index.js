@@ -1,6 +1,4 @@
-import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import MockAvatar from "assets/images/contact/mock-avatar.png";
 import GoldRank from "assets/images/contact/gold-rank.svg";
 import styles from "styles/pages/User.module.scss";
@@ -18,11 +16,12 @@ import Linkedin from "assets/svg/social-media/linkedin-greeen-circle.svg";
 import MembershipPlans from "components/profile/contacts/membershipPlans";
 import PurchaseCard from "components/profile/contacts/purchaseCard";
 import Modal from "@mui/material/Modal";
-import Dots from "assets/svg/common/dots.svg";
 import cookie from "cookie";
 import axios from "axios";
 import { getUserProfile } from "shared/users";
 import { Endpoints } from "utils/endpoints";
+import Text from "components/common/typography/text";
+
 export default function Index({ userInfo, id, accessToken }) {
   console.log("user", userInfo);
 
@@ -44,20 +43,17 @@ export default function Index({ userInfo, id, accessToken }) {
   };
   const handleClose = () => setOpen(false);
 
-  const router = useRouter();
-
   useEffect(() => {
     if (!hasInitialized) {
       getUser();
     }
-    return;
   }, [hasInitialized, getUser]);
 
   const onFollow = async () => {
     if (!user) {
       handleLoginOpen();
     } else {
-      let follow = await axios({
+      await axios({
         method: !followed ? "POST" : "DELETE",
         url: Endpoints.baseUrl + `/user/follow/${id}`,
         headers: { authorization: accessToken },
@@ -75,7 +71,7 @@ export default function Index({ userInfo, id, accessToken }) {
       <div className={styles.headerContainer}>
         <div className={`${styles.buttonContainer} container`}>
           <Button
-            classes={styles.addContentButton}
+            classes={styles.followButton}
             variant={followed ? "outline" : "filled"}
             onClick={() => onFollow()}
           >
@@ -107,7 +103,9 @@ export default function Index({ userInfo, id, accessToken }) {
         ) : null}
 
         <div className={styles.followersSection}>
-          <span>{853} نفر دنبال کننده</span>
+          <Text style={{ margin: 0 }} weight="bold" size="xxl">
+            {853} نفر دنبال کننده
+          </Text>
 
           <div className={styles.social}>
             <a href="https://google.com">
@@ -144,8 +142,8 @@ export default function Index({ userInfo, id, accessToken }) {
           />
 
           <div className={styles.contents}>
-            {activeTab == "feed" && <Feed id={id} />}
-            {activeTab == "forYou" && <About me={userInfo} />}
+            {activeTab === "feed" && <Feed id={id} />}
+            {activeTab === "forYou" && <About me={userInfo} />}
           </div>
         </div>
       </div>
@@ -173,31 +171,8 @@ export default function Index({ userInfo, id, accessToken }) {
 
 export async function getServerSideProps(context) {
   const { accessToken } = cookie.parse(context.req.headers.cookie ?? "");
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
 
   try {
-    const {
-      data: {
-        data: { me },
-      },
-    } = await getUserProfile(accessToken);
-
-    if (!me) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
     const userInfo = await axios.get(
       Endpoints.baseUrl + "/user/profile/" + context.query.id,
       {
@@ -215,12 +190,9 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (e) {
-    console.log("errrrrr", e);
+    console.log(e);
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
+      props: {},
     };
   }
 }

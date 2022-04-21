@@ -83,7 +83,12 @@ export default function Navbar({ pages }) {
 
           <div className={styles.rightCol}>
             <Link href="/">
-              <Text color="primary" size="xxl" className={styles.logo}>
+              <Text
+                weight="bold"
+                color="primary"
+                size="xxl"
+                className={styles.logo}
+              >
                 دیجی نشر
               </Text>
             </Link>
@@ -137,9 +142,14 @@ export default function Navbar({ pages }) {
                             {user.username ?? "کاربر میهمان"}
                           </div>
                           <Link href="/manage-account">
-                            <div className={styles.headerLink}>
+                            <Text
+                              weight="bold"
+                              color="primary"
+                              size="xl"
+                              className={styles.headerLink}
+                            >
                               مدیریت حساب دیجی نشر
-                            </div>
+                            </Text>
                           </Link>
                         </div>
                       </div>

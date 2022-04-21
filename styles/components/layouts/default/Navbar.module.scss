@@ -88,10 +88,15 @@
 
     .popup {
       position: absolute;
-      left: 24px;
+      left: 12px;
       top: 48px;
       padding-left: 26px;
-      width: max-content;
+      width: 270px;
+
+      @include breakpoint(desktop) {
+        width: max-content;
+        left: 24px;
+      }
 
       .popupHeader {
         display: flex;
@@ -100,23 +105,26 @@
         padding-bottom: 20px;
 
         .popupAvatar {
-          height: 70px;
-          width: 70px;
+          height: 50px;
+          width: 50px;
           margin-left: 4px;
+
+          @include breakpoint(desktop) {
+            width: 70px;
+            height: 70px;
+          }
         }
 
         .headerTexts {
-          font-size: $header-size;
 
           .headerUsername {
             color: $dimgray;
             font-weight: 700;
           }
+        }
 
-          .headerLink {
-            font-weight: 500;
-            color: $primary-color;
-          }
+        .headerLink {
+          margin: 0;
         }
       }
     }

@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import jMoment from "moment-jalaali";
+import Text from "components/common/typography/text";
 
 const PublishCheck = ({ data }) => {
   console.log("datatime", data?.publishTime?._d?.getTime());
@@ -9,40 +10,20 @@ const PublishCheck = ({ data }) => {
   return (
     <>
       <Box margin="10px 0  10px 10px">
-        <Typography
-          component="p"
-          fontSize="18px"
-          fontWeight="500"
-          fontFamily="IRANSans"
-          color="#797474"
-        >
+        <Text>
           اشتراک محتوا:{" "}
           {data.sharePolicy === "free"
             ? "رایگان"
             : data.sharePolicy === "subscription"
             ? "خرید اشتراک"
             : "پرداخت"}
-        </Typography>
+        </Text>
       </Box>
       <Box margin="10px 0  10px 10px">
-        <Typography
-          component="p"
-          fontSize="18px"
-          fontWeight="500"
-          fontFamily="IRANSans"
-          color="#797474"
-        >
-          هزینه اشتراک ماهانه : {data.price}
-        </Typography>
+        <Text>هزینه اشتراک ماهانه : {data.price}</Text>
       </Box>
       <Box margin="10px 0  10px 10px">
-        <Typography
-          component="span"
-          fontSize="18px"
-          fontWeight="500"
-          fontFamily="IRANSans"
-          color="#797474"
-        >
+        <Text>
           زمان انتشار:{" "}
           {data.publishTime?._d
             ? jMoment
@@ -56,7 +37,7 @@ const PublishCheck = ({ data }) => {
                 .unix(data?.publishTime?._d?.getTime() / 1000)
                 .format("HH:mm")
             : " هم اکنون "}
-        </Typography>
+        </Text>
       </Box>
     </>
   );

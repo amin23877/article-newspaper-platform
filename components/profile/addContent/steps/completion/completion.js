@@ -1,4 +1,3 @@
-//import Button from "components/common/button";
 import styles from "styles/components/profile/addContent/steps/Completion.module.scss";
 import ImagePlaceholder from "assets/svg/common/image-upoad-placeholder.svg";
 import Image from "next/image";
@@ -10,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import edit from "assets/svg/popup/edit.svg";
 import { useEffect } from "react";
+import Text from "components/common/typography/text";
 
 export default function Completion({
   onEditPublish,
@@ -46,25 +46,12 @@ export default function Completion({
             justifyContent="space-between"
             margin="5px"
           >
-            <Typography
-              fontSize="18px"
-              fontWeight="500"
-              fontFamily="IRANSans"
-              color="#000000"
-            >
+            <Text style={{ margin: 0 }} size="l" weight="bold" color="black">
               جزئیات
-            </Typography>
+            </Text>
             <Button onClick={() => onEditDetail()}>
               <Image src={edit} alt="" />
-              <Typography
-                component="p"
-                fontSize="14px"
-                fontWeight="400"
-                fontFamily="IRANSans"
-                color="#797474"
-              >
-                ویرایش
-              </Typography>
+              <Text style={{ margin: 0 }}>ویرایش</Text>
             </Button>
           </Box>
           <DetailCheck data={data} />
@@ -76,25 +63,12 @@ export default function Completion({
             justifyContent="space-between"
             margin="5px"
           >
-            <Typography
-              fontSize="18px"
-              fontWeight="500"
-              fontFamily="IRANSans"
-              color="#000000"
-            >
+            <Text style={{ margin: 0 }} size="l" weight="bold" color="black">
               حق نشر
-            </Typography>
+            </Text>
             <Button onClick={() => onEditPublish()}>
               <Image src={edit} alt="" />
-              <Typography
-                component="p"
-                fontSize="14px"
-                fontWeight="400"
-                fontFamily="IRANSans"
-                color="#797474"
-              >
-                ویرایش
-              </Typography>
+              <Text style={{ margin: 0 }}>ویرایش</Text>
             </Button>
           </Box>
           <PublishCheck data={data} />

@@ -3,6 +3,7 @@ import Button from "components/common/button";
 import WrapperCard from "components/profile/addContent/wrapper-card";
 import CurrencyInput from "react-currency-input-field";
 import { DatePicker } from "jalali-react-datepicker";
+import Text from "components/common/typography/text";
 
 export default function PublishRight({ onSumbit, data, setData }) {
   const selectDate = ({ value }) => {
@@ -69,15 +70,22 @@ export default function PublishRight({ onSumbit, data, setData }) {
         </WrapperCard>
       )}
 
-      <div className={styles.description}>
+      <Text
+        size="l"
+        align="center"
+        weight="bold"
+        className={styles.description}
+      >
         پس از بارگزاری محتوا باید راهبر سایت آن را تایید کرده سپس محتوا بعد از
-        24 ساعت در صفحه شخصیتان قابل مشاهده می‌باشد.
-        <br /> شما میتوانید زمان انتشار محتوایتان را تعیین نمایید.
-      </div>
+        24 ساعت در صفحه شخصیتان قابل مشاهده می‌باشد. شما میتوانید زمان انتشار
+        محتوایتان را تعیین نمایید.
+      </Text>
 
       <div className={styles.dateSelectionContainer}>
         <div className={styles.header}>
-          <div className={styles.title}>زمان نمایش محتوا را تعیین می کنم.</div>
+          <Text size="l" color="black" weight="bold">
+            زمان نمایش محتوا را تعیین می کنم.
+          </Text>
           <div className={styles.selectContainer}>
             <div className={styles.inputWrapper}>
               <input
@@ -103,9 +111,7 @@ export default function PublishRight({ onSumbit, data, setData }) {
         </div>
         {data.timing && (
           <>
-            <div className={styles.desc}>
-              تاریخ نمایش محتوایتان را تعیین نمایید.
-            </div>
+            <Text>تاریخ نمایش محتوایتان را تعیین نمایید.</Text>
 
             <DatePicker
               onClickSubmitButton={selectDate}

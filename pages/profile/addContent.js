@@ -16,6 +16,7 @@ import cookie from "cookie";
 import { getUserProfile } from "shared/users";
 import { useUploadFile } from "hooks/useUploadFile";
 import { useAddPost } from "hooks/profile/useAddPost";
+import Text from "components/common/typography/text";
 
 const steps = [
   { id: 0, name: "type", text: "انتخاب نوع محتوا" },
@@ -141,9 +142,9 @@ export default function AddContent({ me, accessToken, tags }) {
                 <Image src={ChevronRightLight} alt="" />
               </div>
 
-              <div className={styles.text} onClick={stepBack}>
+              <Text weight="bold" className={styles.text} onClick={stepBack}>
                 بازگشت به مرحله قبل
-              </div>
+              </Text>
             </div>
           ) : (
             ""

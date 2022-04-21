@@ -58,15 +58,17 @@
 .stepBack {
   position: absolute;
   right: 0;
-  top: 0;
+  top: -55px;
   display: flex;
+  align-items: center;
   cursor: pointer;
+
+  @include breakpoint(desktop) {
+    top: 0;
+  }
 }
 
 .text {
-  font-weight: normal;
-  font-size: $secondary-size;
-  line-height: 22px;
   text-align: center;
   color: #979797;
   margin-right: 4px;

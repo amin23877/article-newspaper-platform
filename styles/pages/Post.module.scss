@@ -1,12 +1,22 @@
-@import "styles/vars";
+@import "styles/main";
 
 .postPageContainer {
-  margin: 96px auto;
+  margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   max-width: 1000px;
-  padding: 0 16px 0;
+
+  @include breakpoint(desktop) {
+    margin: 96px auto;
+    padding: 0 16px 0;
+    flex-wrap: nowrap;
+  }
+
   .rightCol {
-    width: 290px;
+    @include breakpoint(desktop) {
+      width: 290px;
+    }
+
     .ad {
       height: 190px;
       margin-bottom: 32px;
@@ -24,10 +34,11 @@
       flex-direction: column;
       align-items: center;
       margin-bottom: 16px;
-      width: 290px;
+      padding: 0 16px;
+
       .avatarContainer {
-        width: 85px;
-        height: 85px;
+        width: 50px;
+        height: 50px;
         margin-bottom: 8px;
       }
       .name {
@@ -117,8 +128,13 @@
     }
   }
   .leftCol {
-    width: calc(100% - 290px);
-    margin-right: 16px;
+    width: 100%;
+    padding: 0 16px;
+
+    @include breakpoint(desktop) {
+      width: calc(100% - 290px);
+    }
+
     .videoText {
       margin-top: 10px;
       display: flex;

@@ -1,69 +1,81 @@
-
-@import "styles/vars";
+@import "styles/main";
 
 .typeStepContainer {
 
   .typeSelection {
     display: flex;
+    gap: 20px;
     justify-content: center;
     margin-top: 84px;
+    padding: 0 2rem;
+
+    @include breakpoint(desktop) {
+      gap: 56px;
+    }
 
     .item {
-      width: 46px;
-      height: 46px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
       margin-bottom: 50px;
-      p{
-        margin-top:0;
+
+      @include breakpoint(desktop) {
+        width: 50px;
+        height: 50px;
+      }
+
+      p {
+        margin-top: 0;
         text-align: center;
       }
-
-      &:not(:last-child) {
-        margin-left: 70px;
-      }
-
     }
   }
+
   .title {
-    font-style: normal;
-    font-weight: bold;
-    font-size: $title-size;
-    line-height: 38px;
     text-align: center;
     color: $primary-color;
     margin-top: 32px;
-
+    margin-bottom: 0;
   }
+
   .rules {
-    font-style: normal;
-    font-weight: normal;
-    font-size: $header-size;
-    line-height: 28px;
     text-align: center;
     color: $primary-color;
-    margin: 24px 0 50px;
-    padding: 0 60px;
+    margin: 0 0 50px;
+
+    @include breakpoint(desktop) {
+      padding: 0 60px
+    }
   }
 }
 
 .buttonContainer {
-  margin-bottom: 48px;
+  margin-bottom: 20px;
   display: flex;
-    align-items:center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
+
+  @include breakpoint(desktop) {
+    margin-bottom: 48px;
+  }
+
   .button {
     background: $primary-color;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px 20px 20px 0px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px 20px 20px 0;
     height: auto;
     width: auto;
     font-size: $header-size;
-    margin-left: 16px;
-    margin-top: 40px;
+    margin-top: 20px;
+
+    @include breakpoint(desktop) {
+      margin-top: 40px;
+    }
 
     input {
       display: none;
     }
+
     label {
       cursor: pointer;
       width: 100%;

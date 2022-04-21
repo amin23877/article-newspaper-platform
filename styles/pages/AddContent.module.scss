@@ -1,86 +1,95 @@
 
-@import "styles/vars";
+@import "styles/main";
 
 .addContentContainer {
   position: relative;
   background-color: #FCFBFA;
+}
 
-  .headerContainer {
-    height: 140px;
-    background-image: url("../../assets/images/profile/default-profile-bg.png");
-    background-size: cover;
+.headerContainer {
+  height: 140px;
+  background-image: url("../../assets/images/profile/default-profile-bg.png");
+  background-size: cover;
+}
+
+.profileContainer {
+  position: relative;
+  height: 150px;
+  width: 100%;
+}
+
+.content {
+  position: absolute;
+  transform: translate(-50%, -42px);
+  top:0;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.name {
+  height: 38px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $header-size;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #241E12;
+  margin-top: 16px;
+}
+
+.narrowColumn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.stepBack {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  cursor: pointer;
+}
+
+.text {
+  font-weight: normal;
+  font-size: $secondary-size;
+  line-height: 22px;
+  text-align: center;
+  color: #979797;
+  margin-right: 4px;
+}
+
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepperContainer {
+  width: 290px;
+
+  @include breakpoint(tablet) {
+    width: 400px;
   }
 
-  .profileContainer {
-    position: relative;
-    height: 150px;
-    width: 100%;
-
-    .content {
-      position: absolute;
-      transform: translate(-50%, -42px);
-      top:0;
-      left: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .avatar {
-        width: 84px;
-        height: 84px;
-        border-radius: 50%;
-        overflow: hidden;
-      }
-      .name {
-        height: 38px;
-        font-style: normal;
-        font-weight: 500;
-        font-size: $header-size;
-        line-height: 28px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: #241E12;
-        margin-top: 16px;
-      }
-    }
+  @include breakpoint(desktop) {
+    width: 660px;
   }
+}
 
-  .narrowColumn {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: relative;
-
-    .stepBack {
-      position: absolute;
-      right: 0;
-      top: 0;
-      display: flex;
-      cursor: pointer;
-
-      .text {
-        font-weight: normal;
-        font-size: $secondary-size;
-        line-height: 22px;
-        text-align: center;
-        color: #979797;
-        margin-right: 4px;
-      }
-    }
-
-    .stepsContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .stepperContainer {
-        width: 660px;
-      }
-
-      .stepContainer {
-        width: 800px;
-      }
-    }
-  }
+.stepContainer {
+  max-width: 800px;
 }

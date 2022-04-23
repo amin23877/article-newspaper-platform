@@ -11,10 +11,8 @@ export function useAddPost() {
       coverImage: data.coverFileId,
       paymentType: [data.sharePolicy],
       price: data.price,
-      bankAccount: null,
-      publishTime: data.publishTime,
+      publishTime: data.publishTime || new Date(Date.now()).toISOString(),
     };
-
     return api.post("/post", body);
   };
 }

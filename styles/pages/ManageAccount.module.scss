@@ -1,8 +1,7 @@
-@import "styles/vars";
+@import "styles/main";
 
 .manageAccountPage {
-  padding-top: 96px;
-  padding-bottom: 40px;
+  padding: 96px 1rem 40px 1rem;
   background-color: $background-color;
   color: $black;
 
@@ -12,14 +11,19 @@
     max-width: 1200px;
 
     .rightCol {
+      display: none;
       background-color: white;
       width: 25%;
       height: 766px;
       margin-left: 16px;
       border: 1px solid $lightgray;
       box-sizing: border-box;
-      border-radius: 20px 20px 20px 0px;
+      border-radius: 20px 20px 20px 0;
       padding: 12px;
+
+      @include breakpoint(desktop) {
+        display: block;
+      }
 
       .welcomeText {
         color: $primary-color;
@@ -89,7 +93,7 @@
 
         .activeMenu {
           background: rgba(21, 90, 97, 0.15);
-          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
           border-radius: 7px;
           padding-inline: 16px;
           height: 46px;
@@ -104,7 +108,11 @@
     }
 
     .leftCol {
-      width: 75%;
+      width: 100%;
+
+      @include breakpoint(desktop) {
+        width: 75%;
+      }
     }
   }
 }
@@ -116,7 +124,7 @@
   transform: translate(-50%, -50%);
   width: 393px;
   background-color: white;
-  box-shadow: 0px 4px 10px rgba(150, 149, 149, 0.1);
+  box-shadow: 0 4px 10px rgba(150, 149, 149, 0.1);
   border-radius: 10px;
   outline: none;
 }

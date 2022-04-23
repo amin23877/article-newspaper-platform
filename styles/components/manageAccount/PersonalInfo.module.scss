@@ -1,4 +1,4 @@
-@import "styles/vars";
+@import "styles/main";
 
 .container {
     display: flex;
@@ -38,6 +38,16 @@
     gap: 32px;
 }
 
+.formControlResponsive {
+    composes: formControl;
+    flex-direction: column;
+
+    @include breakpoint(tablet) {
+        flex-direction: row;
+        gap: 32px;
+    }
+}
+
 .input {
     border: 1px solid $lightgray;
     border-radius: 20px 20px 20px 0;
@@ -45,7 +55,7 @@
 }
 
 .select {
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
     border-radius: 7px;
     border: none;
     padding: 5px;
@@ -59,18 +69,24 @@
     margin: 0 auto;
     overflow: hidden;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .selectCover {
-    --padding: 15px;
+    --padding: 8px;
     background-color: $lightergray;
     position: relative;
     width: 100%;
     height: 100%;
+    min-height: 70px;
     padding: var(--padding);
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
+
+    @include breakpoint(desktop) {
+        --padding: 15px;
+    }
 
     &::after {
         content: '';
@@ -105,9 +121,13 @@
 }
 
 .radioButtons {
-    width: 580px;
+    max-width: 580px;
     display: flex;
-    justify-content: space-between;
+    gap: 3rem;
+
+    @include breakpoint(desktop) {
+        gap: 9rem;
+    }
 }
 
 .realLabel {

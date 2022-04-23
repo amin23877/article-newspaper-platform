@@ -135,7 +135,7 @@ export default function IncomeChart() {
     return () => {
       window.removeEventListener("resize", handleResizeChart);
     };
-  }, []);
+  }, [options.aspectRatio]);
 
   useEffect(() => {
     ChartJS.register({

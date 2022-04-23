@@ -1,10 +1,17 @@
-@import "styles/vars";
+@import "styles/main";
 
 .statusContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: 16px;
+    display: flex;
+    flex-flow: wrap row;
+    gap: 8px;
+
+    @include breakpoint(desktop) {
+        gap: 16px;
+    }
+
     .status {
+        flex: 1 1 32%;
+        white-space: nowrap;
         background: #ffffff;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 10px;
@@ -15,6 +22,7 @@
         font-weight: 500;
         font-size: $primary-size;
         .value {
+            margin: 0;
             color: $primary-color;
             padding-top: 10px;
         }
@@ -23,23 +31,38 @@
 
 .chart {
     margin-top: 16px;
-    width: 900px;
+    max-width: 900px;
+    width: 100%;
     background: #ffffff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
-    padding: 32px 0 0 32px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+
+    @include breakpoint(desktop) {
+        padding: 32px 0 0 32px;
+    }
 }
 
 .bottom {
-    display: grid;
-    grid-template-columns: 380px 510px;
-    grid-column-gap: 10px;
+    display: flex;
+    flex-flow: wrap row;
     margin-top: 24px;
-    width: 900px;
+    max-width: 900px;
+    width: 100%;
+    gap: 1rem;
+
+    .container, .accounts {
+        flex: 1 1 100%;
+
+        @include breakpoint(desktop) {
+            flex: 1 1 48%;
+        }
+    }
+
     .container {
         background: #ffffff;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -95,9 +118,8 @@
         // width: 388px;
     }
     .accounts {
-        // width: 495px;
         .radioButtons {
-            width: 580px;
+            max-width: 580px;
             justify-content: space-between;
             margin-bottom: 32px;
             margin-top: 24px;

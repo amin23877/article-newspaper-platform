@@ -1,9 +1,13 @@
 @import "styles/main";
 
 .manageAccountPage {
-  padding: 96px 1rem 40px 1rem;
+  padding: 1rem;
   background-color: $background-color;
   color: $black;
+
+  @include breakpoint(desktop) {
+    padding: 96px 1rem 40px 1rem;
+  }
 
   .container {
     margin-inline: auto;

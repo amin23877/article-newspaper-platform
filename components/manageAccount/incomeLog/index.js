@@ -5,43 +5,59 @@ import MostLucrativePosts from "./mostLucrativePosts";
 import styles from "styles/components/manageAccount/IncomeLog.module.scss";
 import BankAccounts from "./bankAccounts";
 import { useIncome } from "hooks/manage-account/useIncome";
+import Text from "components/common/typography/text";
 
-export default function IncomeLog({banksData}) {
-    const incomes = useIncome();
+export default function IncomeLog({ banksData }) {
+  const incomes = useIncome();
 
-    const [addAccount, setAddAccount] = useState(false);
+  const [addAccount, setAddAccount] = useState(false);
 
-    return addAccount ? (
-        <AddNewBankAccount setAddAccount={setAddAccount} banksData={banksData}/>
-    ) : (
-        <>
-            <div className={styles.statusContainer}>
-                <div className={styles.status}>
-                    <div>درآمد از اشتراک ها</div>
+  return addAccount ? (
+    <AddNewBankAccount setAddAccount={setAddAccount} banksData={banksData} />
+  ) : (
+    <>
+      <div className={styles.statusContainer}>
+        <div className={styles.status}>
+          <Text color="black" weight="bold">
+            درآمد از اشتراک ها
+          </Text>
 
-                    <div className={styles.value}>{`${incomes.subscribe} تومان`}</div>
-                </div>
+          <Text
+            color="primary"
+            className={styles.value}
+          >{`${incomes.subscribe} تومان`}</Text>
+        </div>
 
-                <div className={styles.status}>
-                    <div>درآمد از پرداخت</div>
+        <div className={styles.status}>
+          <Text color="black" weight="bold">
+            درآمد از پرداخت
+          </Text>
 
-                    <div className={styles.value}>{`${incomes.buyPost} تومان`}</div>
-                </div>
+          <Text
+            color="primary"
+            className={styles.value}
+          >{`${incomes.buyPost} تومان`}</Text>
+        </div>
 
-                <div className={styles.status}>
-                    <div>کل درآمد ها</div>
+        <div className={styles.status}>
+          <Text color="black" weight="bold">
+            کل درآمد ها
+          </Text>
 
-                    <div className={styles.value}>{`${incomes.all} تومان`}</div>
-                </div>
-            </div>
+          <Text
+            color="primary"
+            className={styles.value}
+          >{`${incomes.all} تومان`}</Text>
+        </div>
+      </div>
 
-            <IncomeChart />
+      <IncomeChart />
 
-            <div className={styles.bottom}>
-                <MostLucrativePosts />
+      <div className={styles.bottom}>
+        <MostLucrativePosts />
 
-                <BankAccounts banksData={banksData} setAddAccount={setAddAccount} />
-            </div>
-        </>
-    );
+        <BankAccounts banksData={banksData} setAddAccount={setAddAccount} />
+      </div>
+    </>
+  );
 }

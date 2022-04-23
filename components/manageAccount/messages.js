@@ -162,7 +162,9 @@ export default function Messages({
           }`}
           onClick={() => changeTab(1)}
         >
-          <Text color="white">پیام های ورودی</Text>
+          <Text color={activeIndex === 1 ? "white" : "primary"}>
+            پیام های ورودی
+          </Text>
           <span>{messages?.length}</span>
         </div>
         <div
@@ -171,7 +173,9 @@ export default function Messages({
           }`}
           onClick={() => changeTab(2)}
         >
-          <Text color="primary">پیام های خروجی</Text>
+          <Text color={activeIndex === 2 ? "white" : "primary"}>
+            پیام های خروجی
+          </Text>
           <span>0</span>
         </div>
         <div
@@ -180,7 +184,7 @@ export default function Messages({
           }`}
           onClick={() => changeTab(3)}
         >
-          <Text color="primary">بایگانی</Text>
+          <Text color={activeIndex === 3 ? "white" : "primary"}>بایگانی</Text>
           <span>0</span>
         </div>
       </div>

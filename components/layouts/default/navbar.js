@@ -1,5 +1,4 @@
 import styles from "styles/components/layouts/default/Navbar.module.scss";
-import ActiveLink from "components/common/active-link";
 import UniversalSearch from "./UniversalSearch";
 import Button from "components/common/button";
 import Link from "next/link";
@@ -18,6 +17,7 @@ import { setUserInfo } from "redux/users";
 import Text from "components/common/typography/text";
 import NavMenu from "components/layouts/default/navMenu";
 import DrawerNavMenu from "components/layouts/default/drawerNavMenu";
+import ManageAccountMenu from "components/manageAccount/manageAccountMenu";
 
 export default function Navbar({ pages }) {
   const { pathname, route } = useRouter();
@@ -79,7 +79,11 @@ export default function Navbar({ pages }) {
     <div className={`${styles.boxContainer} w-100`}>
       <div className="container h-100">
         <div className={styles.contentContainer}>
-          <DrawerNavMenu pages={pages} />
+          {pathname === "/manage-account" ? (
+            <ManageAccountMenu />
+          ) : (
+            <DrawerNavMenu pages={pages} />
+          )}
 
           <div className={styles.rightCol}>
             <Link href="/">

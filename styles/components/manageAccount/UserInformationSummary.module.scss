@@ -1,0 +1,37 @@
+@import 'styles/main';
+
+.providerTitle {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.notProviderTitle {
+  cursor: pointer;
+}
+
+.status {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 12px;
+  align-items: center;
+
+  .statusValue {
+    display: flex;
+    font-size: $tertiary-size;
+    color: $primary-color;
+    margin-top: 5px;
+
+    .iconContainer {
+      cursor: pointer;
+    }
+  }
+}
+
+.status ~ .status {
+  margin-bottom: 0;
+  border-bottom: 1px solid $lightgray;
+  padding-bottom: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+}

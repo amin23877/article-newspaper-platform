@@ -150,37 +150,6 @@
   }
 }
 
-.drawerContainer {
-  display: flex;
-  align-items: center;
-  @include breakpoint(desktop) {
-    display: none;
-  }
-}
-
-.drawerTrigger {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-}
-
-.drawer {
-  position: fixed;
-  z-index: 99999;
-  top: 0;
-  right: 0;
-  width: 280px;
-  height: 100vh;
-  background-color: white;
-  padding: 14px;
-  transform: translate3d(100%,0,0);
-  transition: transform .2s ease-in;
-}
-
-.drawerOpen {
-  transform: translate3d(0,0,0);
-}
-
 .drawerLink {
   border-top: 1px solid $lightergray;
   padding: 12px 0;

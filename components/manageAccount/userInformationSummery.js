@@ -35,8 +35,7 @@ function UserInformationSummery({ user }) {
     user && (
       <>
         <Text color="primary" size="xxl" weight="bold">
-          {user.username}
-          خوش آمدید
+          {user.username} خوش آمدید
         </Text>
 
         {user.isContentProvider ? (

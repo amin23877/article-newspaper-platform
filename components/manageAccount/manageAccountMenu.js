@@ -6,12 +6,13 @@ import { changeActiveMenu } from "redux/manage-account";
 import Drawer from "components/common/drawer";
 import UserInformationSummery from "components/manageAccount/userInformationSummery";
 
-function ManageAccountMenu(user) {
+function ManageAccountMenu() {
+  const user = useSelector((state) => state.users.userInfo);
+  const activeMenu = useSelector((state) => state.manageAccount.activeMenu);
+
   const menu = useMenuItems(user);
 
   const dispatch = useDispatch();
-
-  const activeMenu = useSelector((state) => state.manageAccount.activeMenu);
 
   const onChangeMenu = (index) => {
     dispatch(changeActiveMenu(index));

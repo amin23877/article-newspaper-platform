@@ -14,6 +14,7 @@ function Text({
   ...rest
 }) {
   const classes = classNames(
+    styles.reset,
     styles[color],
     styles[size],
     styles[weight],

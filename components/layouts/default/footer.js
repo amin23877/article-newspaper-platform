@@ -39,7 +39,7 @@ export default function Footer() {
           })}
         </div>
 
-        <Text align="center" color="white">
+        <Text style={{ margin: "3rem 0 1rem" }} align="center" color="white">
           دیجی نشر سایت و اپلیکیشن جهت مطالعه و دانلود و خرید نشریات و مجلات
           ،مقاله و صوتی به صورت قانونی است.
         </Text>

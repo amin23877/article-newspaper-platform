@@ -10,6 +10,7 @@ export default function Contacts({
   data = [],
   ...rest
 }) {
+  console.log(data);
   return (
     <div className={styles.contactsContainer}>
       <Text align="center" weight="bold" className={styles.title}>
@@ -27,7 +28,7 @@ export default function Contacts({
             >
               <a>
                 <div className={styles.item}>
-                  <ContactItem info={item.user} />
+                  <ContactItem info={item.targetAccount} />
                 </div>
               </a>
             </Link>

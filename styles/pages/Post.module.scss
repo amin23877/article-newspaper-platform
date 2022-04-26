@@ -207,6 +207,9 @@
       padding-right: 8px;
       margin-bottom: 24px;
       .commentAvatar {
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
         width: 40px;
         height: 40px;
         margin-left: 9px;

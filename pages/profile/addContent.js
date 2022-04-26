@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "styles/pages/AddContent.module.scss";
-import MockAvatar from "assets/images/mock-avatar.png";
 import Stepper from "components/signup/stepper";
 import ChevronRightLight from "assets/svg/common/chevron-right-light.svg";
 import Type from "components/profile/addContent/steps/type";

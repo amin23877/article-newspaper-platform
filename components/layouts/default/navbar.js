@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useUser } from "hooks/useUser";
 import { useEffect, useState } from "react";
 import Popup from "components/common/popup";
-import MockAvatar from "assets/images/mock-avatar.png";
 import UserIcon from "../../../assets/svg/popup/user.svg";
 import CreditCardIcon from "../../../assets/svg/popup/credit-card.svg";
 import InfoIcon from "../../../assets/svg/popup/info.svg";

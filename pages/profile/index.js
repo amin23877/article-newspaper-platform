@@ -2,9 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "styles/pages/Profile.module.scss";
 import Button from "components/common/button";
-
 import FolderPlus from "assets/svg/common/folder-plus.svg";
-import MockAvatar from "assets/images/mock-avatar.png";
 import Contacts from "components/profile/contacts/contacts";
 import Instagram from "assets/svg/social-media/instagram-greeen-circle.svg";
 import Twitter from "assets/svg/social-media/twitter-green-circle.svg";
@@ -20,6 +18,7 @@ import { Endpoints } from "utils/endpoints";
 import { useState } from "react";
 import About from "components/profile/tabs/about";
 import Text from "components/common/typography/text";
+import { useSelector } from "react-redux";
 
 export default function Index({
   me,
@@ -31,9 +30,17 @@ export default function Index({
 }) {
   const [activeTab, setActiveTab] = useState("feed");
 
+  const profilePic = useSelector(
+    (state) => state.users.userInfo.profilePicture
+  );
+
+  const coverImg = useSelector((state) => state.users.userInfo.coverImage);
+
   return (
     <div className={styles.profileContainer}>
       <div className={styles.headerContainer}>
+        <Image alt="" layout="fill" objectFit="cover" src={coverImg.url} />
+
         <div className={`${styles.buttonContainer} container`}>
           {me.isContentProvider && (
             <Button classes={styles.addContentButton}>
@@ -55,7 +62,12 @@ export default function Index({
           <div className={styles.userInfoContainer}>
             <div className={styles.profileContentBox}>
               <div className={styles.avatarContainer}>
-                <Image layout="fill" alt="user-avatar" src={MockAvatar} />
+                <Image
+                  objectFit="cover"
+                  layout="fill"
+                  alt="user-avatar"
+                  src={profilePic.url}
+                />
               </div>
 
               <Text color="black" weight="bold" className={styles.name}>

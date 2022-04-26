@@ -105,6 +105,10 @@
         padding-bottom: 20px;
 
         .popupAvatar {
+          flex-shrink: 0;
+          position: relative;
+          overflow: hidden;
+          border-radius: 50%;
           height: 50px;
           width: 50px;
           margin-left: 4px;
@@ -143,6 +147,8 @@
     }
 
     .profilePic {
+      overflow: hidden;
+      position: relative;
       width: 46px;
       height: 46px;
       border-radius: 50%;

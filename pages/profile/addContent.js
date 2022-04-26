@@ -17,6 +17,7 @@ import { getUserProfile } from "shared/users";
 import { useUploadFile } from "hooks/useUploadFile";
 import { useAddPost } from "hooks/profile/useAddPost";
 import Text from "components/common/typography/text";
+import { useSelector } from "react-redux";
 
 const steps = [
   { id: 0, name: "type", text: "انتخاب نوع محتوا" },
@@ -34,6 +35,12 @@ export default function AddContent({ me, accessToken, tags }) {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [step, setStep] = useState(steps[0]);
+
+  const profilePic = useSelector(
+    (state) => state.users.userInfo.profilePicture
+  );
+
+  const coverImg = useSelector((state) => state.users.userInfo.coverImage);
 
   const [data, setData] = useAsyncState({
     contentType: undefined,
@@ -122,12 +129,19 @@ export default function AddContent({ me, accessToken, tags }) {
 
   return (
     <div className={styles.addContentContainer}>
-      <div className={styles.headerContainer} />
+      <div className={styles.headerContainer}>
+        <Image alt="" layout="fill" objectFit="cover" src={coverImg.url} />
+      </div>
 
       <div className={styles.profileContainer}>
         <div className={styles.content}>
           <div className={styles.avatar}>
-            <Image src={MockAvatar} alt="" />
+            <Image
+              layout="fill"
+              objectFit="cover"
+              src={profilePic.url}
+              alt=""
+            />
           </div>
 
           <div className={styles.name}>{me.username}</div>

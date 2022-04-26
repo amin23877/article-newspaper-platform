@@ -7,6 +7,7 @@
 }
 
 .headerContainer {
+  position: relative;
   height: 140px;
   background-image: url("../../assets/images/profile/default-profile-bg.png");
   background-size: cover;
@@ -29,6 +30,7 @@
 }
 
 .avatar {
+  position: relative;
   width: 84px;
   height: 84px;
   border-radius: 50%;

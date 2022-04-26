@@ -18,6 +18,7 @@ import Text from "components/common/typography/text";
 import NavMenu from "components/layouts/default/navMenu";
 import DrawerNavMenu from "components/layouts/default/drawerNavMenu";
 import ManageAccountMenu from "components/manageAccount/manageAccountMenu";
+import defaultProfile from "assets/images/profile/default-profile-img.svg";
 
 export default function Navbar({ pages }) {
   const { pathname, route } = useRouter();
@@ -129,7 +130,12 @@ export default function Navbar({ pages }) {
                     {user.username ?? "کاربر میهمان"}
                   </div>
                   <div className={styles.profilePic}>
-                    <Image src={MockAvatar} alt="avatar" />
+                    <Image
+                      objectFit="cover"
+                      layout="fill"
+                      src={user.profilePicture?.url ?? defaultProfile}
+                      alt="avatar"
+                    />
                   </div>
                   {showPopup ? (
                     <Popup
@@ -139,7 +145,12 @@ export default function Navbar({ pages }) {
                     >
                       <div className={styles.popupHeader}>
                         <div className={styles.popupAvatar}>
-                          <Image src={MockAvatar} alt="avatar" />
+                          <Image
+                            objectFit="cover"
+                            layout="fill"
+                            src={user.profilePicture?.url ?? defaultProfile}
+                            alt="avatar"
+                          />
                         </div>
                         <div className={styles.headerTexts}>
                           <div className={styles.headerUsername}>

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import styles from "styles/components/manageAccount/PersonalInfo.module.scss";
 import defaultProfile from "assets/images/profile/default-profile-img.svg";
-import { useUpdateProfile } from "../../../hooks/manage-account/useUpdateProfile";
+import { useUpdateProfile } from "hooks/manage-account/useUpdateProfile";
 
 /*
  * this function get a FileList and pass first selected image (FileList[0])
@@ -32,16 +32,11 @@ function EditProfile({ user }) {
   const { update, status } = useUpdateProfile();
 
   const [profilePreview, setProfilePreview] = useState(
-    user.profilePicture || defaultProfile
+    user.profilePicture.url || defaultProfile
   );
-  const [coverPreview, setCoverPreview] = useState(user.coverImage);
+  const [coverPreview, setCoverPreview] = useState(user.coverImage?.url);
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, watch, handleSubmit } = useForm();
 
   const watchProfile = watch("profilePicture");
   const watchCover = watch("coverImage");
@@ -82,13 +77,15 @@ function EditProfile({ user }) {
         </div>
 
         <label className={styles.selectProfilePicture}>
-          <Image
-            objectFit="cover"
-            width={80}
-            height={80}
-            alt="user-profile"
-            src={profilePreview}
-          />
+          {profilePreview && (
+            <Image
+              objectFit="cover"
+              width={80}
+              height={80}
+              alt="user-profile"
+              src={profilePreview}
+            />
+          )}
 
           <input {...register("profilePicture")} type="file" hidden />
         </label>

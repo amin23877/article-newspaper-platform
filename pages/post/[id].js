@@ -22,6 +22,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Endpoints } from "utils/endpoints";
 import cookie from "cookie";
+import { useSelector } from "react-redux";
+import defaultProfile from "assets/images/profile/default-profile-img.svg";
 
 export default function Post({ postInfo }) {
   const router = useRouter();
@@ -35,6 +37,10 @@ export default function Post({ postInfo }) {
   const [liked, setLiked] = useState(false);
   const [post, setPost] = useState();
   const [posts, setPosts] = useState();
+
+  const profilePic = useSelector(
+    (state) => state.users.userInfo.profilePicture
+  );
 
   useEffect(() => {
     getUser();
@@ -391,7 +397,12 @@ export default function Post({ postInfo }) {
         <div>{`${postInfo.commentsCount} نظر`}</div>
         <div className={styles.newComment}>
           <div className={styles.commentAvatar}>
-            <Image src={MockAvatar} alt="" />
+            <Image
+              layout="fill"
+              objectFit="cover"
+              src={profilePic.url ?? defaultProfile}
+              alt=""
+            />
           </div>
           <div className={styles.userNewComment}>
             <div onClick={addComment} className={styles.sendBtn}>
